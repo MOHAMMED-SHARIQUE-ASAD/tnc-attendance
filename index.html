@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE NEW COLLEGE - Attendance System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .college-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #8B0000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .college-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .college-name {
+            color: #8B0000;
+            font-size: 28px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .college-tagline {
+            color: #B22222;
+            font-size: 16px;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .arabic-text {
+            color: #8B0000;
+            font-size: 20px;
+            margin-bottom: 20px;
+            border-top: 2px solid #8B0000;
+            border-bottom: 2px solid #8B0000;
+            padding: 10px;
+            background: #FFF0F0;
+        }
+
+        .arabic-text small {
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+            color: #666;
+        }
+
+        .role-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .role-btn {
+            padding: 8px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .role-btn.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #8B0000;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #B22222;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #8B0000;
+            background: white;
+        }
+
+        .nav-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        .nav-brand h2 {
+            color: #8B0000;
+            font-size: 18px;
+        }
+
+        .nav-brand small {
+            color: #B22222;
+            font-size: 10px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 15px;
+            background: #f8f9fa;
+            border-radius: 30px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: #8B0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 8px 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            margin-top: 70px;
+            margin-bottom: 70px;
+            padding: 20px;
+            min-height: calc(100vh - 140px);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #8B0000;
+        }
+
+        .nav-item span:first-child {
+            font-size: 20px;
+        }
+
+        /* Student Home */
+        .student-home {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .student-header {
+            margin-bottom: 20px;
+        }
+
+        .student-header h1 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .student-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .hours-grid {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .hour-box {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .hour-box.present {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .hour-box .hour {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .hour-box .status {
+            color: #28a745;
+            font-size: 12px;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .class-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .class-title {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .class-status {
+            color: #28a745;
+            font-size: 14px;
+        }
+
+        .faculty-name {
+            color: #8B0000;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .class-details {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .view-all-link {
+            text-align: right;
+            margin: 15px 0;
+        }
+
+        .view-all-link a {
+            color: #8B0000;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .feedback-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .feedback-btn {
+            background: #8B0000;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .favorites-nav {
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            border-radius: 30px;
+            padding: 10px 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .favorites-nav .title {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .favorites-nav .actions span {
+            color: #8B0000;
+            font-size: 14px;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .schedule-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .schedule-header h3 {
+            color: #333;
+            font-size: 16px;
+        }
+
+        .schedule-date {
+            color: #8B0000;
+            font-size: 14px;
+        }
+
+        .schedule-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .schedule-time {
+            color: #8B0000;
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .result-card, .semester-card, .notice-card, .events-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            color: #333;
+            font-size: 16px;
+        }
+
+        .see-all {
+            color: #8B0000;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .semester-stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stats-details {
+            flex: 1;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .percentage-circle {
+            width: 80px;
+            height: 80px;
+            background: #8B0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .percentage-circle::after {
+            content: '%';
+            font-size: 12px;
+            position: absolute;
+            top: 25px;
+            right: 18px;
+        }
+
+        .event-item {
+            display: flex;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .event-date .day {
+            color: #8B0000;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .event-date .month {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .college-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .arabic-footer {
+            font-size: 16px;
+            color: #8B0000;
+            margin-bottom: 5px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 12px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: none;
+            border-left: 4px solid #8B0000;
+        }
+
+        .notification.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="college-logo">
+                    <img src="TNC.png" alt="THE NEW COLLEGE Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiM4QjAwMDAiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiPlROQzwvdGV4dD48L3N2Zz4=';">
+                </div>
+                <h1 class="college-name">THE NEW COLLEGE</h1>
+                <div class="college-tagline">Empowering Education, Enriching Lives</div>
+                <div class="arabic-text">
+                    رَبِّ زدْنِي عِلْماً
+                    <br>
+                    <small>"MY LORD! INCREASE ME IN KNOWLEDGE"</small>
+                </div>
+            </div>
+            
+            <div class="role-selector">
+                <button class="role-btn active" onclick="setRole('student')">Student</button>
+                <button class="role-btn" onclick="setRole('staff')">Staff</button>
+                <button class="role-btn" onclick="setRole('admin')">Admin</button>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div id="studentFields">
+                    <div class="input-group">
+                        <label>📋 Register Number</label>
+                        <input type="text" id="registerNumber" placeholder="Enter register number">
+                    </div>
+                    <div class="input-group">
+                        <label>🔒 Password</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+                </div>
+
+                <div id="staffAdminFields" style="display: none;">
+                    <div class="input-group">
+                        <label>📧 Email Address</label>
+                        <input type="email" id="email" placeholder="Enter email">
+                    </div>
+                    <div class="input-group">
+                        <label>🔒 Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter password">
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn">Login to Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="nav-logo">
+                    <img src="TNC.png" alt="TNC" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9IiM4QjAwMDAiLz48dGV4dCB4PSIyMCIgeT0iMjAiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiPlROQzwvdGV4dD48L3N2Zz4=';">
+                </div>
+                <div>
+                    <h2>THE NEW COLLEGE</h2>
+                    <small>Est. 1951 | Chennai</small>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">MS</div>
+                    <span id="userName">Student</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent"></div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('home')">
+                <span>🏠</span>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('menu')">
+                <span>📋</span>
+                <span>Menu</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('profile')">
+                <span>👤</span>
+                <span>Profile</span>
+            </div>
+        </div>
+
+        <!-- College Footer -->
+        <div class="college-footer">
+            <div class="arabic-footer">رَبِّ زدْنِي عِلْماً</div>
+            <div>THE NEW COLLEGE | Established 1951 | Affiliated to University of Madras</div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationMessage"></span>
+    </div>
+
+    <script>
+        // Student Data
+        const students = [
+            { reg: '2313181058150', name: 'Mohammed Sharique Asad', password: '2313181058150' },
+            { reg: '2313181058101', name: 'M Abdul Muquthadir', password: '2313181058101' },
+            { reg: '2313181058102', name: 'Abrar S', password: '2313181058102' },
+            { reg: '2313181058103', name: 'Ahmed Thariq', password: '2313181058103' },
+            { reg: '2313181058106', name: 'Akbar', password: '2313181058106' },
+            { reg: '2313181058108', name: 'Ashwin R', password: '2313181058108' },
+            { reg: '2313181058109', name: 'S Ibrahim', password: '2313181058109' },
+            { reg: '2313181058110', name: 'Khader Sharieef I', password: '2313181058110' },
+            { reg: '2313181058111', name: 'K Mohamed Sardhar', password: '2313181058111' },
+            { reg: '2313181058112', name: 'F Mohamed Aahil', password: '2313181058112' },
+            { reg: '2313181058113', name: 'Mohamed Aslam', password: '2313181058113' },
+            { reg: '2313181058114', name: 'Mohamed Azeem M', password: '2313181058114' },
+            { reg: '2313181058117', name: 'Mohamed Fowze', password: '2313181058117' },
+            { reg: '2313181058119', name: 'S Mohammed Fahad', password: '2313181058119' },
+            { reg: '2313181058120', name: 'Nithish M', password: '2313181058120' },
+            { reg: '2313181058121', name: 'A Riyas Khan', password: '2313181058121' },
+            { reg: '2313181058122', name: 'S Sameer Ahmed', password: '2313181058122' },
+            { reg: '2313181058126', name: 'Shek Ameen A', password: '2313181058126' },
+            { reg: '2313181058129', name: 'Wasim Khan F', password: '2313181058129' },
+            { reg: '2313181058130', name: 'Zaheer Khan J', password: '2313181058130' },
+            { reg: '2313181058131', name: 'A Zakir Ahamed', password: '2313181058131' },
+            { reg: '2313181058132', name: 'L T Abubacker Siddiq', password: '2313181058132' },
+            { reg: '2313181058135', name: 'Mohammed Abbas S', password: '2313181058135' },
+            { reg: '2313181058136', name: 'Mohamed Ibrahim.K', password: '2313181058136' },
+            { reg: '2313181058138', name: 'Mohammed Muzafar Shariff K', password: '2313181058138' },
+            { reg: '2313181058139', name: 'Muhammad Sheriff', password: '2313181058139' },
+            { reg: '2313181058140', name: 'Muhammadh Zaidh M', password: '2313181058140' },
+            { reg: '2313181058142', name: 'Mohamed Basith S', password: '2313181058142' },
+            { reg: '2313181058143', name: 'Mohammed Shoib Alam', password: '2313181058143' },
+            { reg: '2313181058144', name: 'Shahulhameed', password: '2313181058144' },
+            { reg: '2313181058146', name: 'Syed Sameer Sidiq S K', password: '2313181058146' },
+            { reg: '2313181058147', name: 'N Salman Gurshid', password: '2313181058147' },
+            { reg: '2313181058148', name: 'Mohamed Kaleel K', password: '2313181058148' },
+            { reg: '2313181058149', name: 'K Ahamed Haneef', password: '2313181058149' },
+            { reg: '2313181058151', name: 'Mohammed Saifullah.S', password: '2313181058151' },
+            { reg: '2313181058153', name: 'Danish', password: '2313181058153' },
+            { reg: '2313181058154', name: 'A Shajakhqn', password: '2313181058154' },
+            { reg: '2313181058156', name: 'M A Aadil Hussain', password: '2313181058156' },
+            { reg: '2313181058157', name: 'Harif Hussain', password: '2313181058157' },
+            { reg: '2313181058158', name: 'U Ameer Khan', password: '2313181058158' },
+            { reg: '2313181058159', name: 'Muheeb Basha H', password: '2313181058159' },
+            { reg: '2313181058160', name: 'Habeeb Razeen', password: '2313181058160' },
+            { reg: '2313181058161', name: 'S Mohamed Bilal', password: '2313181058161' }
+        ];
+
+        const staff = [
+            { name: 'Dr. P. Hakkim Divan Mydeen', email: 'p.hakkimdivanmydeen@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. A. Ashraf Ali', email: 'a.ashrafali@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Dr. G. Najeeb Ahmed', email: 'g.najeebahmed@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. M.M. Syed Sulaiman', email: 'mm.syedsulaiman@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Dr. J. Abdul Rasheedh', email: 'j.abdulrasheedh@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. N. Anver Hussain', email: 'n.anverhussain@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Dr. S. Sakthivel', email: 's.sakthivel@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Dr. K. Tajudin', email: 'k.tajudin@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. H. Riaz Ahamed', email: 'h.riazahamed@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. Syed Usman Basha', email: 'syed.usmanbasha@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. A.M. Abdul Kuthus', email: 'am.abdulkuthus@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. Mohammed Arshad .F', email: 'mohammed.arshadf@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. M. Mohamed NagoorGani', email: 'm.mohamednagoorgani@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. S. Xavier Raj', email: 's.xavierraj@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. V.M. Mohamed Noorul Ameen', email: 'vm.mohamednoorulameen@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. P. M. H. Hameedudeen', email: 'pmh.hameedudeen@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. J. Mohammed Javeed Basha', email: 'j.mohammedjaveedbasha@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. N. Mohamed Niyas Ali', email: 'n.mohamedniyasali@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. I. Mohideen Basha', email: 'i.mohideenbasha@thenewcollege.edu.in', password: 'staff' },
+            { name: 'Mr. Aarif Ahmed', email: 'aarif.ahmed@thenewcollege.edu.in', password: 'staff' }
+        ];
+
+        const admin = {
+            email: 'admin@thenewcollege.in',
+            password: 'admin',
+            name: 'Administrator'
+        };
+
+        let currentUser = null;
+        let currentRole = 'student';
+        let attendanceData = {};
+
+        function setRole(role) {
+            currentRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('studentFields').style.display = role === 'student' ? 'block' : 'none';
+            document.getElementById('staffAdminFields').style.display = role !== 'student' ? 'block' : 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            if (currentRole === 'student') {
+                const regNo = document.getElementById('registerNumber').value;
+                const password = document.getElementById('password').value;
+                
+                const student = students.find(s => s.reg === regNo && s.password === password);
+                
+                if (student) {
+                    currentUser = student;
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('userName').textContent = student.name;
+                    document.getElementById('userAvatar').textContent = student.name.split(' ').map(n => n[0]).join('').substring(0,2);
+                    showNotification('Login successful!');
+                    showStudentHome();
+                } else {
+                    showNotification('Invalid credentials!');
+                }
+            } else if (currentRole === 'staff') {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('adminPassword').value;
+                
+                const staffMember = staff.find(s => s.email === email && s.password === password);
+                
+                if (staffMember) {
+                    currentUser = staffMember;
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('userName').textContent = staffMember.name;
+                    document.getElementById('userAvatar').textContent = staffMember.name.split(' ').map(n => n[0]).join('').substring(0,2);
+                    showNotification('Welcome Staff!');
+                    showStaffHome();
+                } else {
+                    showNotification('Invalid credentials!');
+                }
+            } else if (currentRole === 'admin') {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('adminPassword').value;
+                
+                if (email === admin.email && password === admin.password) {
+                    currentUser = admin;
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('userName').textContent = 'Admin';
+                    document.getElementById('userAvatar').textContent = 'AD';
+                    showNotification('Welcome Admin!');
+                    showStaffHome();
+                } else {
+                    showNotification('Invalid credentials!');
+                }
+            }
+        }
+
+        function showStudentHome() {
+            const content = document.getElementById('mainContent');
+            const today = new Date();
+            const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+            const month = today.toLocaleDateString('en-US', { month: 'short' });
+            const day = today.getDate();
+            
+            content.innerHTML = `
+                <div class="student-home">
+                    <div class="student-header">
+                        <h1>${currentUser.name}</h1>
+                        <p>Admission No : ${currentUser.reg}</p>
+                    </div>
+
+                    <div class="hours-grid">
+                        ${[1,2,3,4,5].map(hour => `
+                            <div class="hour-box present">
+                                <div class="hour">${hour} hr</div>
+                                <div class="status">✓ Present</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="class-card">
+                        <div class="class-header">
+                            <span class="class-title">Class</span>
+                            <span class="class-status">Present</span>
+                        </div>
+                        <div class="faculty-name">MM Syed Sulaiman</div>
+                        <div class="class-details">20BJMP607-Programming in ASP.NET</div>
+                        <div class="class-details">PRACTICAL - VII</div>
+                    </div>
+
+                    <div class="view-all-link">
+                        <a href="#" onclick="showNotification('Viewing all attendance'); return false;">View all attendance requests →</a>
+                    </div>
+
+                    <div class="feedback-section">
+                        <p>Every feedback is valuable.</p>
+                        <button class="feedback-btn" onclick="showNotification('Thank you for your feedback!')">Give Feedback</button>
+                    </div>
+
+                    <div class="favorites-nav">
+                        <span class="title">Favorites</span>
+                        <div class="actions">
+                            <span onclick="showNotification('Attendance')">Attendance</span>
+                            <span onclick="showNotification('Add More')">Add More</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-section">
+                        <div class="schedule-header">
+                            <h3>Today's schedule</h3>
+                            <span class="schedule-date">${dayName}, ${month} ${day}</span>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">12:40 to 01:30</div>
+                            <div class="schedule-details">
+                                <h4>20BJM609-Operating Systems</h4>
+                                <p>Mohammed Arshad F</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h3>Latest Result</h3>
+                            <a href="#" class="see-all" onclick="showNotification('Viewing all results'); return false;">See All →</a>
+                        </div>
+                        <div class="no-result">
+                            <p>No Result Published</p>
+                            <small>Your SGPA and GPA will be shown here</small>
+                        </div>
+                    </div>
+
+                    <div class="semester-card">
+                        <div class="card-header">
+                            <h3>Semester Wise Attendance</h3>
+                            <a href="#" class="see-all" onclick="showNotification('Viewing all attendance'); return false;">See All →</a>
+                        </div>
+                        <div>
+                            <h4>Semester 6</h4>
+                            <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Current Semester</p>
+                            <div class="semester-stats">
+                                <div class="stats-details">
+                                    <div class="stat-row">
+                                        <span class="stat-label">Total Hours</span>
+                                        <span class="stat-value">172.0</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Hours Present</span>
+                                        <span class="stat-value">171.0</span>
+                                    </div>
+                                </div>
+                                <div class="percentage-circle">99.42</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notice-card">
+                        <div class="card-header">
+                            <h3>Notice Board</h3>
+                            <a href="#" class="see-all" onclick="showNotification('Viewing all notices'); return false;">See All →</a>
+                        </div>
+                        <div class="notice-content">
+                            <p>Notice Board is Quiet Today</p>
+                            <small>Stay tuned — exciting updates are on the way</small>
+                        </div>
+                    </div>
+
+                    <div class="events-card">
+                        <div class="events-header">
+                            <h3>Events & News</h3>
+                            <a href="#" class="see-all" onclick="showNotification('Viewing all events'); return false;">See All →</a>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="day">15</div>
+                                <div class="month">MAR</div>
+                            </div>
+                            <div class="event-details">
+                                <h4>Mid Term Examinations Begin</h4>
+                                <p>All departments • 10:00 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showStaffHome() {
+            const content = document.getElementById('mainContent');
+            content.innerHTML = `
+                <div style="padding: 20px;">
+                    <h2 style="color: #8B0000;">Welcome, ${currentUser.name}</h2>
+                    <p style="margin-top: 10px;">Staff Dashboard - Coming Soon!</p>
+                </div>
+            `;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.nav-item').classList.add('active');
+            
+            if (tab === 'home' && currentUser) {
+                if (currentRole === 'student') {
+                    showStudentHome();
+                } else {
+                    showStaffHome();
+                }
+            } else {
+                showNotification(`${tab} tab - Coming soon!`);
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const msg = document.getElementById('notificationMessage');
+            msg.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('registerNumber').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('adminPassword').value = '';
+            showNotification('Logged out successfully');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => setRole('student'));
+    </script>
+</body>
+</html>
