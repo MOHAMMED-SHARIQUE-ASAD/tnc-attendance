@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE NEW COLLEGE - Multi-Class Attendance System</title>
+    <title>THE NEW COLLEGE - Attendance System</title>
     <style>
         * {
             margin: 0;
@@ -1701,11 +1701,11 @@
                 <div id="studentFields">
                     <div class="input-group">
                         <label>📋 Register Number</label>
-                        <input type="text" id="registerNumber" placeholder="Enter register number" value="24001">
+                        <input type="text" id="registerNumber" placeholder="Enter register number">
                     </div>
                     <div class="input-group">
                         <label>🔒 Password</label>
-                        <input type="password" id="password" placeholder="Enter password" value="24001">
+                        <input type="password" id="password" placeholder="Enter password">
                         <div class="hint">Password is your register number</div>
                     </div>
                 </div>
@@ -1713,11 +1713,11 @@
                 <div id="staffAdminFields" style="display: none;">
                     <div class="input-group">
                         <label>📧 Email Address</label>
-                        <input type="email" id="email" placeholder="Enter email" value="sa.abdulkadhar@thenewcollege.edu.in">
+                        <input type="email" id="email" placeholder="Enter email">
                     </div>
                     <div class="input-group">
                         <label>🔒 Password</label>
-                        <input type="password" id="adminPassword" placeholder="Enter password" value="staff">
+                        <input type="password" id="adminPassword" placeholder="Enter password">
                     </div>
                 </div>
 
@@ -1803,7 +1803,7 @@
 
     <script>
         // ==================== APPS SCRIPT WEB APP URL ====================
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxv9csUq13hFnCop46gyy0QnOkCtp_DB_ZWbnPLXxDjwqOFh2E8PCo4UOfk8UbfrIzcaw/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbypjqmi0LhPrVrP3GuUDrT-2UApyFxFOzGAMczFpTY7v6zQXMsKBl9G-FIuVrPifaAx/exec';
 
         // ==================== APPLICATION STATE ====================
         let currentUser = null;
@@ -1816,14 +1816,6 @@
         let selectedClass = '';
         let attendanceData = {};
         let expandedPeriod = null;
-        let classes = [
-            '1st Year A Batch',
-            '1st Year B Batch',
-            '2nd Year A Batch',
-            '2nd Year B Batch',
-            '3rd Year A Batch',
-            '3rd Year B Batch'
-        ];
         
         // Navigation History
         let navigationHistory = [];
@@ -1834,6 +1826,16 @@
 
         // Student data from Google Sheets
         let studentsFromSheet = [];
+
+        // ==================== CLASSES ====================
+        const classes = [
+            '1st Year A Batch',
+            '1st Year B Batch',
+            '2nd Year A Batch',
+            '2nd Year B Batch',
+            '3rd Year A Batch',
+            '3rd Year B Batch'
+        ];
 
         // ==================== STAFF MEMBERS ====================
         const staffMembers = [
@@ -1876,20 +1878,9 @@
             name: 'Administrator'
         };
 
-        // ==================== LOAD CLASSES FROM SHEET ====================
-        async function loadClasses() {
-            try {
-                const response = await fetch(APPS_SCRIPT_URL + '?action=getAllClasses&t=' + new Date().getTime());
-                const data = await response.json();
-                if (data.classes) {
-                    classes = data.classes;
-                }
-                return true;
-            } catch (error) {
-                console.error('Error loading classes:', error);
-                return false;
-            }
-        }
+        // ==================== NO HARDCODED STUDENTS - ONLY GOOGLE SHEETS ====================
+        // This array is intentionally empty - all students come from Google Sheets
+        const csStudents = [];
 
         // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
         async function loadStudentsFromSheet(className) {
@@ -1900,17 +1891,15 @@
             if (!className) return false;
             
             try {
-                showLoading();
                 const url = APPS_SCRIPT_URL + '?action=getStudents&class=' + encodeURIComponent(className) + '&t=' + new Date().getTime();
                 console.log('Fetching students from:', url);
                 
                 const response = await fetch(url);
                 const data = await response.json();
                 
-                console.log('Received data:', data);
+                console.log(`Data received for ${className}:`, data);
                 
                 if (data.students && Array.isArray(data.students)) {
-                    studentsFromSheet = data.students;
                     // Store by class
                     let allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
                     allStudents[className] = data.students;
@@ -1918,12 +1907,59 @@
                     console.log(`Loaded ${data.students.length} students for ${className}`);
                     return true;
                 } else {
-                    console.log('No students in response');
+                    console.log(`No students in response for ${className}`);
                     return false;
                 }
             } catch (error) {
                 console.error('Error loading students from sheet:', error);
                 return false;
+            }
+        }
+
+        // ==================== LOAD ATTENDANCE FROM SHEET ====================
+        async function loadAttendanceFromSheet() {
+            try {
+                const url = APPS_SCRIPT_URL + '?action=getAttendance&t=' + new Date().getTime();
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.records) {
+                    attendanceData = data.records;
+                    localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
+                    console.log('Loaded attendance records:', Object.keys(attendanceData).length);
+                }
+            } catch (error) {
+                console.error('Error loading attendance from sheet:', error);
+                const saved = localStorage.getItem('attendanceRecords');
+                if (saved) {
+                    attendanceData = JSON.parse(saved);
+                }
+            }
+        }
+
+        // ==================== SAVE ATTENDANCE TO SHEET ====================
+        async function saveAttendanceToSheet(records, className) {
+            showLoading();
+            try {
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        records: records,
+                        className: className 
+                    })
+                });
+                
+                // Update local storage
+                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
+                showNotification(`Attendance for ${className} saved to Google Sheets!`, 'success');
+                
+            } catch (error) {
+                console.error('Error saving attendance:', error);
+                showNotification('Error saving to Google Sheets', 'error');
             } finally {
                 hideLoading();
             }
@@ -1964,17 +2000,14 @@
             currentUser = null;
         }
 
-        // ==================== AUTO-REFRESH FUNCTIONALITY ====================
+        // ==================== AUTO-REFRESH ====================
         function startAutoRefresh() {
             if (refreshInterval) clearInterval(refreshInterval);
             refreshInterval = setInterval(() => {
                 if (currentUser) {
-                    loadAttendanceFromLocal();
                     if (currentRole === 'student') {
                         if (currentPage === 'home') showStudentHome();
                         else if (currentPage === 'attendance') showAttendance();
-                    } else {
-                        if (currentPage === 'markAttendance') showMarkAttendance();
                     }
                 }
             }, 30000);
@@ -1982,44 +2015,12 @@
 
         async function refreshData() {
             showLoading();
-            await loadClasses();
+            await loadAttendanceFromSheet();
             hideLoading();
             showNotification('Data refreshed!', 'success');
-            if (currentRole === 'student') {
-                if (currentPage === 'home') showStudentHome();
-                else if (currentPage === 'attendance') showAttendance();
-            } else {
-                if (currentPage === 'markAttendance') showMarkAttendance();
-            }
         }
 
-        // ==================== ATTENDANCE DATA MANAGEMENT ====================
-        function loadAttendanceFromLocal() {
-            const saved = localStorage.getItem('attendanceRecords');
-            if (saved) {
-                attendanceData = JSON.parse(saved);
-            }
-        }
-
-        function saveAttendanceToLocal() {
-            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-        }
-
-        async function loadAttendanceFromSheet() {
-            try {
-                const response = await fetch(APPS_SCRIPT_URL + '?action=getAttendance&t=' + new Date().getTime());
-                const data = await response.json();
-                if (data.records) {
-                    attendanceData = data.records;
-                    saveAttendanceToLocal();
-                }
-            } catch (error) {
-                console.error('Error loading from sheet:', error);
-                loadAttendanceFromLocal();
-            }
-        }
-
-        // ==================== LOGIN HANDLER ====================
+        // ==================== LOGIN HANDLER - SHEET ONLY ====================
         function setRole(role) {
             currentRole = role;
             document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
@@ -2033,16 +2034,16 @@
             event.preventDefault();
             
             if (currentRole === 'student') {
-                const regNo = document.getElementById('registerNumber').value;
-                const password = document.getElementById('password').value;
+                const regNo = document.getElementById('registerNumber').value.trim();
+                const password = document.getElementById('password').value.trim();
 
                 showLoading();
                 
                 try {
-                    // Try each class to find the student
                     let foundStudent = null;
                     let studentClass = null;
                     
+                    // Search in all classes
                     for (const className of classes) {
                         await loadStudentsFromSheet(className);
                         const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
@@ -2065,7 +2066,7 @@
                             name: foundStudent.name,
                             role: 'student',
                             department: 'Computer Science',
-                            semester: foundStudent.year || '3rd',
+                            semester: foundStudent.year || '1st',
                             batch: foundStudent.batch || 'A',
                             class: studentClass
                         };
@@ -2135,7 +2136,7 @@
             }
         }
 
-        // ==================== CLASS SELECTION FOR STAFF ====================
+        // ==================== CLASS SELECTION ====================
         function showClassSelection() {
             const content = document.getElementById('mainContent');
             
@@ -2162,6 +2163,7 @@
             navigateTo('markAttendance');
         }
 
+        // ==================== MENU FUNCTIONS ====================
         function updateMenuForRole() {
             const menuGrid = document.getElementById('menuGrid');
             
@@ -2340,9 +2342,7 @@
                     break;
             }
             
-            if (section !== 'home') {
-                document.getElementById('backBtnNav').classList.add('visible');
-            }
+            document.getElementById('backBtnNav').classList.add('visible');
         }
 
         function switchTab(tab) {
@@ -2687,11 +2687,18 @@
         function showStaffAdminDashboard() {
             const content = document.getElementById('mainContent');
             
+            // Count total students across all classes
+            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
+            let totalStudents = 0;
+            for (const className in allStudents) {
+                totalStudents += allStudents[className].length;
+            }
+            
             content.innerHTML = `
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-title">Total Classes</div>
-                        <div class="stat-value">${classes.length}</div>
+                        <div class="stat-title">Total Students</div>
+                        <div class="stat-value">${totalStudents}</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-title">Total Staff</div>
@@ -2707,9 +2714,9 @@
                     </div>
                 </div>
 
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3>Quick Actions</h3>
+                <div class="table-container" style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #8B0000; padding-bottom: 10px;">
+                        <h3 style="color: #333; font-size: 18px; font-weight: 600;">Quick Actions</h3>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
                         <button class="btn-primary" onclick="navigateTo('markAttendance')" style="padding: 15px;">✅ Mark Attendance</button>
@@ -2722,26 +2729,45 @@
             `;
         }
 
-        // ==================== MARK ATTENDANCE PAGE ====================
+        // ==================== MARK ATTENDANCE PAGE - SHEET ONLY ====================
         async function showMarkAttendance() {
             const content = document.getElementById('mainContent');
             const today = new Date().toISOString().split('T')[0];
-            
+
             if (!selectedClass) {
                 showClassSelection();
                 return;
             }
-            
-            // Get students for selected class
+
+            // Get students ONLY from Google Sheets
             const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-            const studentList = allStudents[selectedClass] || [];
-            
+            let studentList = allStudents[selectedClass] || [];
+
+            // If no students in localStorage, try loading from sheet again
             if (studentList.length === 0) {
                 await loadStudentsFromSheet(selectedClass);
+                const updatedAllStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
+                studentList = updatedAllStudents[selectedClass] || [];
             }
-            
-            const updatedList = allStudents[selectedClass] || [];
-            
+
+            // If still no students, show error
+            if (studentList.length === 0) {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 50px;">
+                        <h3 style="color: #8B0000;">No Students Found</h3>
+                        <p>No students found in <strong>${selectedClass}</strong>.</p>
+                        <p>Please add students to the <strong>${selectedClass}</strong> sheet in Google Sheets with these columns:</p>
+                        <p style="background: #f0f0f0; padding: 10px; margin: 20px; border-radius: 5px;">
+                            Register No | Name | Password | Batch | Year
+                        </p>
+                        <button class="btn-primary" onclick="showClassSelection()" style="margin-top: 20px; padding: 10px 20px;">
+                            ← Back to Class Selection
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
             // Initialize attendance data structure
             if (!attendanceData[selectedClass]) {
                 attendanceData[selectedClass] = {};
@@ -2752,14 +2778,7 @@
             if (!attendanceData[selectedClass][today][selectedPeriod]) {
                 attendanceData[selectedClass][today][selectedPeriod] = {};
             }
-            if (selectedCourse && !attendanceData[selectedClass][today][selectedPeriod][selectedCourse]) {
-                attendanceData[selectedClass][today][selectedPeriod][selectedCourse] = {};
-                
-                updatedList.forEach(student => {
-                    attendanceData[selectedClass][today][selectedPeriod][selectedCourse][student.reg] = 'unmarked';
-                });
-            }
-            
+
             content.innerHTML = `
                 <div class="mark-attendance-page">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -2773,7 +2792,7 @@
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                         <h3 style="color: #8B0000;">${selectedClass}</h3>
                         <p>Date: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        <p>Total Students: ${updatedList.length}</p>
+                        <p>Total Students: ${studentList.length}</p>
                     </div>
                     
                     <div class="period-selector">
@@ -2811,14 +2830,14 @@
 
                         <div class="student-list">
                             <div class="student-list-header">
-                                <h3>Students (${updatedList.length})</h3>
+                                <h3>Students (${studentList.length})</h3>
                                 <input type="text" placeholder="Search student..." 
                                        style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; width: 200px;"
                                        onkeyup="searchStudents(this.value)">
                             </div>
                             <div id="studentListContainer">
-                                ${updatedList.map(student => {
-                                    const status = attendanceData[selectedClass]?.[today]?.[selectedPeriod]?.[selectedCourse]?.[student.reg] || 'unmarked';
+                                ${studentList.map(student => {
+                                    const status = attendanceData[selectedClass]?.[today]?.[selectedPeriod]?.[student.reg] || 'unmarked';
                                     return `
                                         <div class="student-list-item" id="student-${student.reg}" data-name="${student.name.toLowerCase()}" data-reg="${student.reg}">
                                             <div class="student-info">
@@ -2883,9 +2902,8 @@
             if (!attendanceData[selectedClass]) attendanceData[selectedClass] = {};
             if (!attendanceData[selectedClass][today]) attendanceData[selectedClass][today] = {};
             if (!attendanceData[selectedClass][today][selectedPeriod]) attendanceData[selectedClass][today][selectedPeriod] = {};
-            if (!attendanceData[selectedClass][today][selectedPeriod][selectedCourse]) attendanceData[selectedClass][today][selectedPeriod][selectedCourse] = {};
             
-            attendanceData[selectedClass][today][selectedPeriod][selectedCourse][regNo] = status;
+            attendanceData[selectedClass][today][selectedPeriod][regNo] = status;
             
             const studentDiv = document.getElementById(`student-${regNo}`);
             if (studentDiv) {
@@ -2907,10 +2925,9 @@
             if (!attendanceData[selectedClass]) attendanceData[selectedClass] = {};
             if (!attendanceData[selectedClass][today]) attendanceData[selectedClass][today] = {};
             if (!attendanceData[selectedClass][today][selectedPeriod]) attendanceData[selectedClass][today][selectedPeriod] = {};
-            if (!attendanceData[selectedClass][today][selectedPeriod][selectedCourse]) attendanceData[selectedClass][today][selectedPeriod][selectedCourse] = {};
             
             studentList.forEach(student => {
-                attendanceData[selectedClass][today][selectedPeriod][selectedCourse][student.reg] = status;
+                attendanceData[selectedClass][today][selectedPeriod][student.reg] = status;
             });
             
             studentList.forEach(student => {
@@ -2929,8 +2946,8 @@
             if (!selectedCourse || !selectedClass) return;
             
             const today = new Date().toISOString().split('T')[0];
-            if (attendanceData[selectedClass]?.[today]?.[selectedPeriod]?.[selectedCourse]) {
-                delete attendanceData[selectedClass][today][selectedPeriod][selectedCourse];
+            if (attendanceData[selectedClass]?.[today]?.[selectedPeriod]) {
+                delete attendanceData[selectedClass][today][selectedPeriod];
             }
             showMarkAttendance();
         }
@@ -2946,7 +2963,7 @@
             const records = [];
             
             studentList.forEach(student => {
-                const status = attendanceData[selectedClass]?.[today]?.[selectedPeriod]?.[selectedCourse]?.[student.reg];
+                const status = attendanceData[selectedClass]?.[today]?.[selectedPeriod]?.[student.reg];
                 if (status && status !== 'unmarked') {
                     const key = `${student.reg}_${today}_${selectedPeriod}`;
                     attendanceData[key] = status;
@@ -2971,84 +2988,15 @@
                 return;
             }
             
-            showLoading();
+            await saveAttendanceToSheet(records, selectedClass);
             
-            try {
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        records: records,
-                        className: selectedClass 
-                    })
-                });
-                
-                saveAttendanceToLocal();
-                
-                showNotification(`Attendance for ${selectedClass} - Period ${selectedPeriod} submitted successfully!`, 'success');
-                
-                selectedCourse = null;
-                showMarkAttendance();
-                
-            } catch (error) {
-                console.error('Error saving attendance:', error);
-                showNotification('Error saving attendance', 'error');
-            } finally {
-                hideLoading();
-            }
+            showNotification(`Attendance for ${selectedClass} - Period ${selectedPeriod} submitted successfully!`, 'success');
+            
+            selectedCourse = null;
+            showMarkAttendance();
         }
 
-        // ==================== PROFILE PAGE ====================
-        function showProfile() {
-            const content = document.getElementById('mainContent');
-            
-            content.innerHTML = `
-                <div class="account-page" style="background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div class="account-header" style="text-align: center; margin-bottom: 30px;">
-                        <div class="profile-avatar" style="width: 80px; height: 80px; background: #8B0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; margin: 0 auto 15px;">
-                            ${currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
-                        </div>
-                        <h2 style="color: #333; font-size: 22px; margin-bottom: 5px;">${currentUser.name}</h2>
-                        <p style="color: #666; font-size: 14px;">${currentUser.role === 'student' ? 'Register No: ' + currentUser.reg : currentUser.role === 'staff' ? 'Staff Member' : 'Administrator'}</p>
-                        ${currentUser.role === 'student' ? `<p style="color: #8B0000; font-size: 14px;">${currentUser.class || ''} | Batch: ${currentUser.batch || ''}</p>` : ''}
-                    </div>
-
-                    <div class="profile-details" style="margin-bottom: 20px;">
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Email</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.email || (currentUser.role === 'student' ? 'student@thenewcollege.edu.in' : currentUser.email || 'staff@thenewcollege.edu.in')}</span>
-                        </div>
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Department</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.department || 'Computer Science'}</span>
-                        </div>
-                        ${currentUser.role === 'staff' ? `
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Designation</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.designation || 'Faculty'}</span>
-                        </div>
-                        ` : ''}
-                        ${currentUser.role === 'student' ? `
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Semester</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.semester || '6'}</span>
-                        </div>
-                        ` : ''}
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Phone</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">+91 98765 43210</span>
-                        </div>
-                    </div>
-
-                    <button class="logout-btn-account" onclick="logout()" style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;">Logout</button>
-                </div>
-            `;
-        }
-
-        // ==================== ATTENDANCE PAGE ====================
+        // ==================== ATTENDANCE VIEW PAGE ====================
         function showAttendance() {
             const content = document.getElementById('mainContent');
             
@@ -3319,45 +3267,97 @@
             }
         }
 
-        // ==================== OTHER PAGES ====================
+        // ==================== PROFILE PAGE ====================
+        function showProfile() {
+            const content = document.getElementById('mainContent');
+            
+            content.innerHTML = `
+                <div class="account-page" style="background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div class="account-header" style="text-align: center; margin-bottom: 30px;">
+                        <div class="profile-avatar" style="width: 80px; height: 80px; background: #8B0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; margin: 0 auto 15px;">
+                            ${currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                        </div>
+                        <h2 style="color: #333; font-size: 22px; margin-bottom: 5px;">${currentUser.name}</h2>
+                        <p style="color: #666; font-size: 14px;">${currentUser.role === 'student' ? 'Register No: ' + currentUser.reg : currentUser.role === 'staff' ? 'Staff Member' : 'Administrator'}</p>
+                        ${currentUser.role === 'student' ? `<p style="color: #8B0000; font-size: 14px;">${currentUser.class || ''} | Batch: ${currentUser.batch || ''}</p>` : ''}
+                    </div>
+
+                    <div class="profile-details" style="margin-bottom: 20px;">
+                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
+                            <span class="detail-label" style="color: #666; font-size: 14px;">Email</span>
+                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.email || (currentUser.role === 'student' ? 'student@thenewcollege.edu.in' : currentUser.email || 'staff@thenewcollege.edu.in')}</span>
+                        </div>
+                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
+                            <span class="detail-label" style="color: #666; font-size: 14px;">Department</span>
+                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.department || 'Computer Science'}</span>
+                        </div>
+                        ${currentUser.role === 'staff' ? `
+                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
+                            <span class="detail-label" style="color: #666; font-size: 14px;">Designation</span>
+                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.designation || 'Faculty'}</span>
+                        </div>
+                        ` : ''}
+                        ${currentUser.role === 'student' ? `
+                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
+                            <span class="detail-label" style="color: #666; font-size: 14px;">Semester</span>
+                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.semester || '6'}</span>
+                        </div>
+                        ` : ''}
+                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
+                            <span class="detail-label" style="color: #666; font-size: 14px;">Phone</span>
+                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">+91 98765 43210</span>
+                        </div>
+                    </div>
+
+                    <button class="logout-btn-account" onclick="logout()" style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;">Logout</button>
+                </div>
+            `;
+        }
+
+        // ==================== OTHER PAGES (Placeholders) ====================
         function showDepartments() {
-            document.getElementById('mainContent').innerHTML = '<div class="departments-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Departments</h2><p>Department details coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Departments</h2><p>Department details coming soon!</p></div>';
         }
 
         function showAllCourses() {
-            document.getElementById('mainContent').innerHTML = '<div class="courses-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">All Courses</h2><p>Course details coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">All Courses</h2><p>Course details coming soon!</p></div>';
         }
 
         function showStudents() {
-            document.getElementById('mainContent').innerHTML = '<div class="students-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Students</h2><p>Student list coming soon!</p></div>';
+            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
+            let totalStudents = 0;
+            for (const className in allStudents) {
+                totalStudents += allStudents[className].length;
+            }
+            document.getElementById('mainContent').innerHTML = `<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Students</h2><p>Total Students: ${totalStudents}</p><p>Student list coming soon!</p></div>`;
         }
 
         function showFaculty() {
-            document.getElementById('mainContent').innerHTML = '<div class="faculty-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Faculty</h2><p>Faculty list coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Faculty</h2><p>Faculty list coming soon!</p></div>';
         }
 
         function showLibraryGo() {
-            document.getElementById('mainContent').innerHTML = '<div class="library-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Library Go</h2><p>Library features coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Library Go</h2><p>Library features coming soon!</p></div>';
         }
 
         function showFees() {
-            document.getElementById('mainContent').innerHTML = '<div class="fees-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Fees</h2><p>Fee management coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Fees</h2><p>Fee management coming soon!</p></div>';
         }
 
         function showTutorials() {
-            document.getElementById('mainContent').innerHTML = '<div class="tutorials-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Tutorials</h2><p>Tutorials coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Tutorials</h2><p>Tutorials coming soon!</p></div>';
         }
 
         function showStudentTimetable() {
-            document.getElementById('mainContent').innerHTML = '<div class="timetable-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Student Timetable</h2><p>Timetable coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Student Timetable</h2><p>Timetable coming soon!</p></div>';
         }
 
         function showMyMentor() {
-            document.getElementById('mainContent').innerHTML = '<div class="mentor-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">My Mentor</h2><p>Mentor details coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">My Mentor</h2><p>Mentor details coming soon!</p></div>';
         }
 
         function showLibraryVisits() {
-            document.getElementById('mainContent').innerHTML = '<div class="visits-page" style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Library Visits</h2><p>Library visits coming soon!</p></div>';
+            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Library Visits</h2><p>Library visits coming soon!</p></div>';
         }
 
         // ==================== NOTIFICATION ====================
@@ -3383,10 +3383,10 @@
             selectedPeriod = 1;
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('dashboard').classList.remove('active');
-            document.getElementById('registerNumber').value = '24001';
-            document.getElementById('password').value = '24001';
-            document.getElementById('email').value = 'sa.abdulkadhar@thenewcollege.edu.in';
-            document.getElementById('adminPassword').value = 'staff';
+            document.getElementById('registerNumber').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('adminPassword').value = '';
             showNotification('Logged out successfully', 'info');
         }
 
@@ -3397,6 +3397,11 @@
             startAutoRefresh();
             updateRecentItems();
             await loadAttendanceFromSheet();
+            
+            // Log sheet status on load
+            console.log('Google Sheets Integration Status:');
+            console.log('Apps Script URL:', APPS_SCRIPT_URL);
+            console.log('Classes:', classes);
         });
     </script>
 </body>
