@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE NEW COLLEGE - Attendance System</title>
     <style>
+        /* ==================== COMPLETE STYLES ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -1824,9 +1825,6 @@
         // Auto-refresh interval
         let refreshInterval = null;
 
-        // Student data from Google Sheets
-        let studentsFromSheet = [];
-
         // ==================== CLASSES ====================
         const classes = [
             '1st Year A Batch',
@@ -1878,9 +1876,7 @@
             name: 'Administrator'
         };
 
-        // ==================== NO HARDCODED STUDENTS - ONLY GOOGLE SHEETS ====================
-        // This array is intentionally empty - all students come from Google Sheets
-        const csStudents = [];
+        // ==================== NO HARDCODED STUDENTS - ALL DATA FROM SHEETS ====================
 
         // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
         async function loadStudentsFromSheet(className) {
@@ -3398,7 +3394,7 @@
             updateRecentItems();
             await loadAttendanceFromSheet();
             
-            // Log sheet status on load
+            // Log status
             console.log('Google Sheets Integration Status:');
             console.log('Apps Script URL:', APPS_SCRIPT_URL);
             console.log('Classes:', classes);
