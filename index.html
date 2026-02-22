@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE NEW COLLEGE - Attendance System</title>
     <style>
-        /* Copy all your existing styles here - they're perfect! */
+        /* Copy all the styles from the previous version - they're the same */
         * {
             margin: 0;
             padding: 0;
@@ -19,7 +19,6 @@
             color: #333;
         }
 
-        /* Login Page Styles */
         .login-container {
             display: flex;
             justify-content: center;
@@ -295,7 +294,6 @@
             color: #8B0000;
         }
 
-        /* Main Content */
         .main-content {
             margin-top: 60px;
             margin-bottom: 70px;
@@ -304,7 +302,6 @@
             overflow-y: auto;
         }
 
-        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -339,7 +336,6 @@
             font-size: 20px;
         }
 
-        /* Full Page Menu */
         .menu-full {
             position: fixed;
             top: 60px;
@@ -447,7 +443,6 @@
             background: #f0f0f0;
         }
 
-        /* Student Home Content */
         .student-home {
             max-width: 600px;
             margin: 0 auto;
@@ -545,7 +540,6 @@
             color: #004085;
         }
 
-        /* Period Detail Card */
         .period-detail-card {
             background: white;
             border-radius: 15px;
@@ -1037,7 +1031,6 @@
             font-size: 12px;
         }
 
-        /* Attendance Page */
         .attendance-page {
             background: white;
             border-radius: 20px;
@@ -1272,7 +1265,6 @@
             font-weight: 600;
         }
 
-        /* Mark Attendance Page */
         .mark-attendance-page {
             background: white;
             border-radius: 20px;
@@ -1529,7 +1521,6 @@
             transform: translateY(-2px);
         }
 
-        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1564,7 +1555,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Notifications */
         .notification {
             position: fixed;
             top: 80px;
@@ -1593,7 +1583,6 @@
             border-left-color: #dc3545;
         }
 
-        /* Footer */
         .college-footer {
             text-align: center;
             margin-top: 20px;
@@ -1644,11 +1633,11 @@
                 <div id="studentFields">
                     <div class="input-group">
                         <label>📋 Register Number</label>
-                        <input type="text" id="registerNumber" placeholder="Enter register number">
+                        <input type="text" id="registerNumber" placeholder="Enter register number" value="2413181107042">
                     </div>
                     <div class="input-group">
                         <label>🔒 Password</label>
-                        <input type="password" id="password" placeholder="Enter password">
+                        <input type="password" id="password" placeholder="Enter password" value="2413181107042">
                         <div class="hint">Password is your register number</div>
                     </div>
                 </div>
@@ -1746,7 +1735,7 @@
 
     <script>
         // ==================== APPS SCRIPT WEB APP URL ====================
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxL6TslVdejlguNkzJlN1kWUgdy82H2oTPvUikwIB1QDQvQv6KNAwfpswQTdmJmYsS_Vg/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxv9csUq13hFnCop46gyy0QnOkCtp_DB_ZWbnPLXxDjwqOFh2E8PCo4UOfk8UbfrIzcaw/exec';
 
         // ==================== APPLICATION STATE ====================
         let currentUser = null;
@@ -1766,52 +1755,8 @@
         // Auto-refresh interval
         let refreshInterval = null;
 
-        // ==================== ALL COMPUTER SCIENCE STUDENTS ====================
-        const csStudents = [
-            { reg: '2313181058101', name: 'M Abdul Muquthadir', password: '2313181058101' },
-            { reg: '2313181058102', name: 'Abrar S', password: '2313181058102' },
-            { reg: '2313181058103', name: 'Ahmed Thariq', password: '2313181058103' },
-            { reg: '2313181058106', name: 'Akbar', password: '2313181058106' },
-            { reg: '2313181058108', name: 'Ashwin R', password: '2313181058108' },
-            { reg: '2313181058109', name: 'S Ibrahim', password: '2313181058109' },
-            { reg: '2313181058110', name: 'Khader Sharieef I', password: '2313181058110' },
-            { reg: '2313181058111', name: 'K Mohamed Sardhar', password: '2313181058111' },
-            { reg: '2313181058112', name: 'F Mohamed Aahil', password: '2313181058112' },
-            { reg: '2313181058113', name: 'Mohamed Aslam', password: '2313181058113' },
-            { reg: '2313181058114', name: 'Mohamed Azeem M', password: '2313181058114' },
-            { reg: '2313181058117', name: 'Mohamed Fowze', password: '2313181058117' },
-            { reg: '2313181058119', name: 'S Mohammed Fahad', password: '2313181058119' },
-            { reg: '2313181058120', name: 'Nithish M', password: '2313181058120' },
-            { reg: '2313181058121', name: 'A Riyas Khan', password: '2313181058121' },
-            { reg: '2313181058122', name: 'S Sameer Ahmed', password: '2313181058122' },
-            { reg: '2313181058126', name: 'Shek Ameen A', password: '2313181058126' },
-            { reg: '2313181058129', name: 'Wasim Khan F', password: '2313181058129' },
-            { reg: '2313181058130', name: 'Zaheer Khan J', password: '2313181058130' },
-            { reg: '2313181058131', name: 'A Zakir Ahamed', password: '2313181058131' },
-            { reg: '2313181058132', name: 'L T Abubacker Siddiq', password: '2313181058132' },
-            { reg: '2313181058135', name: 'Mohammed Abbas S', password: '2313181058135' },
-            { reg: '2313181058136', name: 'Mohamed Ibrahim.K', password: '2313181058136' },
-            { reg: '2313181058138', name: 'Mohammed Muzafar Shariff K', password: '2313181058138' },
-            { reg: '2313181058139', name: 'Muhammad Sheriff', password: '2313181058139' },
-            { reg: '2313181058140', name: 'Muhammadh Zaidh M', password: '2313181058140' },
-            { reg: '2313181058142', name: 'Mohamed Basith S', password: '2313181058142' },
-            { reg: '2313181058143', name: 'Mohammed Shoib Alam', password: '2313181058143' },
-            { reg: '2313181058144', name: 'Shahulhameed', password: '2313181058144' },
-            { reg: '2313181058146', name: 'Syed Sameer Sidiq S K', password: '2313181058146' },
-            { reg: '2313181058147', name: 'N Salman Gurshid', password: '2313181058147' },
-            { reg: '2313181058148', name: 'Mohamed Kaleel K', password: '2313181058148' },
-            { reg: '2313181058149', name: 'K Ahamed Haneef', password: '2313181058149' },
-            { reg: '2313181058150', name: 'Mohammed Sharique Asad', password: '2313181058150' },
-            { reg: '2313181058151', name: 'Mohammed Saifullah.S', password: '2313181058151' },
-            { reg: '2313181058153', name: 'Danish', password: '2313181058153' },
-            { reg: '2313181058154', name: 'A Shajakhqn', password: '2313181058154' },
-            { reg: '2313181058156', name: 'M A Aadil Hussain', password: '2313181058156' },
-            { reg: '2313181058157', name: 'Harif Hussain', password: '2313181058157' },
-            { reg: '2313181058158', name: 'U Ameer Khan', password: '2313181058158' },
-            { reg: '2313181058159', name: 'Muheeb Basha H', password: '2313181058159' },
-            { reg: '2313181058160', name: 'Habeeb Razeen', password: '2313181058160' },
-            { reg: '2313181058161', name: 'S Mohamed Bilal', password: '2313181058161' }
-        ];
+        // Student data from Google Sheets
+        let studentsFromSheet = [];
 
         // ==================== STAFF MEMBERS ====================
         const staffMembers = [
@@ -1853,6 +1798,43 @@
             password: 'admin',
             name: 'Administrator'
         };
+
+        // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
+        async function loadStudentsFromSheet() {
+            showLoading();
+            try {
+                // Add timestamp to prevent caching
+                const response = await fetch(APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime());
+                const data = await response.json();
+                
+                if (data.students && Array.isArray(data.students)) {
+                    studentsFromSheet = data.students;
+                    localStorage.setItem('studentsFromSheet', JSON.stringify(studentsFromSheet));
+                    console.log('Loaded students from sheet:', studentsFromSheet);
+                    return true;
+                } else {
+                    // Fallback to localStorage
+                    const saved = localStorage.getItem('studentsFromSheet');
+                    if (saved) {
+                        studentsFromSheet = JSON.parse(saved);
+                        console.log('Loaded students from localStorage:', studentsFromSheet);
+                        return true;
+                    }
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error loading students from sheet:', error);
+                // Try localStorage as fallback
+                const saved = localStorage.getItem('studentsFromSheet');
+                if (saved) {
+                    studentsFromSheet = JSON.parse(saved);
+                    return true;
+                }
+                return false;
+            } finally {
+                hideLoading();
+            }
+        }
 
         // ==================== SESSION MANAGEMENT ====================
         function loadSession() {
@@ -1907,6 +1889,7 @@
 
         async function refreshData() {
             showLoading();
+            await loadStudentsFromSheet();
             await loadAttendanceFromSheet();
             hideLoading();
             showNotification('Data refreshed!', 'success');
@@ -1932,7 +1915,7 @@
 
         async function loadAttendanceFromSheet() {
             try {
-                const response = await fetch(APPS_SCRIPT_URL + '?t=' + new Date().getTime());
+                const response = await fetch(APPS_SCRIPT_URL + '?action=getAttendance&t=' + new Date().getTime());
                 const data = await response.json();
                 if (data.records) {
                     attendanceData = data.records;
@@ -1974,7 +1957,7 @@
                 }
                 
                 // Use fetch with no-cors mode for Google Apps Script
-                await fetch(APPS_SCRIPT_URL, {
+                await fetch(APPS_SCRIPT_URL + '?action=saveAttendance', {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: {
@@ -1994,9 +1977,6 @@
             }
         }
 
-        // Initialize
-        loadAttendanceFromLocal();
-
         // ==================== LOGIN HANDLER ====================
         function setRole(role) {
             currentRole = role;
@@ -2007,18 +1987,25 @@
             document.getElementById('staffAdminFields').style.display = role !== 'student' ? 'block' : 'none';
         }
 
-        function handleLogin(event) {
+        async function handleLogin(event) {
             event.preventDefault();
             
             if (currentRole === 'student') {
                 const regNo = document.getElementById('registerNumber').value;
                 const password = document.getElementById('password').value;
 
-                const student = csStudents.find(s => s.reg === regNo && s.password === password);
-
-                if (student) {
+                // First check students from Google Sheets
+                await loadStudentsFromSheet();
+                
+                // Look for student in sheet data
+                const sheetStudent = studentsFromSheet.find(s => 
+                    s.reg === regNo && (s.password === password || s.password === regNo)
+                );
+                
+                if (sheetStudent) {
                     currentUser = {
-                        ...student,
+                        reg: sheetStudent.reg,
+                        name: sheetStudent.name,
                         role: 'student',
                         department: 'Computer Science',
                         semester: 6
@@ -2034,11 +2021,10 @@
                     navigationHistory = [];
                     currentPage = 'home';
                     
-                    // Set home tab as active
                     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
                     document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
                     
-                    showNotification(`Welcome, ${student.name}!`, 'success');
+                    showNotification(`Welcome, ${sheetStudent.name}!`, 'success');
                     showStudentHome();
                 } else {
                     showNotification('Invalid Register Number or Password!', 'error');
@@ -2062,7 +2048,6 @@
                     navigationHistory = [];
                     currentPage = 'home';
                     
-                    // Set home tab as active
                     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
                     document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
                     
@@ -2088,7 +2073,6 @@
                     navigationHistory = [];
                     currentPage = 'home';
                     
-                    // Set home tab as active
                     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
                     document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
                     
@@ -2099,6 +2083,9 @@
                 }
             }
         }
+
+        // Keep hardcoded students as fallback (but we won't use them now)
+        const csStudents = [];
 
         function updateMenuForRole() {
             const menuGrid = document.getElementById('menuGrid');
@@ -2635,7 +2622,7 @@
                 <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
                     <div class="stat-card" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                         <div class="stat-title" style="color: #666; font-size: 13px; margin-bottom: 5px;">Total Students</div>
-                        <div class="stat-value" style="color: #333; font-size: 24px; font-weight: bold;">${csStudents.length}</div>
+                        <div class="stat-value" style="color: #333; font-size: 24px; font-weight: bold;">${studentsFromSheet.length}</div>
                     </div>
                     <div class="stat-card" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                         <div class="stat-title" style="color: #666; font-size: 13px; margin-bottom: 5px;">Total Staff</div>
@@ -2717,7 +2704,10 @@
             const content = document.getElementById('mainContent');
             const today = new Date().toISOString().split('T')[0];
             
-            // Fix: Create proper structure for attendance data
+            // Get students list (from sheet or hardcoded)
+            const studentList = studentsFromSheet.length > 0 ? studentsFromSheet : csStudents;
+            
+            // Initialize attendance data structure
             if (!attendanceData[today]) {
                 attendanceData[today] = {};
             }
@@ -2728,7 +2718,7 @@
                 attendanceData[today][selectedPeriod] = attendanceData[today][selectedPeriod] || {};
                 attendanceData[today][selectedPeriod][selectedCourse] = {};
                 
-                csStudents.forEach(student => {
+                studentList.forEach(student => {
                     const key = `${student.reg}_${today}_${selectedPeriod}`;
                     attendanceData[today][selectedPeriod][selectedCourse][student.reg] = attendanceData[key] || 'unmarked';
                 });
@@ -2780,7 +2770,7 @@
                             <div class="student-list-header">
                                 <h3>Students</h3>
                             </div>
-                            ${csStudents.map(student => {
+                            ${studentList.map(student => {
                                 const status = attendanceData[today]?.[selectedPeriod]?.[selectedCourse]?.[student.reg] || 'unmarked';
                                 return `
                                     <div class="student-list-item" id="student-${student.reg}">
@@ -2847,15 +2837,17 @@
             if (!selectedCourse) return;
             
             const today = new Date().toISOString().split('T')[0];
+            const studentList = studentsFromSheet.length > 0 ? studentsFromSheet : csStudents;
+            
             if (!attendanceData[today]) attendanceData[today] = {};
             if (!attendanceData[today][selectedPeriod]) attendanceData[today][selectedPeriod] = {};
             if (!attendanceData[today][selectedPeriod][selectedCourse]) attendanceData[today][selectedPeriod][selectedCourse] = {};
             
-            csStudents.forEach(student => {
+            studentList.forEach(student => {
                 attendanceData[today][selectedPeriod][selectedCourse][student.reg] = status;
             });
             
-            csStudents.forEach(student => {
+            studentList.forEach(student => {
                 const studentDiv = document.getElementById(`student-${student.reg}`);
                 if (studentDiv) {
                     const options = studentDiv.querySelectorAll('.status-option');
@@ -2882,9 +2874,10 @@
             
             const today = new Date().toISOString().split('T')[0];
             const selectedCourseObj = courses.find(c => c.id == selectedCourse);
+            const studentList = studentsFromSheet.length > 0 ? studentsFromSheet : csStudents;
             
             // Save all attendance records with faculty and course info
-            csStudents.forEach(student => {
+            studentList.forEach(student => {
                 const status = attendanceData[today]?.[selectedPeriod]?.[selectedCourse]?.[student.reg];
                 if (status && status !== 'unmarked') {
                     const key = `${student.reg}_${today}_${selectedPeriod}`;
@@ -2959,11 +2952,12 @@
         // ==================== STUDENTS PAGE ====================
         function showStudents() {
             const content = document.getElementById('mainContent');
+            const studentList = studentsFromSheet.length > 0 ? studentsFromSheet : csStudents;
             
             content.innerHTML = `
                 <div class="table-container" style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                     <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #8B0000; padding-bottom: 10px;">
-                        <h3 style="color: #333; font-size: 18px; font-weight: 600;">Student List - Computer Science (3rd Year)</h3>
+                        <h3 style="color: #333; font-size: 18px; font-weight: 600;">Student List</h3>
                     </div>
                     <table style="width: 100%; border-collapse: collapse;">
                         <thead>
@@ -2976,7 +2970,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            ${csStudents.map((student, index) => `
+                            ${studentList.map((student, index) => `
                                 <tr>
                                     <td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">${index + 1}</td>
                                     <td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">${student.reg}</td>
@@ -3350,11 +3344,14 @@
         }
 
         // ==================== INITIALIZE ====================
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             setRole('student');
             loadSession();
             startAutoRefresh();
             updateRecentItems();
+            
+            // Load students from Google Sheets on startup
+            await loadStudentsFromSheet();
         });
     </script>
 </body>
