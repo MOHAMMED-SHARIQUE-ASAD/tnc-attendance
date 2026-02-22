@@ -1667,6 +1667,49 @@
             border-color: #8B0000;
             box-shadow: 0 10px 25px rgba(139,0,0,0.2);
         }
+
+        /* Debug Panel Styles */
+        .debug-panel {
+            background: #f8f9fa;
+            border: 2px solid #17a2b8;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .debug-panel h3 {
+            color: #17a2b8;
+            margin-bottom: 15px;
+        }
+
+        .debug-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .debug-label {
+            font-weight: bold;
+            width: 150px;
+            color: #495057;
+        }
+
+        .debug-value {
+            color: #212529;
+            word-break: break-all;
+        }
+
+        .debug-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .debug-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -1714,11 +1757,11 @@
                 <div id="staffAdminFields" style="display: none;">
                     <div class="input-group">
                         <label>📧 Email Address</label>
-                        <input type="email" id="email" placeholder="Enter email">
+                        <input type="email" id="email" placeholder="Enter email" value="sa.abdulkadhar@thenewcollege.edu.in">
                     </div>
                     <div class="input-group">
                         <label>🔒 Password</label>
-                        <input type="password" id="adminPassword" placeholder="Enter password">
+                        <input type="password" id="adminPassword" placeholder="Enter password" value="staff">
                     </div>
                 </div>
 
@@ -1804,7 +1847,8 @@
 
     <script>
         // ==================== APPS SCRIPT WEB APP URL ====================
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbypjqmi0LhPrVrP3GuUDrT-2UApyFxFOzGAMczFpTY7v6zQXMsKBl9G-FIuVrPifaAx/exec';
+        // !!! IMPORTANT: Replace this with your new URL !!!
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbze1Zf_Ssg045lXGDG1OtKEfjBYoHsRzErJ9UgTM-JeOvshVIVDiadUtGnWL9mE29Sv/exec';
 
         // ==================== APPLICATION STATE ====================
         let currentUser = null;
@@ -1912,34 +1956,172 @@
             }
         }
 
-        // ==================== LOAD ATTENDANCE FROM SHEET ====================
+        // ==================== LOAD ATTENDANCE FROM SHEET (UPDATED) ====================
         async function loadAttendanceFromSheet() {
             try {
                 const url = APPS_SCRIPT_URL + '?action=getAttendance&t=' + new Date().getTime();
+                console.log('Fetching attendance from:', url);
+                
                 const response = await fetch(url);
                 const data = await response.json();
+                
+                console.log('Attendance data received:', data);
                 
                 if (data.records) {
                     attendanceData = data.records;
                     localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
                     console.log('Loaded attendance records:', Object.keys(attendanceData).length);
+                    
+                    // Log a sample for debugging
+                    const sampleKey = Object.keys(attendanceData)[0];
+                    if (sampleKey) {
+                        console.log('Sample record:', sampleKey, attendanceData[sampleKey]);
+                    }
+                } else {
+                    console.warn('No records in attendance data');
                 }
             } catch (error) {
                 console.error('Error loading attendance from sheet:', error);
                 const saved = localStorage.getItem('attendanceRecords');
                 if (saved) {
                     attendanceData = JSON.parse(saved);
+                    console.log('Loaded attendance from localStorage as fallback');
                 }
             }
         }
 
-        // ==================== SAVE ATTENDANCE TO SHEET ====================
+        // ==================== DEBUG ATTENDANCE FUNCTION ====================
+        async function debugAttendance() {
+            console.log("🔍 DEBUG ATTENDANCE FUNCTION CALLED");
+            console.log("Current attendance data:", attendanceData);
+            
+            // If logged in as student, check for that student
+            if (currentUser && currentUser.role === 'student') {
+                const studentId = currentUser.reg;
+                const today = new Date().toISOString().split('T')[0];
+                
+                console.log(`🎓 Checking attendance for student: ${studentId} (${currentUser.name})`);
+                console.log(`📅 Today's date: ${today}`);
+                
+                let debugHTML = `
+                    <div class="debug-panel">
+                        <h3>🔍 Attendance Debug Info</h3>
+                        <div class="debug-row">
+                            <span class="debug-label">Student:</span>
+                            <span class="debug-value">${currentUser.name} (${studentId})</span>
+                        </div>
+                        <div class="debug-row">
+                            <span class="debug-label">Class:</span>
+                            <span class="debug-value">${currentUser.class || 'Unknown'}</span>
+                        </div>
+                        <div class="debug-row">
+                            <span class="debug-label">Today:</span>
+                            <span class="debug-value">${today}</span>
+                        </div>
+                        <div class="debug-row">
+                            <span class="debug-label">Total Records:</span>
+                            <span class="debug-value">${Object.keys(attendanceData).length}</span>
+                        </div>
+                        <h4>Period Status for Today:</h4>
+                `;
+                
+                for (let period = 1; period <= 5; period++) {
+                    const key = `${studentId}_${today}_${period}`;
+                    const status = attendanceData[key];
+                    
+                    let statusDisplay = '❌ Not marked';
+                    let statusClass = 'debug-error';
+                    
+                    if (status) {
+                        statusDisplay = `✅ ${status}`;
+                        statusClass = 'debug-success';
+                    }
+                    
+                    debugHTML += `
+                        <div class="debug-row">
+                            <span class="debug-label">Period ${period}:</span>
+                            <span class="debug-value ${statusClass}">${statusDisplay}</span>
+                        </div>
+                    `;
+                    
+                    if (status) {
+                        debugHTML += `
+                            <div class="debug-row" style="margin-left: 20px;">
+                                <span class="debug-label">Faculty:</span>
+                                <span class="debug-value">${attendanceData[key + '_faculty'] || 'N/A'}</span>
+                            </div>
+                            <div class="debug-row" style="margin-left: 20px;">
+                                <span class="debug-label">Course:</span>
+                                <span class="debug-value">${attendanceData[key + '_course'] || 'N/A'}</span>
+                            </div>
+                        `;
+                    }
+                }
+                
+                // Check for any records for this student on any date
+                const allStudentRecords = Object.keys(attendanceData)
+                    .filter(key => key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course'))
+                    .map(key => {
+                        const [sid, date, period] = key.split('_');
+                        return { date, period, status: attendanceData[key] };
+                    });
+                
+                debugHTML += `
+                    <h4>All Records for ${studentId}:</h4>
+                    <div class="debug-row">
+                        <span class="debug-label">Total Found:</span>
+                        <span class="debug-value">${allStudentRecords.length}</span>
+                    </div>
+                `;
+                
+                if (allStudentRecords.length > 0) {
+                    allStudentRecords.slice(0, 5).forEach(record => {
+                        debugHTML += `
+                            <div class="debug-row">
+                                <span class="debug-label">${record.date} P${record.period}:</span>
+                                <span class="debug-value ${record.status === 'present' ? 'debug-success' : 'debug-error'}">${record.status}</span>
+                            </div>
+                        `;
+                    });
+                    if (allStudentRecords.length > 5) {
+                        debugHTML += `<div class="debug-row">... and ${allStudentRecords.length - 5} more</div>`;
+                    }
+                } else {
+                    debugHTML += `<div class="debug-row"><span class="debug-error">No attendance records found for this student in the loaded data!</span></div>`;
+                }
+                
+                debugHTML += `
+                        <div class="debug-row">
+                            <button onclick="refreshData()" class="btn-primary" style="margin-top: 10px; padding: 8px 15px;">🔄 Refresh Data</button>
+                            <button onclick="document.querySelector('.debug-panel').remove()" class="btn-primary" style="margin-top: 10px; margin-left: 10px; padding: 8px 15px; background: #6c757d;">✖ Close</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add to page
+                const mainContent = document.getElementById('mainContent');
+                mainContent.innerHTML = debugHTML + mainContent.innerHTML;
+                
+            } else {
+                // Staff view - show summary
+                const today = new Date().toISOString().split('T')[0];
+                const todayKeys = Object.keys(attendanceData).filter(key => key.includes(today));
+                
+                alert(`📊 Attendance Summary:\nTotal Records: ${Object.keys(attendanceData).length}\nToday's Records: ${todayKeys.length}\n\nCheck console for details (F12)`);
+                console.log('All attendance keys:', Object.keys(attendanceData));
+                console.log('Today\'s keys:', todayKeys);
+            }
+        }
+
+        // ==================== SAVE ATTENDANCE TO SHEET (UPDATED) ====================
         async function saveAttendanceToSheet(records, className) {
             showLoading();
             try {
-                await fetch(APPS_SCRIPT_URL, {
+                console.log('Saving attendance records:', records);
+                
+                const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'no-cors', // Keep no-cors for Google Apps Script
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -1949,13 +2131,24 @@
                     })
                 });
                 
-                // Update local storage
+                // Update local storage with the new records
+                records.forEach(record => {
+                    const key = `${record.studentId}_${record.date}_${record.period}`;
+                    attendanceData[key] = record.status;
+                    attendanceData[key + '_faculty'] = record.faculty;
+                    attendanceData[key + '_course'] = record.course;
+                    attendanceData[key + '_studentName'] = record.studentName;
+                });
+                
                 localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                showNotification(`Attendance for ${className} saved to Google Sheets!`, 'success');
+                showNotification(`✅ Attendance for ${className} saved!`, 'success');
+                
+                // Log success for debugging
+                console.log('Attendance saved successfully, local storage updated');
                 
             } catch (error) {
                 console.error('Error saving attendance:', error);
-                showNotification('Error saving to Google Sheets', 'error');
+                showNotification('❌ Error saving to Google Sheets', 'error');
             } finally {
                 hideLoading();
             }
@@ -2014,6 +2207,12 @@
             await loadAttendanceFromSheet();
             hideLoading();
             showNotification('Data refreshed!', 'success');
+            
+            // Refresh current view
+            if (currentRole === 'student') {
+                if (currentPage === 'home') showStudentHome();
+                else if (currentPage === 'attendance') showAttendance();
+            }
         }
 
         // ==================== LOGIN HANDLER - SHEET ONLY ====================
@@ -2148,6 +2347,12 @@
                                 <p style="color: #666;">Click to mark attendance</p>
                             </div>
                         `).join('')}
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
+                            🔍 Debug Attendance
+                        </button>
                     </div>
                 </div>
             `;
@@ -2637,6 +2842,12 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
+                            🔍 Debug My Attendance
+                        </button>
+                    </div>
                 </div>
             `;
         }
@@ -2720,6 +2931,7 @@
                         <button class="btn-primary" onclick="navigateTo('courses')" style="padding: 15px;">📚 View Courses</button>
                         <button class="btn-primary" onclick="navigateTo('students')" style="padding: 15px;">👥 View Students</button>
                         <button class="btn-primary" onclick="navigateTo('faculty')" style="padding: 15px;">👨‍🏫 View Faculty</button>
+                        <button class="btn-primary" onclick="debugAttendance()" style="padding: 15px; background: #17a2b8;">🔍 Debug Attendance</button>
                     </div>
                 </div>
             `;
@@ -2988,6 +3200,9 @@
             
             showNotification(`Attendance for ${selectedClass} - Period ${selectedPeriod} submitted successfully!`, 'success');
             
+            // Refresh attendance data
+            await loadAttendanceFromSheet();
+            
             selectedCourse = null;
             showMarkAttendance();
         }
@@ -3056,6 +3271,12 @@
                         <div id="attendanceContent">
                             ${attendanceHTML || '<p style="text-align: center; padding: 20px;">No attendance records found</p>'}
                         </div>
+                        
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
+                                🔍 Debug Attendance
+                            </button>
+                        </div>
                     </div>
                 `;
             } else {
@@ -3074,6 +3295,12 @@
                                 <div class="stat-title">Total Records</div>
                                 <div class="stat-value">${Object.keys(attendanceData).length}</div>
                             </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
+                                🔍 Debug Attendance
+                            </button>
                         </div>
                     </div>
                 `;
@@ -3395,9 +3622,11 @@
             await loadAttendanceFromSheet();
             
             // Log status
-            console.log('Google Sheets Integration Status:');
-            console.log('Apps Script URL:', APPS_SCRIPT_URL);
-            console.log('Classes:', classes);
+            console.log('🚀 Attendance System Initialized');
+            console.log('📊 Apps Script URL:', APPS_SCRIPT_URL);
+            console.log('📚 Classes:', classes);
+            console.log('👥 Staff Members:', staffMembers.length);
+            console.log('📝 Courses:', courses.length);
         });
     </script>
 </body>
