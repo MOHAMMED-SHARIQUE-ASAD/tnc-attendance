@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE NEW COLLEGE - Attendance System</title>
     <style>
+        /* ==================== COMPLETE STYLES ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -471,7 +472,6 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            cursor: pointer;
         }
 
         .hour-box {
@@ -482,6 +482,7 @@
             text-align: center;
             border: 2px solid transparent;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .hour-box:hover {
@@ -1136,6 +1137,7 @@
             background: #f8f9fa;
             color: #666;
             font-size: 13px;
+            font-weight: 600;
         }
 
         .attendance-table td {
@@ -1175,6 +1177,7 @@
             gap: 10px;
             flex-wrap: wrap;
             margin-top: 20px;
+            justify-content: center;
         }
 
         .status-btn {
@@ -1253,6 +1256,7 @@
             background: #f8f9fa;
             color: #666;
             font-size: 13px;
+            font-weight: 600;
         }
 
         .term-table td {
@@ -1713,13 +1717,6 @@
             color: #dc3545;
             font-weight: bold;
         }
-
-        .month-selector {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
     </style>
 </head>
 <body>
@@ -1983,13 +1980,7 @@
                 if (data.records) {
                     attendanceData = data.records;
                     localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                    console.log('Loaded attendance records:', Object.keys(attendanceData).length);
-                    
-                    // Log a sample for debugging
-                    const sampleKey = Object.keys(attendanceData)[0];
-                    if (sampleKey) {
-                        console.log('Sample record:', sampleKey, attendanceData[sampleKey]);
-                    }
+                    console.log('Loaded attendance records:', Object.keys(attendanceData).filter(key => !key.includes('_')).length);
                 } else {
                     console.warn('No records in attendance data');
                 }
@@ -2012,9 +2003,6 @@
                 const studentId = currentUser.reg;
                 const today = new Date().toISOString().split('T')[0];
                 
-                console.log(`🎓 Checking attendance for student: ${studentId} (${currentUser.name})`);
-                console.log(`📅 Today's date: ${today}`);
-                
                 let debugHTML = `
                     <div class="debug-panel">
                         <h3>🔍 Attendance Debug Info</h3>
@@ -2032,7 +2020,7 @@
                         </div>
                         <div class="debug-row">
                             <span class="debug-label">Total Records:</span>
-                            <span class="debug-value">${Object.keys(attendanceData).length}</span>
+                            <span class="debug-value">${Object.keys(attendanceData).filter(key => !key.includes('_')).length}</span>
                         </div>
                         <h4>Period Status for Today:</h4>
                 `;
@@ -2055,23 +2043,10 @@
                             <span class="debug-value ${statusClass}">${statusDisplay}</span>
                         </div>
                     `;
-                    
-                    if (status) {
-                        debugHTML += `
-                            <div class="debug-row" style="margin-left: 20px;">
-                                <span class="debug-label">Faculty:</span>
-                                <span class="debug-value">${attendanceData[key + '_faculty'] || 'N/A'}</span>
-                            </div>
-                            <div class="debug-row" style="margin-left: 20px;">
-                                <span class="debug-label">Course:</span>
-                                <span class="debug-value">${attendanceData[key + '_course'] || 'N/A'}</span>
-                            </div>
-                        `;
-                    }
                 }
                 
                 const allStudentRecords = Object.keys(attendanceData)
-                    .filter(key => key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course'))
+                    .filter(key => key.startsWith(studentId) && !key.includes('_'))
                     .map(key => {
                         const [sid, date, period] = key.split('_');
                         return { date, period, status: attendanceData[key] };
@@ -2094,11 +2069,8 @@
                             </div>
                         `;
                     });
-                    if (allStudentRecords.length > 10) {
-                        debugHTML += `<div class="debug-row">... and ${allStudentRecords.length - 10} more</div>`;
-                    }
                 } else {
-                    debugHTML += `<div class="debug-row"><span class="debug-error">No attendance records found for this student in the loaded data!</span></div>`;
+                    debugHTML += `<div class="debug-row"><span class="debug-error">No attendance records found for this student!</span></div>`;
                 }
                 
                 debugHTML += `
@@ -2111,14 +2083,6 @@
                 
                 const mainContent = document.getElementById('mainContent');
                 mainContent.innerHTML = debugHTML + mainContent.innerHTML;
-                
-            } else {
-                const today = new Date().toISOString().split('T')[0];
-                const todayKeys = Object.keys(attendanceData).filter(key => key.includes(today));
-                
-                alert(`📊 Attendance Summary:\nTotal Records: ${Object.keys(attendanceData).length}\nToday's Records: ${todayKeys.length}\n\nCheck console for details (F12)`);
-                console.log('All attendance keys:', Object.keys(attendanceData));
-                console.log('Today\'s keys:', todayKeys);
             }
         }
 
@@ -2145,13 +2109,10 @@
                     attendanceData[key] = record.status;
                     attendanceData[key + '_faculty'] = record.faculty;
                     attendanceData[key + '_course'] = record.course;
-                    attendanceData[key + '_studentName'] = record.studentName;
                 });
                 
                 localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
                 showNotification(`✅ Attendance for ${className} saved!`, 'success');
-                
-                console.log('Attendance saved successfully, local storage updated');
                 
             } catch (error) {
                 console.error('Error saving attendance:', error);
@@ -2665,7 +2626,7 @@
             return icons[item] || '📌';
         }
 
-        // ==================== UPDATED STUDENT HOME ====================
+        // ==================== FIXED STUDENT HOME PAGE ====================
         function showStudentHome() {
             const content = document.getElementById('mainContent');
             const today = new Date();
@@ -2675,7 +2636,6 @@
             const day = today.getDate();
             
             const studentId = currentUser.reg;
-            const studentClass = currentUser.class;
             const todayAttendance = [];
             const periodDetails = {};
             
@@ -2687,22 +2647,15 @@
                         hour: hour,
                         status: attendanceData[key],
                         faculty: attendanceData[key + '_faculty'] || 'Not assigned',
-                        course: attendanceData[key + '_course'] || 'No course',
-                        details: attendanceData[key + '_details'] || ''
+                        course: attendanceData[key + '_course'] || 'No course'
                     });
                     periodDetails[hour] = {
                         status: attendanceData[key],
                         faculty: attendanceData[key + '_faculty'] || 'Not assigned',
-                        course: attendanceData[key + '_course'] || 'No course',
-                        details: attendanceData[key + '_details'] || ''
+                        course: attendanceData[key + '_course'] || 'No course'
                     };
                 } else {
-                    periodDetails[hour] = {
-                        status: null,
-                        faculty: null,
-                        course: null,
-                        details: null
-                    };
+                    periodDetails[hour] = { status: null };
                 }
             }
             
@@ -2734,15 +2687,14 @@
                             <div class="period-detail-content">
                                 <div class="period-detail-row">
                                     <span class="period-detail-label">Faculty:</span>
-                                    <span class="period-detail-value faculty">${detail.faculty || 'Not assigned'}</span>
+                                    <span class="period-detail-value faculty">${detail.faculty}</span>
                                 </div>
                                 <div class="period-detail-row">
                                     <span class="period-detail-label">Status:</span>
                                     <span class="period-detail-value status ${detail.status}">${getStatusText(detail.status)}</span>
                                 </div>
                                 <div class="period-detail-course">
-                                    <h4>${detail.course || 'No course'}</h4>
-                                    ${detail.details ? `<p class="course-code">${detail.details}</p>` : ''}
+                                    <h4>${detail.course}</h4>
                                 </div>
                             </div>
                         </div>
@@ -2764,7 +2716,7 @@
             
             // Calculate attendance summary
             const allStudentRecords = Object.keys(attendanceData)
-                .filter(key => key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course') && !key.includes('_studentName'));
+                .filter(key => key.startsWith(studentId) && !key.includes('_'));
             const totalClasses = allStudentRecords.length;
             const presentClasses = allStudentRecords.filter(key => attendanceData[key] === 'present').length;
             const attendancePercentage = totalClasses > 0 ? Math.round((presentClasses / totalClasses) * 100) : 0;
@@ -2879,14 +2831,6 @@
             `;
         }
 
-        function calculateAttendancePercentage(studentId) {
-            const total = Object.keys(attendanceData).filter(key => key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course')).length;
-            const present = Object.entries(attendanceData).filter(([key, value]) => key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course') && value === 'present').length;
-            
-            if (total === 0) return '0';
-            return Math.round((present / total) * 100);
-        }
-
         function showPeriodDetail(hour) {
             if (expandedPeriod === hour) {
                 expandedPeriod = null;
@@ -2987,10 +2931,7 @@
                     <div style="text-align: center; padding: 50px;">
                         <h3 style="color: #8B0000;">No Students Found</h3>
                         <p>No students found in <strong>${selectedClass}</strong>.</p>
-                        <p>Please add students to the <strong>${selectedClass}</strong> sheet in Google Sheets with these columns:</p>
-                        <p style="background: #f0f0f0; padding: 10px; margin: 20px; border-radius: 5px;">
-                            Register No | Name | Password | Batch | Year
-                        </p>
+                        <p>Please add students to the <strong>${selectedClass}</strong> sheet in Google Sheets.</p>
                         <button class="btn-primary" onclick="showClassSelection()" style="margin-top: 20px; padding: 10px 20px;">
                             ← Back to Class Selection
                         </button>
@@ -2999,24 +2940,11 @@
                 return;
             }
 
-            if (!attendanceData[selectedClass]) {
-                attendanceData[selectedClass] = {};
-            }
-            if (!attendanceData[selectedClass][today]) {
-                attendanceData[selectedClass][today] = {};
-            }
-            if (!attendanceData[selectedClass][today][selectedPeriod]) {
-                attendanceData[selectedClass][today][selectedPeriod] = {};
-            }
-
             content.innerHTML = `
                 <div class="mark-attendance-page">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <h2 style="color: #8B0000;">Mark Attendance</h2>
-                        <button class="btn-primary" onclick="showClassSelection()" 
-                                style="padding: 8px 15px; background: #6c757d;">
-                            ← Change Class
-                        </button>
+                        <button class="btn-primary" onclick="showClassSelection()" style="padding: 8px 15px; background: #6c757d;">← Change Class</button>
                     </div>
                     
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
@@ -3061,18 +2989,17 @@
                         <div class="student-list">
                             <div class="student-list-header">
                                 <h3>Students (${studentList.length})</h3>
-                                <input type="text" placeholder="Search student..." 
-                                       style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; width: 200px;"
-                                       onkeyup="searchStudents(this.value)">
+                                <input type="text" placeholder="Search student..." style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; width: 200px;" onkeyup="searchStudents(this.value)">
                             </div>
                             <div id="studentListContainer">
                                 ${studentList.map(student => {
-                                    const status = attendanceData[selectedClass]?.[today]?.[selectedPeriod]?.[student.reg] || 'unmarked';
+                                    const key = `${student.reg}_${today}_${selectedPeriod}`;
+                                    const status = attendanceData[key] || 'unmarked';
                                     return `
-                                        <div class="student-list-item" id="student-${student.reg}" data-name="${student.name.toLowerCase()}" data-reg="${student.reg}">
+                                        <div class="student-list-item" id="student-${student.reg}">
                                             <div class="student-info">
                                                 <h4>${student.name}</h4>
-                                                <p>${student.reg} | Batch: ${student.batch || 'N/A'}</p>
+                                                <p>${student.reg}</p>
                                             </div>
                                             <div class="student-status">
                                                 <div class="status-option present ${status === 'present' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'present')">✓</div>
@@ -3104,8 +3031,8 @@
             const queryLower = query.toLowerCase();
             
             items.forEach(item => {
-                const name = item.dataset.name;
-                const reg = item.dataset.reg;
+                const name = item.querySelector('.student-info h4').textContent.toLowerCase();
+                const reg = item.querySelector('.student-info p').textContent;
                 if (name.includes(queryLower) || reg.includes(query)) {
                     item.style.display = 'flex';
                 } else {
@@ -3128,19 +3055,13 @@
             if (!selectedCourse || !selectedClass) return;
             
             const today = new Date().toISOString().split('T')[0];
-            
-            if (!attendanceData[selectedClass]) attendanceData[selectedClass] = {};
-            if (!attendanceData[selectedClass][today]) attendanceData[selectedClass][today] = {};
-            if (!attendanceData[selectedClass][today][selectedPeriod]) attendanceData[selectedClass][today][selectedPeriod] = {};
-            
-            attendanceData[selectedClass][today][selectedPeriod][regNo] = status;
+            const key = `${regNo}_${today}_${selectedPeriod}`;
+            attendanceData[key] = status;
             
             const studentDiv = document.getElementById(`student-${regNo}`);
             if (studentDiv) {
                 const options = studentDiv.querySelectorAll('.status-option');
-                options.forEach(opt => {
-                    opt.classList.remove('active');
-                });
+                options.forEach(opt => opt.classList.remove('active'));
                 studentDiv.querySelector(`.status-option.${status}`).classList.add('active');
             }
         }
@@ -3152,21 +3073,14 @@
             const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
             const studentList = allStudents[selectedClass] || [];
             
-            if (!attendanceData[selectedClass]) attendanceData[selectedClass] = {};
-            if (!attendanceData[selectedClass][today]) attendanceData[selectedClass][today] = {};
-            if (!attendanceData[selectedClass][today][selectedPeriod]) attendanceData[selectedClass][today][selectedPeriod] = {};
-            
             studentList.forEach(student => {
-                attendanceData[selectedClass][today][selectedPeriod][student.reg] = status;
-            });
-            
-            studentList.forEach(student => {
+                const key = `${student.reg}_${today}_${selectedPeriod}`;
+                attendanceData[key] = status;
+                
                 const studentDiv = document.getElementById(`student-${student.reg}`);
                 if (studentDiv) {
                     const options = studentDiv.querySelectorAll('.status-option');
-                    options.forEach(opt => {
-                        opt.classList.remove('active');
-                    });
+                    options.forEach(opt => opt.classList.remove('active'));
                     studentDiv.querySelector(`.status-option.${status}`).classList.add('active');
                 }
             });
@@ -3176,9 +3090,14 @@
             if (!selectedCourse || !selectedClass) return;
             
             const today = new Date().toISOString().split('T')[0];
-            if (attendanceData[selectedClass]?.[today]?.[selectedPeriod]) {
-                delete attendanceData[selectedClass][today][selectedPeriod];
-            }
+            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
+            const studentList = allStudents[selectedClass] || [];
+            
+            studentList.forEach(student => {
+                const key = `${student.reg}_${today}_${selectedPeriod}`;
+                delete attendanceData[key];
+            });
+            
             showMarkAttendance();
         }
 
@@ -3193,14 +3112,9 @@
             const records = [];
             
             studentList.forEach(student => {
-                const status = attendanceData[selectedClass]?.[today]?.[selectedPeriod]?.[student.reg];
+                const key = `${student.reg}_${today}_${selectedPeriod}`;
+                const status = attendanceData[key];
                 if (status && status !== 'unmarked') {
-                    const key = `${student.reg}_${today}_${selectedPeriod}`;
-                    attendanceData[key] = status;
-                    attendanceData[key + '_faculty'] = currentUser.name;
-                    attendanceData[key + '_course'] = selectedCourseObj ? `${selectedCourseObj.code}-${selectedCourseObj.name}` : 'Course';
-                    attendanceData[key + '_studentName'] = student.name;
-                    
                     records.push({
                         date: today,
                         studentId: student.reg,
@@ -3219,22 +3133,17 @@
             }
             
             await saveAttendanceToSheet(records, selectedClass);
-            
-            showNotification(`Attendance for ${selectedClass} - Period ${selectedPeriod} submitted successfully!`, 'success');
-            
-            await loadAttendanceFromSheet();
+            showNotification(`Attendance for ${selectedClass} - Period ${selectedPeriod} submitted!`, 'success');
             
             selectedCourse = null;
             showMarkAttendance();
         }
 
-        // ==================== UPDATED ATTENDANCE PAGE ====================
+        // ==================== FIXED ATTENDANCE PAGE ====================
         function showAttendance() {
             const content = document.getElementById('mainContent');
             
             if (currentUser.role === 'student') {
-                const studentId = currentUser.reg;
-                
                 content.innerHTML = `
                     <div class="attendance-page">
                         <div class="attendance-tabs">
@@ -3253,31 +3162,6 @@
                         </div>
                     </div>
                 `;
-            } else {
-                const todayStr = new Date().toISOString().split('T')[0];
-                const todayCount = Object.keys(attendanceData).filter(key => key.includes(todayStr) && !key.includes('_faculty') && !key.includes('_course')).length;
-                
-                content.innerHTML = `
-                    <div class="attendance-page">
-                        <h3 style="margin-bottom: 20px;">Attendance Overview</h3>
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-title">Today's Attendance</div>
-                                <div class="stat-value">${todayCount}</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-title">Total Records</div>
-                                <div class="stat-value">${Object.keys(attendanceData).filter(key => !key.includes('_faculty') && !key.includes('_course')).length}</div>
-                            </div>
-                        </div>
-                        
-                        <div style="text-align: center; margin-top: 20px;">
-                            <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
-                                🔍 Debug Attendance
-                            </button>
-                        </div>
-                    </div>
-                `;
             }
         }
 
@@ -3285,7 +3169,7 @@
             const studentId = currentUser.reg;
             
             const allRecords = Object.keys(attendanceData)
-                .filter(key => key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course') && !key.includes('_studentName'));
+                .filter(key => key.startsWith(studentId) && !key.includes('_'));
             
             const totalClasses = allRecords.length;
             const presentClasses = allRecords.filter(key => attendanceData[key] === 'present').length;
@@ -3328,15 +3212,16 @@
             
             const currentMonth = months.find(m => m.name === selectedMonth) || months[0];
             
-            // Generate days for the selected month (only weekdays for demo, but you can show all days)
+            // Generate days for the selected month
             const days = [];
             for (let d = 1; d <= currentMonth.days; d++) {
-                // For demo, show some sample days (you can modify this to show all days)
-                if (d === 19 || d === 20 || d === 21 || d === 24 || d === 25 || d === 26 || d === 27 || d === 28) {
-                    const date = new Date(currentMonth.year, currentMonth.monthNum - 1, d);
-                    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' }).substring(0, 3);
-                    days.push({ day: d, weekday: weekday, date: `${currentMonth.year}-${currentMonth.monthNum.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}` });
-                }
+                const date = new Date(currentMonth.year, currentMonth.monthNum - 1, d);
+                const weekday = date.toLocaleDateString('en-US', { weekday: 'short' }).substring(0, 3);
+                days.push({ 
+                    day: d, 
+                    weekday: weekday, 
+                    date: `${currentMonth.year}-${currentMonth.monthNum.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}` 
+                });
             }
             
             const html = `
@@ -3392,6 +3277,7 @@
             showAttendanceHourly();
         }
 
+        // ==================== FIXED TERMLY VIEW ====================
         function showAttendanceTermly() {
             document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
@@ -3432,8 +3318,8 @@
                     sl: index + 1,
                     year: month.year,
                     month: month.name,
-                    attended: attended.toFixed(1),
-                    total: total.toFixed(1),
+                    attended: attended,
+                    total: total,
                     percent: percent
                 };
             });
@@ -3471,8 +3357,8 @@
                             `).join('')}
                             <tr>
                                 <td colspan="3"><strong>Total</strong></td>
-                                <td><strong>${totalAttended.toFixed(1)}</strong></td>
-                                <td><strong>${totalClasses.toFixed(1)}</strong></td>
+                                <td><strong>${totalAttended}</strong></td>
+                                <td><strong>${totalClasses}</strong></td>
                                 <td><strong>${overallPercent}</strong></td>
                             </tr>
                         </tbody>
@@ -3625,10 +3511,6 @@
             await loadAttendanceFromSheet();
             
             console.log('🚀 Attendance System Initialized');
-            console.log('📊 Apps Script URL:', APPS_SCRIPT_URL);
-            console.log('📚 Classes:', classes);
-            console.log('👥 Staff Members:', staffMembers.length);
-            console.log('📝 Courses:', courses.length);
         });
     </script>
 </body>
