@@ -845,4 +845,2417 @@
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .see-all {
+            color: #8B0000;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .no-result p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .no-result small {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .semester-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .semester-stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .stats-details {
+            flex: 1;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .stat-value {
+            color: #333;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .percentage-circle {
+            width: 80px;
+            height: 80px;
+            background: #8B0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .percentage-circle::after {
+            content: '%';
+            font-size: 12px;
+            position: absolute;
+            top: 25px;
+            right: 18px;
+        }
+
+        .notice-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .notice-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .notice-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .notice-content h4 {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .notice-content p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .events-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .events-header h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .event-item {
+            display: flex;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-date {
+            width: 45px;
+            text-align: center;
+        }
+
+        .event-date .day {
+            color: #8B0000;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .event-date .month {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .event-details h4 {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .event-details p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* Attendance Page */
+        .attendance-page {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .attendance-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .attendance-tab {
+            padding: 8px 20px;
+            border: none;
+            background: none;
+            color: #666;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .attendance-tab.active {
+            background: #8B0000;
+            color: white;
+        }
+
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .course-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .course-header h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .course-faculty {
+            color: #8B0000;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .course-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .course-stats span {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .month-grid {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .month-btn {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 20px;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .month-btn.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .attendance-table th {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .attendance-table td {
+            text-align: center;
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .status-present {
+            color: #28a745;
+            font-size: 18px;
+        }
+
+        .status-absent {
+            color: #dc3545;
+            font-size: 18px;
+        }
+
+        .status-late {
+            color: #ffc107;
+            font-size: 18px;
+        }
+
+        .status-letoff {
+            color: #17a2b8;
+            font-size: 18px;
+        }
+
+        .status-unmarked {
+            color: #6c757d;
+            font-size: 18px;
+        }
+
+        .status-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .status-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: default;
+        }
+
+        .status-btn.present {
+            background: #d4edda;
+            color: #28a745;
+        }
+
+        .status-btn.absent {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+
+        .status-btn.late {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-btn.letoff {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-btn.unmarked {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .term-stats {
+            margin-top: 20px;
+        }
+
+        .term-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .term-header h3 {
+            color: #333;
+            font-size: 18px;
+        }
+
+        .term-header span {
+            color: #8B0000;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .term-period {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .term-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .term-table th {
+            text-align: left;
+            padding: 10px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .term-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .term-table tr:last-child td {
+            border-bottom: none;
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        /* Mark Attendance Page */
+        .mark-attendance-page {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .period-selector {
+            margin-bottom: 30px;
+        }
+
+        .period-selector h3 {
+            color: #8B0000;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .period-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .period-card {
+            flex: 1;
+            min-width: 100px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .period-card.selected {
+            border-color: #8B0000;
+            background: #fff0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,0,0,0.1);
+        }
+
+        .period-card .period-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8B0000;
+            margin-bottom: 5px;
+        }
+
+        .period-card .period-time {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .course-selector {
+            margin-bottom: 30px;
+        }
+
+        .course-selector h3 {
+            color: #8B0000;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .course-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .student-list {
+            margin-bottom: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .student-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .student-list-header h3 {
+            color: #8B0000;
+            font-size: 18px;
+        }
+
+        .student-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-info h4 {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .student-info p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .student-status {
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            background: white;
+            border: 2px solid #e0e0e0;
+        }
+
+        .status-option.present.active {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        .status-option.absent.active {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .status-option.late.active {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .status-option.letoff.active {
+            background: #cce5ff;
+            border-color: #004085;
+            color: #004085;
+        }
+
+        .status-option:hover {
+            transform: scale(1.1);
+        }
+
+        .mark-all-section {
+            margin-bottom: 30px;
+        }
+
+        .mark-all-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .mark-all-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mark-all-btn.present {
+            background: #d4edda;
+            color: #28a745;
+            border: 2px solid #28a745;
+        }
+
+        .mark-all-btn.absent {
+            background: #f8d7da;
+            color: #dc3545;
+            border: 2px solid #dc3545;
+        }
+
+        .mark-all-btn.late {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .mark-all-btn.letoff {
+            background: #cce5ff;
+            color: #004085;
+            border: 2px solid #004085;
+        }
+
+        .mark-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .submit-attendance {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            background: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #B22222;
+            transform: translateY(-2px);
+        }
+
+        .cancel-btn {
+            padding: 12px 30px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .loading-overlay.active {
+            display: flex;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #8B0000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 12px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 1500;
+            border-left: 4px solid #8B0000;
+            font-size: 13px;
+        }
+
+        .notification.show {
+            display: flex;
+        }
+
+        .notification.success {
+            border-left-color: #28a745;
+        }
+
+        .notification.error {
+            border-left-color: #dc3545;
+        }
+
+        /* Footer */
+        .college-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .arabic-footer {
+            font-family: 'Traditional Arabic', 'Times New Roman', serif;
+            font-size: 16px;
+            color: #8B0000;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div>Loading data...</div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="college-logo">
+                    <img src="TNC.png" alt="THE NEW COLLEGE Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IiM4QjAwMDAiLz48dGV4dCB4PSI0MCIgeT0iNDAiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiPlROQzwvdGV4dD48L3N2Zz4=';">
+                </div>
+                <h1 class="college-name">THE NEW COLLEGE</h1>
+                <div class="college-tagline">Empowering Education, Enriching Lives</div>
+                <div class="arabic-text">
+                    رَبِّ زدْنِي عِلْماً
+                    <br>
+                    <small>"MY LORD! INCREASE ME IN KNOWLEDGE"</small>
+                </div>
+            </div>
+            
+            <div class="role-selector">
+                <button class="role-btn active" onclick="setRole('student')">Student</button>
+                <button class="role-btn" onclick="setRole('staff')">Staff</button>
+                <button class="role-btn" onclick="setRole('admin')">Admin</button>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div id="studentFields">
+                    <div class="input-group">
+                        <label>📋 Register Number</label>
+                        <input type="text" id="registerNumber" placeholder="Enter register number">
+                    </div>
+                    <div class="input-group">
+                        <label>🔒 Password</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                        <div class="hint">Password is your register number</div>
+                    </div>
+                </div>
+
+                <div id="staffAdminFields" style="display: none;">
+                    <div class="input-group">
+                        <label>📧 Email Address</label>
+                        <input type="email" id="email" placeholder="Enter email">
+                    </div>
+                    <div class="input-group">
+                        <label>🔒 Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter password">
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn">Login to Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <nav class="navbar">
+            <div class="nav-left">
+                <button class="back-btn-nav" id="backBtnNav" onclick="goBack()">←</button>
+                <div class="nav-brand">
+                    <div class="nav-logo">
+                        <img src="TNC.png" alt="TNC" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9IiM4QjAwMDAiLz48dGV4dCB4PSIyMCIgeT0iMjAiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiPlROQzwvdGV4dD48L3N2Zz4=';">
+                    </div>
+                    <div>
+                        <h2>THE NEW COLLEGE</h2>
+                        <small>Est. 1951 | Chennai</small>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="refresh-btn" onclick="refreshData()" title="Refresh data">↻</button>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </div>
+        </nav>
+
+        <!-- Full Page Menu -->
+        <div class="menu-full" id="fullMenu">
+            <div class="search-box">
+                <input type="text" placeholder="Search" id="menuSearch" onkeyup="searchMenu(this.value)">
+            </div>
+
+            <div class="recent-section" id="recentSection">
+                <div class="recent-header">
+                    <h3>Recent</h3>
+                    <span class="clear-all" onclick="clearRecent()">Clear all</span>
+                </div>
+                <div id="recentItems">
+                    <div class="recent-item" onclick="navigateTo('libraryGo')">
+                        <span>📚</span>
+                        <span>Library Go</span>
+                    </div>
+                    <div class="recent-item" onclick="navigateTo('attendance')">
+                        <span>✅</span>
+                        <span>Attendance</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <h3>Menu</h3>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be dynamically updated based on role -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent"></div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('home')">
+                <span>🏠</span>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('menu')">
+                <span>📋</span>
+                <span>Menu</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('profile')">
+                <span>👤</span>
+                <span>Profile</span>
+            </div>
+        </div>
+
+        <!-- College Footer -->
+        <div class="college-footer">
+            <div class="arabic-footer">رَبِّ زدْنِي عِلْماً</div>
+            <div>THE NEW COLLEGE | Established 1951 | Affiliated to University of Madras</div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationIcon">ℹ️</span>
+        <span id="notificationMessage"></span>
+    </div>
+
+    <script>
+        // ==================== APPS SCRIPT WEB APP URL ====================
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxL6TslVdejlguNkzJlN1kWUgdy82H2oTPvUikwIB1QDQvQv6KNAwfpswQTdmJmYsS_Vg/exec';
+
+        // ==================== APPLICATION STATE ====================
+        let currentUser = null;
+        let currentRole = 'student';
+        let currentTab = 'home';
+        let menuOpen = false;
+        let recentItems = ['Library Go', 'Attendance'];
+        let selectedPeriod = 1;
+        let selectedCourse = null;
+        let attendanceData = {};
+        let expandedPeriod = null;
+        
+        // Navigation History
+        let navigationHistory = [];
+        let currentPage = 'home';
+
+        // Auto-refresh interval
+        let refreshInterval = null;
+
+        // ==================== ALL COMPUTER SCIENCE STUDENTS ====================
+        const csStudents = [
+            { reg: '2313181058101', name: 'M Abdul Muquthadir', password: '2313181058101' },
+            { reg: '2313181058102', name: 'Abrar S', password: '2313181058102' },
+            { reg: '2313181058103', name: 'Ahmed Thariq', password: '2313181058103' },
+            { reg: '2313181058106', name: 'Akbar', password: '2313181058106' },
+            { reg: '2313181058108', name: 'Ashwin R', password: '2313181058108' },
+            { reg: '2313181058109', name: 'S Ibrahim', password: '2313181058109' },
+            { reg: '2313181058110', name: 'Khader Sharieef I', password: '2313181058110' },
+            { reg: '2313181058111', name: 'K Mohamed Sardhar', password: '2313181058111' },
+            { reg: '2313181058112', name: 'F Mohamed Aahil', password: '2313181058112' },
+            { reg: '2313181058113', name: 'Mohamed Aslam', password: '2313181058113' },
+            { reg: '2313181058114', name: 'Mohamed Azeem M', password: '2313181058114' },
+            { reg: '2313181058117', name: 'Mohamed Fowze', password: '2313181058117' },
+            { reg: '2313181058119', name: 'S Mohammed Fahad', password: '2313181058119' },
+            { reg: '2313181058120', name: 'Nithish M', password: '2313181058120' },
+            { reg: '2313181058121', name: 'A Riyas Khan', password: '2313181058121' },
+            { reg: '2313181058122', name: 'S Sameer Ahmed', password: '2313181058122' },
+            { reg: '2313181058126', name: 'Shek Ameen A', password: '2313181058126' },
+            { reg: '2313181058129', name: 'Wasim Khan F', password: '2313181058129' },
+            { reg: '2313181058130', name: 'Zaheer Khan J', password: '2313181058130' },
+            { reg: '2313181058131', name: 'A Zakir Ahamed', password: '2313181058131' },
+            { reg: '2313181058132', name: 'L T Abubacker Siddiq', password: '2313181058132' },
+            { reg: '2313181058135', name: 'Mohammed Abbas S', password: '2313181058135' },
+            { reg: '2313181058136', name: 'Mohamed Ibrahim.K', password: '2313181058136' },
+            { reg: '2313181058138', name: 'Mohammed Muzafar Shariff K', password: '2313181058138' },
+            { reg: '2313181058139', name: 'Muhammad Sheriff', password: '2313181058139' },
+            { reg: '2313181058140', name: 'Muhammadh Zaidh M', password: '2313181058140' },
+            { reg: '2313181058142', name: 'Mohamed Basith S', password: '2313181058142' },
+            { reg: '2313181058143', name: 'Mohammed Shoib Alam', password: '2313181058143' },
+            { reg: '2313181058144', name: 'Shahulhameed', password: '2313181058144' },
+            { reg: '2313181058146', name: 'Syed Sameer Sidiq S K', password: '2313181058146' },
+            { reg: '2313181058147', name: 'N Salman Gurshid', password: '2313181058147' },
+            { reg: '2313181058148', name: 'Mohamed Kaleel K', password: '2313181058148' },
+            { reg: '2313181058149', name: 'K Ahamed Haneef', password: '2313181058149' },
+            { reg: '2313181058150', name: 'Mohammed Sharique Asad', password: '2313181058150' },
+            { reg: '2313181058151', name: 'Mohammed Saifullah.S', password: '2313181058151' },
+            { reg: '2313181058153', name: 'Danish', password: '2313181058153' },
+            { reg: '2313181058154', name: 'A Shajakhqn', password: '2313181058154' },
+            { reg: '2313181058156', name: 'M A Aadil Hussain', password: '2313181058156' },
+            { reg: '2313181058157', name: 'Harif Hussain', password: '2313181058157' },
+            { reg: '2313181058158', name: 'U Ameer Khan', password: '2313181058158' },
+            { reg: '2313181058159', name: 'Muheeb Basha H', password: '2313181058159' },
+            { reg: '2313181058160', name: 'Habeeb Razeen', password: '2313181058160' },
+            { reg: '2313181058161', name: 'S Mohamed Bilal', password: '2313181058161' }
+        ];
+
+        // ==================== STAFF MEMBERS ====================
+        const staffMembers = [
+            { name: 'Dr. P. Hakkim Divan Mydeen', email: 'p.hakkimdivanmydeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. A. Ashraf Ali', email: 'a.ashrafali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Dr. G. Najeeb Ahmed', email: 'g.najeebahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Mr. M.M. Syed Sulaiman', email: 'mm.syedsulaiman@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
+            { name: 'Dr. J. Abdul Rasheedh', email: 'j.abdulrasheedh@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Mr. N. Anver Hussain', email: 'n.anverhussain@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
+            { name: 'Dr. S. Sakthivel', email: 's.sakthivel@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Dr. K. Tajudin', email: 'k.tajudin@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Mr. H. Riaz Ahamed', email: 'h.riazahamed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. Syed Usman Basha', email: 'syed.usmanbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. A.M. Abdul Kuthus', email: 'am.abdulkuthus@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. Mohammed Arshad .F', email: 'mohammed.arshadf@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. M. Mohamed NagoorGani', email: 'm.mohamednagoorgani@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. S. Xavier Raj', email: 's.xavierraj@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. V.M. Mohamed Noorul Ameen', email: 'vm.mohamednoorulameen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. P. M. H. Hameedudeen', email: 'pmh.hameedudeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. J. Mohammed Javeed Basha', email: 'j.mohammedjaveedbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. N. Mohamed Niyas Ali', email: 'n.mohamedniyasali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. I. Mohideen Basha', email: 'i.mohideenbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. Aarif Ahmed', email: 'aarif.ahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
+        ];
+
+        // ==================== COURSES ====================
+        const courses = [
+            { id: 1, code: '20BJM608', name: 'Programming in ASP.NET', faculty: 'M M Syed Sulaiman', totalHours: 50 },
+            { id: 2, code: '20BJM609', name: 'Operating Systems', faculty: 'N Anver Hussain', totalHours: 57 },
+            { id: 3, code: '20BJMP607', name: 'Programming in ASP.NET PRACTICAL – VII', faculty: 'Dr. S. SAKTHIVEL', totalHours: 65 },
+            { id: 4, code: '20BJM610', name: 'Internet of Things', faculty: 'Dr. G NAJEEB AHMED', totalHours: 37 },
+            { id: 5, code: '20BJMQ601', name: 'Mini Project', faculty: 'Dr. J. Abdul Rasheedh', totalHours: 35 }
+        ];
+
+        // ==================== ADMIN USER ====================
+        const adminUser = {
+            email: 'admin@thenewcollege.in',
+            password: 'admin',
+            name: 'Administrator'
+        };
+
+        // ==================== SESSION MANAGEMENT ====================
+        function loadSession() {
+            const savedUser = localStorage.getItem('currentUser');
+            const savedRole = localStorage.getItem('currentRole');
+            
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                currentRole = savedRole || 'student';
+                
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                
+                updateMenuForRole();
+                document.getElementById('userName').textContent = currentUser.name;
+                const initials = currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('userAvatar').textContent = initials;
+                
+                if (currentRole === 'student') {
+                    showStudentHome();
+                } else {
+                    showStaffAdminDashboard();
+                }
+            }
+        }
+
+        function saveSession() {
+            if (currentUser) {
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('currentRole', currentRole);
+            }
+        }
+
+        function clearSession() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentRole');
+            currentUser = null;
+        }
+
+        // ==================== AUTO-REFRESH FUNCTIONALITY ====================
+        function startAutoRefresh() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(() => {
+                if (currentUser) {
+                    loadAttendanceFromLocal();
+                    if (currentRole === 'student') {
+                        if (currentPage === 'home') showStudentHome();
+                        else if (currentPage === 'attendance') showAttendance();
+                    } else {
+                        if (currentPage === 'markAttendance') showMarkAttendance();
+                    }
+                }
+            }, 30000); // 30 seconds
+        }
+
+        async function refreshData() {
+            showLoading();
+            await loadAttendanceFromSheet();
+            hideLoading();
+            showNotification('Data refreshed!', 'success');
+            if (currentRole === 'student') {
+                if (currentPage === 'home') showStudentHome();
+                else if (currentPage === 'attendance') showAttendance();
+            } else {
+                if (currentPage === 'markAttendance') showMarkAttendance();
+            }
+        }
+
+        // ==================== ATTENDANCE DATA MANAGEMENT ====================
+        function loadAttendanceFromLocal() {
+            const saved = localStorage.getItem('attendanceRecords');
+            if (saved) {
+                attendanceData = JSON.parse(saved);
+            }
+        }
+
+        function saveAttendanceToLocal() {
+            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
+        }
+
+        async function loadAttendanceFromSheet() {
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?t=' + new Date().getTime());
+                const data = await response.json();
+                if (data.records) {
+                    attendanceData = data.records;
+                    saveAttendanceToLocal();
+                }
+            } catch (error) {
+                console.error('Error loading from sheet:', error);
+                loadAttendanceFromLocal();
+            }
+        }
+
+        async function saveAttendanceToSheet() {
+            showLoading();
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const records = [];
+                
+                for (const [key, status] of Object.entries(attendanceData)) {
+                    if (key.includes('_') && !key.includes('_faculty') && !key.includes('_course') && !key.includes('_details')) {
+                        const [studentId, date, period] = key.split('_');
+                        if (date === today) {
+                            records.push({
+                                date: date,
+                                studentId: studentId,
+                                period: period,
+                                status: status,
+                                faculty: attendanceData[key + '_faculty'] || '',
+                                course: attendanceData[key + '_course'] || '',
+                                details: attendanceData[key + '_details'] || ''
+                            });
+                        }
+                    }
+                }
+                
+                if (records.length === 0) {
+                    showNotification('No new records to save', 'info');
+                    hideLoading();
+                    return;
+                }
+                
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ records: records })
+                });
+                
+                showNotification('Attendance saved to Google Sheets!', 'success');
+                saveAttendanceToLocal();
+                
+            } catch (error) {
+                console.error('Error saving attendance:', error);
+                showNotification('Error saving to Google Sheets', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Initialize
+        loadAttendanceFromLocal();
+
+        // ==================== LOGIN HANDLER ====================
+        function setRole(role) {
+            currentRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('studentFields').style.display = role === 'student' ? 'block' : 'none';
+            document.getElementById('staffAdminFields').style.display = role !== 'student' ? 'block' : 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            if (currentRole === 'student') {
+                const regNo = document.getElementById('registerNumber').value;
+                const password = document.getElementById('password').value;
+
+                const student = csStudents.find(s => s.reg === regNo && s.password === password);
+
+                if (student) {
+                    currentUser = {
+                        ...student,
+                        role: 'student',
+                        department: 'Computer Science',
+                        semester: 6
+                    };
+                    
+                    saveSession();
+                    
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    
+                    updateMenuForRole();
+                    
+                    const nameParts = student.name.split(' ');
+                    const initials = nameParts.map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    document.getElementById('userName').textContent = student.name;
+                    document.getElementById('userAvatar').textContent = initials;
+                    
+                    navigationHistory = [];
+                    currentPage = 'home';
+                    
+                    // Set home tab as active
+                    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                    document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
+                    
+                    showNotification(`Welcome, ${student.name}!`, 'success');
+                    showStudentHome();
+                } else {
+                    showNotification('Invalid Register Number or Password!', 'error');
+                }
+            } else if (currentRole === 'staff') {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('adminPassword').value;
+
+                const staff = staffMembers.find(s => s.email === email && s.password === password);
+
+                if (staff) {
+                    currentUser = { ...staff, role: 'staff' };
+                    
+                    saveSession();
+                    
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    
+                    updateMenuForRole();
+                    
+                    document.getElementById('userName').textContent = staff.name;
+                    const nameParts = staff.name.split(' ');
+                    const initials = nameParts.map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    document.getElementById('userAvatar').textContent = initials;
+                    
+                    navigationHistory = [];
+                    currentPage = 'home';
+                    
+                    // Set home tab as active
+                    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                    document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
+                    
+                    showNotification(`Welcome, ${staff.name}!`, 'success');
+                    showStaffAdminDashboard();
+                } else {
+                    showNotification('Invalid email or password!', 'error');
+                }
+            } else if (currentRole === 'admin') {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('adminPassword').value;
+
+                if (email === adminUser.email && password === adminUser.password) {
+                    currentUser = { ...adminUser, role: 'admin' };
+                    
+                    saveSession();
+                    
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    
+                    updateMenuForRole();
+                    
+                    document.getElementById('userName').textContent = 'Administrator';
+                    document.getElementById('userAvatar').textContent = 'AD';
+                    
+                    navigationHistory = [];
+                    currentPage = 'home';
+                    
+                    // Set home tab as active
+                    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                    document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
+                    
+                    showNotification('Welcome, Admin!', 'success');
+                    showStaffAdminDashboard();
+                } else {
+                    showNotification('Invalid admin credentials!', 'error');
+                }
+            }
+        }
+
+        function updateMenuForRole() {
+            const menuGrid = document.getElementById('menuGrid');
+            
+            if (currentRole === 'student') {
+                menuGrid.innerHTML = `
+                    <div class="menu-grid-item" onclick="navigateTo('libraryGo')">
+                        <span>📚</span>
+                        <span>Library Go</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('attendance')">
+                        <span>✅</span>
+                        <span>Attendance</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('fees')">
+                        <span>💰</span>
+                        <span>Fees</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('myAccount')">
+                        <span>👤</span>
+                        <span>My Account</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('tutorials')">
+                        <span>📹</span>
+                        <span>Tutorials</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('studentTimetable')">
+                        <span>⏰</span>
+                        <span>Student Timetable</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('myMentor')">
+                        <span>👨‍🏫</span>
+                        <span>My Mentor</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('libraryVisits')">
+                        <span>📖</span>
+                        <span>Library Visits</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('onlinePayment')">
+                        <span>💳</span>
+                        <span>Online Payment</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('feePayment')">
+                        <span>💰</span>
+                        <span>Fee Payment</span>
+                    </div>
+                `;
+            } else {
+                menuGrid.innerHTML = `
+                    <div class="menu-grid-item" onclick="navigateTo('markAttendance')">
+                        <span>✅</span>
+                        <span>Mark Attendance</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('departments')">
+                        <span>🏛️</span>
+                        <span>Departments</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('courses')">
+                        <span>📚</span>
+                        <span>All Courses</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('students')">
+                        <span>👥</span>
+                        <span>Students</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('faculty')">
+                        <span>👨‍🏫</span>
+                        <span>Faculty</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('libraryGo')">
+                        <span>📚</span>
+                        <span>Library Go</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('attendance')">
+                        <span>✅</span>
+                        <span>Attendance</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('fees')">
+                        <span>💰</span>
+                        <span>Fees</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('myAccount')">
+                        <span>👤</span>
+                        <span>My Account</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('tutorials')">
+                        <span>📹</span>
+                        <span>Tutorials</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('studentTimetable')">
+                        <span>⏰</span>
+                        <span>Student Timetable</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('libraryVisits')">
+                        <span>📖</span>
+                        <span>Library Visits</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('onlinePayment')">
+                        <span>💳</span>
+                        <span>Online Payment</span>
+                    </div>
+                    <div class="menu-grid-item" onclick="navigateTo('feePayment')">
+                        <span>💰</span>
+                        <span>Fee Payment</span>
+                    </div>
+                `;
+            }
+        }
+
+        function navigateTo(section) {
+            document.getElementById('fullMenu').classList.remove('open');
+            document.getElementById('mainContent').style.display = 'block';
+            
+            switch(section) {
+                case 'markAttendance':
+                    currentPage = 'markAttendance';
+                    showMarkAttendance();
+                    break;
+                case 'libraryGo':
+                    currentPage = 'libraryGo';
+                    showLibraryGo();
+                    break;
+                case 'attendance':
+                    currentPage = 'attendance';
+                    showAttendance();
+                    break;
+                case 'fees':
+                    currentPage = 'fees';
+                    showFees();
+                    break;
+                case 'myAccount':
+                    currentPage = 'myAccount';
+                    showProfile();
+                    break;
+                case 'tutorials':
+                    currentPage = 'tutorials';
+                    showTutorials();
+                    break;
+                case 'studentTimetable':
+                    currentPage = 'studentTimetable';
+                    showStudentTimetable();
+                    break;
+                case 'myMentor':
+                    currentPage = 'myMentor';
+                    showMyMentor();
+                    break;
+                case 'libraryVisits':
+                    currentPage = 'libraryVisits';
+                    showLibraryVisits();
+                    break;
+                case 'onlinePayment':
+                case 'feePayment':
+                    currentPage = 'fees';
+                    showFees();
+                    break;
+            }
+            
+            document.getElementById('backBtnNav').classList.add('visible');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.nav-item').classList.add('active');
+
+            if (tab === 'home') {
+                document.getElementById('fullMenu').classList.remove('open');
+                document.getElementById('mainContent').style.display = 'block';
+                
+                navigationHistory = [];
+                currentPage = 'home';
+                expandedPeriod = null;
+                document.getElementById('backBtnNav').classList.remove('visible');
+                
+                if (currentUser?.role === 'student') {
+                    showStudentHome();
+                } else {
+                    showStaffAdminDashboard();
+                }
+            } else if (tab === 'menu') {
+                toggleMenu();
+            } else if (tab === 'profile') {
+                document.getElementById('fullMenu').classList.remove('open');
+                document.getElementById('mainContent').style.display = 'block';
+                currentPage = 'myAccount';
+                showProfile();
+                document.getElementById('backBtnNav').classList.add('visible');
+            }
+        }
+
+        function toggleMenu() {
+            menuOpen = !menuOpen;
+            document.getElementById('fullMenu').classList.toggle('open', menuOpen);
+            document.getElementById('mainContent').style.display = menuOpen ? 'none' : 'block';
+        }
+
+        function goBack() {
+            if (currentPage === 'home') return;
+            
+            if (currentRole === 'student') {
+                showStudentHome();
+            } else {
+                showStaffAdminDashboard();
+            }
+            currentPage = 'home';
+            document.getElementById('backBtnNav').classList.remove('visible');
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        function searchMenu(query) {
+            const items = document.querySelectorAll('.menu-grid-item');
+            items.forEach(item => {
+                const text = item.querySelector('span:last-child').textContent.toLowerCase();
+                if (text.includes(query.toLowerCase())) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function clearRecent() {
+            recentItems = [];
+            updateRecentItems();
+        }
+
+        function updateRecentItems() {
+            const recentDiv = document.getElementById('recentItems');
+            if (recentItems.length === 0) {
+                recentDiv.innerHTML = '<div class="recent-item">No recent items</div>';
+            } else {
+                recentDiv.innerHTML = recentItems.map(item => {
+                    return `
+                        <div class="recent-item" onclick="navigateTo('${item.toLowerCase().replace(/ /g, '')}')">
+                            <span>${getIconForItem(item)}</span>
+                            <span>${item}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function getIconForItem(item) {
+            const icons = {
+                'Library Go': '📚',
+                'Attendance': '✅',
+                'Fees': '💰',
+                'My Account': '👤',
+                'Tutorials': '📹',
+                'Student Timetable': '⏰',
+                'My Mentor': '👨‍🏫',
+                'Library Visits': '📖',
+                'Online Payment': '💳',
+                'Fee Payment': '💰'
+            };
+            return icons[item] || '📌';
+        }
+
+        // ==================== STUDENT HOME ====================
+        function showStudentHome() {
+            const content = document.getElementById('mainContent');
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+            const month = today.toLocaleDateString('en-US', { month: 'short' });
+            const day = today.getDate();
+            
+            const studentId = currentUser.reg;
+            const todayAttendance = [];
+            const periodDetails = {};
+            
+            for (let hour = 1; hour <= 5; hour++) {
+                const key = `${studentId}_${todayStr}_${hour}`;
+                if (attendanceData[key]) {
+                    todayAttendance.push({
+                        hour: hour,
+                        status: attendanceData[key],
+                        faculty: attendanceData[key + '_faculty'] || 'Not assigned',
+                        course: attendanceData[key + '_course'] || 'No course',
+                        details: attendanceData[key + '_details'] || ''
+                    });
+                }
+                periodDetails[hour] = {
+                    status: attendanceData[key] || null,
+                    faculty: attendanceData[key + '_faculty'] || null,
+                    course: attendanceData[key + '_course'] || null,
+                    details: attendanceData[key + '_details'] || null
+                };
+            }
+            
+            let hoursGridHTML = '<div class="hours-grid">';
+            for (let hour = 1; hour <= 5; hour++) {
+                const attendance = todayAttendance.find(a => a.hour === hour);
+                const status = attendance ? attendance.status : null;
+                hoursGridHTML += `
+                    <div class="hour-box ${status || ''}" onclick="showPeriodDetail(${hour})">
+                        <div class="hour">${hour} hr</div>
+                        ${status ? `<div class="status">${getStatusText(status)}</div>` : ''}
+                    </div>
+                `;
+            }
+            hoursGridHTML += '</div>';
+            
+            // Generate period detail if expanded
+            let periodDetailHTML = '';
+            if (expandedPeriod !== null && periodDetails[expandedPeriod]) {
+                const detail = periodDetails[expandedPeriod];
+                if (detail.status) {
+                    periodDetailHTML = `
+                        <div class="period-detail-card">
+                            <div class="period-detail-header">
+                                <h3>Class - Hour ${expandedPeriod}</h3>
+                                <span class="period-time">${getPeriodTime(expandedPeriod)}</span>
+                            </div>
+                            <div class="period-detail-content">
+                                <div class="period-detail-row">
+                                    <span class="period-detail-label">Faculty:</span>
+                                    <span class="period-detail-value faculty">${detail.faculty || 'Not assigned'}</span>
+                                </div>
+                                <div class="period-detail-row">
+                                    <span class="period-detail-label">Status:</span>
+                                    <span class="period-detail-value status ${detail.status}">${getStatusText(detail.status) || detail.status}</span>
+                                </div>
+                                <div class="period-detail-course">
+                                    <h4>${detail.course || 'No course'}</h4>
+                                    ${detail.details ? `<p class="course-code">${detail.details}</p>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    periodDetailHTML = `
+                        <div class="period-detail-card">
+                            <div class="period-detail-header">
+                                <h3>Class - Hour ${expandedPeriod}</h3>
+                                <span class="period-time">${getPeriodTime(expandedPeriod)}</span>
+                            </div>
+                            <div class="period-detail-content">
+                                <p style="text-align: center; color: #666;">No attendance marked for this period</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            content.innerHTML = `
+                <div class="student-home">
+                    <div class="student-header">
+                        <h1>${currentUser.name}</h1>
+                        <p>Admission No : ${currentUser.reg}</p>
+                    </div>
+
+                    <!-- Hours Grid -->
+                    ${hoursGridHTML}
+
+                    ${periodDetailHTML}
+
+                    <!-- View All Link -->
+                    <div class="view-all-link">
+                        <a href="#" onclick="navigateTo('attendance'); return false;">View all attendance requests →</a>
+                    </div>
+
+                    <!-- Feedback Section -->
+                    <div class="feedback-section">
+                        <p>Every feedback is valuable.</p>
+                        <button class="feedback-btn" onclick="showNotification('Thank you for your feedback!', 'success')">Give Feedback</button>
+                    </div>
+
+                    <!-- Favorites Navigation -->
+                    <div class="favorites-nav">
+                        <span class="title">Favorites</span>
+                        <div class="actions">
+                            <span onclick="navigateTo('attendance')">Attendance</span>
+                            <span onclick="showNotification('Add More feature coming soon', 'info')">Add More</span>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Section -->
+                    <div class="schedule-section">
+                        <div class="schedule-header">
+                            <h3>Today's schedule</h3>
+                            <span class="schedule-date">${dayName}, ${month} ${day}</span>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">12:40 to 01:30</div>
+                            <div class="schedule-details">
+                                <h4>20BJM609-Operating Systems</h4>
+                                <p>Mohammed Arshad F</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Card -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h3>Latest Result</h3>
+                            <a href="#" class="see-all" onclick="showNotification('Viewing all results', 'info'); return false;">See All →</a>
+                        </div>
+                        <div class="no-result">
+                            <p>No Result Published</p>
+                            <small>Your SGPA and GPA will be shown here as soon as they're published</small>
+                        </div>
+                    </div>
+
+                    <!-- Semester Card -->
+                    <div class="semester-card">
+                        <div class="card-header">
+                            <h3>Semester Wise Attendance</h3>
+                            <a href="#" class="see-all" onclick="navigateTo('attendance'); return false;">See All →</a>
+                        </div>
+                        <div>
+                            <h4>Semester 6</h4>
+                            <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Current Semester</p>
+                            <div class="semester-stats">
+                                <div class="stats-details">
+                                    <div class="stat-row">
+                                        <span class="stat-label">Total Hours</span>
+                                        <span class="stat-value">172.0</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Hours Present</span>
+                                        <span class="stat-value">171.0</span>
+                                    </div>
+                                </div>
+                                <div class="percentage-circle">99.42</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notice Card -->
+                    <div class="notice-card">
+                        <div class="card-header">
+                            <h3>Notice Board</h3>
+                            <a href="#" class="see-all" onclick="showNotification('Viewing all notices', 'info'); return false;">See All →</a>
+                        </div>
+                        <div class="notice-content">
+                            <div class="notice-icon">📢</div>
+                            <h4>Notice Board is Quiet Today</h4>
+                            <p>Stay tuned — exciting updates are on the way</p>
+                        </div>
+                    </div>
+
+                    <!-- Events Card -->
+                    <div class="events-card">
+                        <div class="events-header">
+                            <h3>Events & News</h3>
+                            <a href="#" class="see-all" onclick="showNotification('Viewing all events', 'info'); return false;">See All →</a>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="day">15</div>
+                                <div class="month">MAR</div>
+                            </div>
+                            <div class="event-details">
+                                <h4>Mid Term Examinations Begin</h4>
+                                <p>All departments • 10:00 AM</p>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="day">20</div>
+                                <div class="month">MAR</div>
+                            </div>
+                            <div class="event-details">
+                                <h4>Technical Symposium</h4>
+                                <p>Computer Science Dept • 09:30 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showPeriodDetail(hour) {
+            if (expandedPeriod === hour) {
+                expandedPeriod = null;
+            } else {
+                expandedPeriod = hour;
+            }
+            showStudentHome();
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'present': return '✓ Present';
+                case 'absent': return '✗ Absent';
+                case 'late': return '⏰ Late';
+                case 'letoff': return '☑ Let-off';
+                default: return '';
+            }
+        }
+
+        function getPeriodTime(period) {
+            const times = {
+                1: '09:00 - 10:00',
+                2: '10:00 - 11:00',
+                3: '11:00 - 12:00',
+                4: '12:00 - 01:00',
+                5: '02:00 - 03:00'
+            };
+            return times[period] || '';
+        }
+
+        // ==================== STAFF/ADMIN DASHBOARD ====================
+        function showStaffAdminDashboard() {
+            const content = document.getElementById('mainContent');
+            
+            content.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Students</div>
+                        <div class="stat-value">${csStudents.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Staff</div>
+                        <div class="stat-value">${staffMembers.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Courses</div>
+                        <div class="stat-value">${courses.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Today's Date</div>
+                        <div class="stat-value">${new Date().toLocaleDateString()}</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                        <button class="btn-primary" onclick="navigateTo('markAttendance')" style="padding: 15px;">✅ Mark Attendance</button>
+                        <button class="btn-primary" onclick="navigateTo('departments')" style="padding: 15px;">🏛️ View Departments</button>
+                        <button class="btn-primary" onclick="navigateTo('courses')" style="padding: 15px;">📚 View Courses</button>
+                        <button class="btn-primary" onclick="navigateTo('students')" style="padding: 15px;">👥 View Students</button>
+                        <button class="btn-primary" onclick="navigateTo('faculty')" style="padding: 15px;">👨‍🏫 View Faculty</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==================== PROFILE PAGE ====================
+        function showProfile() {
+            const content = document.getElementById('mainContent');
+            
+            content.innerHTML = `
+                <div class="account-page">
+                    <div class="account-header">
+                        <div class="profile-avatar" style="width: 80px; height: 80px; background: #8B0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; margin: 0 auto 15px;">
+                            ${currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                        </div>
+                        <h2>${currentUser.name}</h2>
+                        <p>${currentUser.role === 'student' ? 'Register No: ' + currentUser.reg : currentUser.role === 'staff' ? 'Staff Member' : 'Administrator'}</p>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value">${currentUser.email || (currentUser.role === 'student' ? 'student@thenewcollege.edu.in' : currentUser.email || 'staff@thenewcollege.edu.in')}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Department</span>
+                            <span class="detail-value">${currentUser.department || 'Computer Science'}</span>
+                        </div>
+                        ${currentUser.role === 'staff' ? `
+                        <div class="detail-row">
+                            <span class="detail-label">Designation</span>
+                            <span class="detail-value">${currentUser.designation || 'Faculty'}</span>
+                        </div>
+                        ` : ''}
+                        ${currentUser.role === 'student' ? `
+                        <div class="detail-row">
+                            <span class="detail-label">Semester</span>
+                            <span class="detail-value">${currentUser.semester || '6'}</span>
+                        </div>
+                        ` : ''}
+                        <div class="detail-row">
+                            <span class="detail-label">Phone</span>
+                            <span class="detail-value">+91 98765 43210</span>
+                        </div>
+                    </div>
+
+                    <button class="logout-btn-account" onclick="logout()">Logout</button>
+                </div>
+            `;
+        }
+
+        // ==================== MARK ATTENDANCE PAGE ====================
+        function showMarkAttendance() {
+            const content = document.getElementById('mainContent');
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Initialize student statuses for selected period and course
+            if (!attendanceData[selectedPeriod]) {
+                attendanceData[selectedPeriod] = {};
+            }
+            if (!attendanceData[selectedPeriod][selectedCourse]) {
+                attendanceData[selectedPeriod][selectedCourse] = {};
+                
+                csStudents.forEach(student => {
+                    const key = `${student.reg}_${today}_${selectedPeriod}`;
+                    attendanceData[selectedPeriod][selectedCourse][student.reg] = attendanceData[key] || 'unmarked';
+                });
+            }
+            
+            content.innerHTML = `
+                <div class="mark-attendance-page">
+                    <h2 style="color: #8B0000; margin-bottom: 20px;">Mark Attendance</h2>
+                    <p style="margin-bottom: 20px;">Date: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    
+                    <!-- Period Selector -->
+                    <div class="period-selector">
+                        <h3>Select Period</h3>
+                        <div class="period-grid">
+                            ${[1, 2, 3, 4, 5].map(period => `
+                                <div class="period-card ${selectedPeriod === period ? 'selected' : ''}" onclick="selectPeriod(${period})">
+                                    <div class="period-number">Period ${period}</div>
+                                    <div class="period-time">${getPeriodTime(period)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Course Selector -->
+                    <div class="course-selector">
+                        <h3>Select Course</h3>
+                        <select class="course-select" onchange="selectCourse(this.value)">
+                            <option value="">Choose a course...</option>
+                            ${courses.map(course => `
+                                <option value="${course.id}" ${selectedCourse == course.id ? 'selected' : ''}>${course.code} - ${course.name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    ${selectedCourse ? `
+                        <!-- Mark All Section -->
+                        <div class="mark-all-section">
+                            <h3>Quick Mark All</h3>
+                            <div class="mark-all-buttons">
+                                <button class="mark-all-btn present" onclick="markAllStudents('present')">✅ All Present</button>
+                                <button class="mark-all-btn absent" onclick="markAllStudents('absent')">❌ All Absent</button>
+                                <button class="mark-all-btn late" onclick="markAllStudents('late')">⏰ All Late</button>
+                                <button class="mark-all-btn letoff" onclick="markAllStudents('letoff')">☑ All Let-off</button>
+                            </div>
+                        </div>
+
+                        <!-- Student List -->
+                        <div class="student-list">
+                            <div class="student-list-header">
+                                <h3>Students</h3>
+                            </div>
+                            ${csStudents.map(student => {
+                                const status = attendanceData[selectedPeriod][selectedCourse][student.reg] || 'unmarked';
+                                return `
+                                    <div class="student-list-item" id="student-${student.reg}">
+                                        <div class="student-info">
+                                            <h4>${student.name}</h4>
+                                            <p>${student.reg}</p>
+                                        </div>
+                                        <div class="student-status">
+                                            <div class="status-option present ${status === 'present' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'present')">✓</div>
+                                            <div class="status-option absent ${status === 'absent' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'absent')">✗</div>
+                                            <div class="status-option late ${status === 'late' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'late')">⏰</div>
+                                            <div class="status-option letoff ${status === 'letoff' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'letoff')">☑</div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="submit-attendance">
+                            <button class="cancel-btn" onclick="resetAttendance()">Reset</button>
+                            <button class="submit-btn" onclick="submitAttendance()">Submit Attendance</button>
+                        </div>
+                    ` : `
+                        <div style="text-align: center; padding: 50px; color: #666;">
+                            Please select a course to start marking attendance
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+
+        function selectPeriod(period) {
+            selectedPeriod = period;
+            showMarkAttendance();
+        }
+
+        function selectCourse(courseId) {
+            selectedCourse = parseInt(courseId);
+            showMarkAttendance();
+        }
+
+        function setStudentStatus(regNo, status) {
+            if (!selectedCourse) return;
+            
+            attendanceData[selectedPeriod][selectedCourse][regNo] = status;
+            
+            const studentDiv = document.getElementById(`student-${regNo}`);
+            if (studentDiv) {
+                const options = studentDiv.querySelectorAll('.status-option');
+                options.forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                studentDiv.querySelector(`.status-option.${status}`).classList.add('active');
+            }
+        }
+
+        function markAllStudents(status) {
+            if (!selectedCourse) return;
+            
+            csStudents.forEach(student => {
+                attendanceData[selectedPeriod][selectedCourse][student.reg] = status;
+            });
+            
+            csStudents.forEach(student => {
+                const studentDiv = document.getElementById(`student-${student.reg}`);
+                if (studentDiv) {
+                    const options = studentDiv.querySelectorAll('.status-option');
+                    options.forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    studentDiv.querySelector(`.status-option.${status}`).classList.add('active');
+                }
+            });
+        }
+
+        function resetAttendance() {
+            if (!selectedCourse) return;
+            
+            attendanceData[selectedPeriod][selectedCourse] = {};
+            csStudents.forEach(student => {
+                attendanceData[selectedPeriod][selectedCourse][student.reg] = 'unmarked';
+            });
+            showMarkAttendance();
+        }
+
+        function submitAttendance() {
+            if (!selectedCourse) return;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const selectedCourseObj = courses.find(c => c.id == selectedCourse);
+            
+            csStudents.forEach(student => {
+                const status = attendanceData[selectedPeriod][selectedCourse][student.reg];
+                if (status && status !== 'unmarked') {
+                    const key = `${student.reg}_${today}_${selectedPeriod}`;
+                    attendanceData[key] = status;
+                    attendanceData[key + '_faculty'] = currentUser.name;
+                    attendanceData[key + '_course'] = selectedCourseObj ? `${selectedCourseObj.code}-${selectedCourseObj.name}` : 'Course';
+                    attendanceData[key + '_details'] = selectedCourseObj ? selectedCourseObj.faculty : '';
+                }
+            });
+            
+            saveAttendanceToSheet();
+            saveAttendanceToLocal();
+            
+            showNotification(`Attendance for Period ${selectedPeriod} submitted successfully!`, 'success');
+            
+            selectedCourse = null;
+            showMarkAttendance();
+        }
+
+        // ==================== ATTENDANCE PAGE ====================
+        function showAttendance() {
+            const content = document.getElementById('mainContent');
+            
+            if (currentUser.role === 'student') {
+                const studentId = currentUser.reg;
+                
+                const studentAttendance = [];
+                for (const [key, status] of Object.entries(attendanceData)) {
+                    if (key.includes('_') && !key.includes('_faculty') && !key.includes('_course') && !key.includes('_details')) {
+                        const [sid, date, hour] = key.split('_');
+                        if (sid === studentId) {
+                            studentAttendance.push({
+                                date: date,
+                                hour: parseInt(hour),
+                                status: status,
+                                faculty: attendanceData[key + '_faculty'],
+                                course: attendanceData[key + '_course'],
+                                details: attendanceData[key + '_details']
+                            });
+                        }
+                    }
+                }
+                
+                const groupedByDate = {};
+                studentAttendance.forEach(record => {
+                    if (!groupedByDate[record.date]) {
+                        groupedByDate[record.date] = [];
+                    }
+                    groupedByDate[record.date].push(record);
+                });
+                
+                const sortedDates = Object.keys(groupedByDate).sort().reverse();
+                
+                let attendanceHTML = '';
+                for (const date of sortedDates) {
+                    const records = groupedByDate[date];
+                    attendanceHTML += `<h4 style="margin: 20px 0 10px; color: #8B0000;">${date}</h4>`;
+                    
+                    for (const record of records) {
+                        attendanceHTML += `
+                            <div class="class-card" style="margin-bottom: 10px;">
+                                <div class="class-header">
+                                    <span class="class-title">Hour ${record.hour}</span>
+                                    <span class="class-status ${record.status}">${getStatusText(record.status)}</span>
+                                </div>
+                                <div class="faculty-name">${record.faculty || 'Unknown'}</div>
+                                <div class="class-details">${record.course || 'No course'}</div>
+                                ${record.details ? `<div class="class-details">${record.details}</div>` : ''}
+                            </div>
+                        `;
+                    }
+                }
+                
+                content.innerHTML = `
+                    <div class="attendance-page">
+                        <div class="attendance-tabs">
+                            <button class="attendance-tab active" onclick="showAttendanceCourse()">Course</button>
+                            <button class="attendance-tab" onclick="showAttendanceHourly()">Hourly</button>
+                            <button class="attendance-tab" onclick="showAttendanceTermly()">Termly</button>
+                        </div>
+                        <div id="attendanceContent">
+                            ${attendanceHTML || '<p style="text-align: center; padding: 20px;">No attendance records found</p>'}
+                        </div>
+                    </div>
+                `;
+            } else {
+                const todayStr = new Date().toISOString().split('T')[0];
+                const todayCount = Object.keys(attendanceData).filter(key => key.includes(todayStr)).length;
+                
+                content.innerHTML = `
+                    <div class="attendance-page">
+                        <h3 style="margin-bottom: 20px;">Attendance Overview</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-title">Today's Attendance</div>
+                                <div class="stat-value">${todayCount}</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">Total Records</div>
+                                <div class="stat-value">${Object.keys(attendanceData).length}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function getAttendanceCourseHTML() {
+            const studentId = currentUser.reg;
+            
+            let totalClasses = 0;
+            let totalAttended = 0;
+            
+            for (const [key, status] of Object.entries(attendanceData)) {
+                if (key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course') && !key.includes('_details')) {
+                    totalClasses++;
+                    if (status === 'present') {
+                        totalAttended++;
+                    }
+                }
+            }
+            
+            const attendancePercentage = totalClasses > 0 ? Math.round((totalAttended / totalClasses) * 100) : 0;
+            
+            return `
+                <div class="course-list">
+                    <div class="course-item">
+                        <div class="course-header">
+                            <h3>Overall Attendance</h3>
+                        </div>
+                        <div class="course-stats">
+                            <span>Total Classes: ${totalClasses}</span>
+                            <span>Attended: ${totalAttended}</span>
+                            <span>Percentage: ${attendancePercentage}%</span>
+                        </div>
+                    </div>
+                    ${courses.map(course => {
+                        let courseClasses = 0;
+                        let courseAttended = 0;
+                        
+                        for (const [key, status] of Object.entries(attendanceData)) {
+                            if (key.startsWith(studentId) && !key.includes('_faculty') && !key.includes('_course') && !key.includes('_details')) {
+                                courseClasses++;
+                                if (status === 'present') {
+                                    courseAttended++;
+                                }
+                            }
+                        }
+                        
+                        const coursePercentage = courseClasses > 0 ? Math.round((courseAttended / courseClasses) * 100) : 0;
+                        
+                        return `
+                            <div class="course-item">
+                                <div class="course-header">
+                                    <h3>${course.code} - ${course.name}</h3>
+                                    <div class="course-faculty">Faculty: ${course.faculty}</div>
+                                </div>
+                                <div class="course-stats">
+                                    <span>Classes: ${courseClasses}</span>
+                                    <span>Attended: ${courseAttended}</span>
+                                    <span>${coursePercentage}%</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function showAttendanceCourse() {
+            document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('attendanceContent').innerHTML = getAttendanceCourseHTML();
+        }
+
+        function showAttendanceHourly() {
+            document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const studentId = currentUser.reg;
+            
+            const novemberDays = [
+                { day: '19', weekday: 'Wed' }, { day: '20', weekday: 'Thu' }, { day: '21', weekday: 'Fri' },
+                { day: '24', weekday: 'Mon' }, { day: '25', weekday: 'Tue' }, { day: '26', weekday: 'Wed' },
+                { day: '27', weekday: 'Thu' }, { day: '28', weekday: 'Fri' }
+            ];
+            
+            const html = `
+                <div>
+                    <div class="month-grid">
+                        <button class="month-btn active">November</button>
+                        <button class="month-btn">December</button>
+                        <button class="month-btn">January</button>
+                        <button class="month-btn">February</button>
+                    </div>
+                    <table class="attendance-table">
+                        <thead>
+                            <tr><th>Day</th><th>H1</th><th>H2</th><th>H3</th><th>H4</th><th>H5</th></tr>
+                        </thead>
+                        <tbody>
+                            ${novemberDays.map(day => {
+                                const date = `2025-11-${day.day.padStart(2, '0')}`;
+                                return `
+                                    <tr>
+                                        <td>${day.day}-${day.weekday}</td>
+                                        ${[1,2,3,4,5].map(hour => {
+                                            const key = `${studentId}_${date}_${hour}`;
+                                            const status = attendanceData[key] || 'unmarked';
+                                            return `<td class="status-${status}">${getStatusSymbol(status)}</td>`;
+                                        }).join('')}
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                    <div class="status-buttons">
+                        <span class="status-btn present">✅ Present</span>
+                        <span class="status-btn absent">❌ Absent</span>
+                        <span class="status-btn late">⏰ Late</span>
+                        <span class="status-btn letoff">☑ Let-off</span>
+                        <span class="status-btn unmarked">◻ Unmarked</span>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('attendanceContent').innerHTML = html;
+        }
+
+        function showAttendanceTermly() {
+            document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const studentId = currentUser.reg;
+            
+            const months = [
+                { name: 'Nov', days: 30, year: 2025, monthNum: 11 },
+                { name: 'Dec', days: 31, year: 2025, monthNum: 12 },
+                { name: 'Jan', days: 31, year: 2026, monthNum: 1 }
+            ];
+            
+            let totalAttended = 0;
+            let totalClasses = 0;
+            
+            const monthData = months.map((month, index) => {
+                let attended = 0;
+                let total = 0;
+                
+                for (let day = 1; day <= month.days; day++) {
+                    const date = `${month.year}-${month.monthNum.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    for (let hour = 1; hour <= 5; hour++) {
+                        const key = `${studentId}_${date}_${hour}`;
+                        if (attendanceData[key]) {
+                            total++;
+                            totalClasses++;
+                            if (attendanceData[key] === 'present') {
+                                attended++;
+                                totalAttended++;
+                            }
+                        }
+                    }
+                }
+                
+                const percent = total > 0 ? Math.round((attended / total) * 100) : 0;
+                
+                return {
+                    sl: index + 1,
+                    year: month.year,
+                    month: month.name,
+                    attended: attended.toFixed(1),
+                    total: total.toFixed(1),
+                    percent: percent
+                };
+            });
+            
+            const overallPercent = totalClasses > 0 ? Math.round((totalAttended / totalClasses) * 100) : 0;
+            
+            const html = `
+                <div class="term-stats">
+                    <div class="term-header">
+                        <h3>Semester-6</h3>
+                        <span>${overallPercent}%</span>
+                    </div>
+                    <div class="term-period">Term<br>19-11-2025 To 15-04-2026</div>
+                    <table class="term-table">
+                        <thead>
+                            <tr><th>SI</th><th>Year</th><th>Month</th><th>Attendance</th><th>Total</th><th>%</th></tr>
+                        </thead>
+                        <tbody>
+                            ${monthData.map(m => `
+                                <tr>
+                                    <td>${m.sl}</td>
+                                    <td>${m.year}</td>
+                                    <td>${m.month}</td>
+                                    <td>${m.attended}</td>
+                                    <td>${m.total}</td>
+                                    <td>${m.percent}</td>
+                                </tr>
+                            `).join('')}
+                            <tr>
+                                <td colspan="3"><strong>Total</strong></td>
+                                <td><strong>${totalAttended.toFixed(1)}</strong></td>
+                                <td><strong>${totalClasses.toFixed(1)}</strong></td>
+                                <td><strong>${overallPercent}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            document.getElementById('attendanceContent').innerHTML = html;
+        }
+
+        function getStatusSymbol(status) {
+            switch(status) {
+                case 'present': return '✅';
+                case 'absent': return '❌';
+                case 'late': return '⏰';
+                case 'letoff': return '☑';
+                default: return '◻';
+            }
+        }
+
+        // ==================== OTHER PAGES (Simplified for Demo) ====================
+        function showLibraryGo() {
+            document.getElementById('mainContent').innerHTML = '<div class="library-page"><h2 style="color: #8B0000;">Library Go</h2><p>Library features coming soon!</p></div>';
+        }
+
+        function showFees() {
+            document.getElementById('mainContent').innerHTML = '<div class="fees-page"><h2 style="color: #8B0000;">Fees</h2><p>Fee management coming soon!</p></div>';
+        }
+
+        function showTutorials() {
+            document.getElementById('mainContent').innerHTML = '<div class="tutorials-page"><h2 style="color: #8B0000;">Tutorials</h2><p>Tutorials coming soon!</p></div>';
+        }
+
+        function showStudentTimetable() {
+            document.getElementById('mainContent').innerHTML = '<div class="timetable-page"><h2 style="color: #8B0000;">Student Timetable</h2><p>Timetable coming soon!</p></div>';
+        }
+
+        function showMyMentor() {
+            document.getElementById('mainContent').innerHTML = '<div class="mentor-page"><h2 style="color: #8B0000;">My Mentor</h2><p>Mentor details coming soon!</p></div>';
+        }
+
+        function showLibraryVisits() {
+            document.getElementById('mainContent').innerHTML = '<div class="visits-page"><h2 style="color: #8B0000;">Library Visits</h2><p>Library visits coming soon!</p></div>';
+        }
+
+        // ==================== NOTIFICATION ====================
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            const msg = document.getElementById('notificationMessage');
+            
+            notification.className = `notification ${type}`;
+            icon.textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            msg.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        // ==================== LOGOUT ====================
+        function logout() {
+            clearSession();
+            currentUser = null;
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('registerNumber').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('adminPassword').value = '';
+            showNotification('Logged out successfully', 'info');
+        }
+
+        // ==================== INITIALIZE ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            setRole('student');
+            loadSession();
+            startAutoRefresh();
+        });
+    </script>
+</body>
+</html>
