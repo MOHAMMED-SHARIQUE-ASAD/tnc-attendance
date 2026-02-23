@@ -5,23 +5,1699 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE NEW COLLEGE - Attendance System</title>
     <style>
-        /* Your existing styles - keep them all */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
             min-height: 100vh;
             color: #333;
         }
-        /* Keep all your existing styles here */
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .college-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(139, 0, 0, 0.3);
+            border: 3px solid #8B0000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .college-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .college-name {
+            color: #8B0000;
+            font-size: 28px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .college-tagline {
+            color: #B22222;
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .arabic-text {
+            color: #8B0000;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-family: 'Traditional Arabic', 'Times New Roman', serif;
+            border-top: 2px solid #8B0000;
+            border-bottom: 2px solid #8B0000;
+            padding: 10px;
+            background: #FFF0F0;
+        }
+
+        .arabic-text small {
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .role-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .role-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .role-btn.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #8B0000;
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+        }
+
+        .input-group .hint {
+            font-size: 12px;
+            color: #8B0000;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn-nav {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #8B0000;
+            display: none;
+            transition: transform 0.2s ease;
+        }
+
+        .back-btn-nav:hover {
+            transform: translateX(-3px);
+        }
+
+        .back-btn-nav.visible {
+            display: block;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #8B0000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        .nav-brand h2 {
+            color: #8B0000;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .nav-brand small {
+            color: #B22222;
+            font-size: 10px;
+            display: block;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .refresh-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #8B0000;
+            margin-right: 5px;
+            transition: transform 0.5s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: rotate(180deg);
+        }
+
+        .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            color: #8B0000;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            margin-bottom: 70px;
+            padding: 20px;
+            min-height: calc(100vh - 130px);
+            overflow-y: auto;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            padding: 5px;
+        }
+
+        .nav-item.active {
+            color: #8B0000;
+        }
+
+        .nav-item span:first-child {
+            font-size: 20px;
+        }
+
+        .menu-full {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 130px);
+            background: white;
+            z-index: 999;
+            overflow-y: auto;
+            padding: 20px;
+            display: none;
+        }
+
+        .menu-full.open {
+            display: block;
+        }
+
+        .menu-full .search-box {
+            margin-bottom: 20px;
+        }
+
+        .menu-full .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+
+        .menu-section {
+            margin-bottom: 25px;
+        }
+
+        .menu-section h3 {
+            color: #8B0000;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .menu-grid-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-grid-item:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .menu-grid-item span:first-child {
+            font-size: 24px;
+        }
+
+        .menu-grid-item span:last-child {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .recent-section {
+            margin-bottom: 20px;
+        }
+
+        .recent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .recent-header h3 {
+            color: #8B0000;
+            font-size: 16px;
+        }
+
+        .clear-all {
+            color: #8B0000;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .recent-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .recent-item:hover {
+            background: #f0f0f0;
+        }
+
+        .student-home {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .student-header {
+            margin-bottom: 5px;
+        }
+
+        .student-header h1 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .student-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .hours-grid {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .hour-box {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .hour-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .hour-box.present {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .hour-box.absent {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .hour-box.late {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .hour-box.letoff {
+            background: #cce5ff;
+            border-color: #004085;
+        }
+
+        .hour-box .hour {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .hour-box .status {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .hour-box.present .status {
+            color: #28a745;
+        }
+
+        .hour-box.absent .status {
+            color: #dc3545;
+        }
+
+        .hour-box.late .status {
+            color: #ffc107;
+        }
+
+        .hour-box.letoff .status {
+            color: #004085;
+        }
+
+        .period-detail-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .period-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .period-detail-header h3 {
+            color: #8B0000;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .period-detail-header .period-time {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .period-detail-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .period-detail-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .period-detail-label {
+            min-width: 100px;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .period-detail-value {
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .period-detail-value.faculty {
+            color: #8B0000;
+            font-weight: 600;
+        }
+
+        .period-detail-value.status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .period-detail-value.status.present {
+            background: #d4edda;
+            color: #28a745;
+        }
+
+        .period-detail-value.status.absent {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+
+        .period-detail-value.status.late {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .period-detail-value.status.letoff {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .period-detail-course {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .period-detail-course h4 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .period-detail-course p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .period-detail-course .course-code {
+            color: #8B0000;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .class-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .class-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .class-title {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .class-status {
+            color: #28a745;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .faculty-name {
+            color: #8B0000;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .class-details {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .view-all-link {
+            text-align: right;
+            margin: 15px 0;
+        }
+
+        .view-all-link a {
+            color: #8B0000;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .feedback-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .feedback-section p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .feedback-btn {
+            background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .feedback-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .favorites-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 10px 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .favorites-nav .title {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .favorites-nav .actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .favorites-nav .actions span {
+            color: #8B0000;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .schedule-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .schedule-header h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .schedule-date {
+            color: #8B0000;
+            font-size: 14px;
+        }
+
+        .schedule-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-time {
+            font-weight: 600;
+            color: #8B0000;
+            min-width: 100px;
+            font-size: 14px;
+        }
+
+        .schedule-details h4 {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .schedule-details p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .see-all {
+            color: #8B0000;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .no-result p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .no-result small {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .semester-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .semester-stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .stats-details {
+            flex: 1;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .stat-value {
+            color: #333;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .percentage-circle {
+            width: 80px;
+            height: 80px;
+            background: #8B0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .percentage-circle::after {
+            content: '%';
+            font-size: 12px;
+            position: absolute;
+            top: 25px;
+            right: 18px;
+        }
+
+        .notice-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .notice-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .notice-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .notice-content h4 {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .notice-content p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .events-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .events-header h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .event-item {
+            display: flex;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-date {
+            width: 45px;
+            text-align: center;
+        }
+
+        .event-date .day {
+            color: #8B0000;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .event-date .month {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .event-details h4 {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .event-details p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .attendance-page {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .attendance-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .attendance-tab {
+            padding: 8px 20px;
+            border: none;
+            background: none;
+            color: #666;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .attendance-tab.active {
+            background: #8B0000;
+            color: white;
+        }
+
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .course-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .course-header h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .course-faculty {
+            color: #8B0000;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .course-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .course-stats span {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .month-grid {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .month-btn {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 20px;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .month-btn.active {
+            background: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+
+        .month-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .attendance-table th {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .attendance-table td {
+            text-align: center;
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .status-present {
+            color: #28a745;
+            font-size: 18px;
+        }
+
+        .status-absent {
+            color: #dc3545;
+            font-size: 18px;
+        }
+
+        .status-late {
+            color: #ffc107;
+            font-size: 18px;
+        }
+
+        .status-letoff {
+            color: #17a2b8;
+            font-size: 18px;
+        }
+
+        .status-unmarked {
+            color: #6c757d;
+            font-size: 18px;
+        }
+
+        .status-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .status-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: default;
+        }
+
+        .status-btn.present {
+            background: #d4edda;
+            color: #28a745;
+        }
+
+        .status-btn.absent {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+
+        .status-btn.late {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-btn.letoff {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-btn.unmarked {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .term-stats {
+            margin-top: 20px;
+        }
+
+        .term-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .term-header h3 {
+            color: #333;
+            font-size: 18px;
+        }
+
+        .term-header span {
+            color: #8B0000;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .term-period {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .term-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .term-table th {
+            text-align: left;
+            padding: 10px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .term-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .term-table tr:last-child td {
+            border-bottom: none;
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .mark-attendance-page {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .period-selector {
+            margin-bottom: 30px;
+        }
+
+        .period-selector h3 {
+            color: #8B0000;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .period-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .period-card {
+            flex: 1;
+            min-width: 100px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .period-card.selected {
+            border-color: #8B0000;
+            background: #fff0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,0,0,0.1);
+        }
+
+        .period-card .period-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8B0000;
+            margin-bottom: 5px;
+        }
+
+        .period-card .period-time {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .course-selector {
+            margin-bottom: 30px;
+        }
+
+        .course-selector h3 {
+            color: #8B0000;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .course-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .student-list {
+            margin-bottom: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .student-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .student-list-header h3 {
+            color: #8B0000;
+            font-size: 18px;
+        }
+
+        .student-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .student-list-item:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-info h4 {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .student-info p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .student-status {
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            background: white;
+            border: 2px solid #e0e0e0;
+        }
+
+        .status-option.present.active {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        .status-option.absent.active {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .status-option.late.active {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .status-option.letoff.active {
+            background: #cce5ff;
+            border-color: #004085;
+            color: #004085;
+        }
+
+        .status-option:hover {
+            transform: scale(1.1);
+        }
+
+        .mark-all-section {
+            margin-bottom: 30px;
+        }
+
+        .mark-all-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .mark-all-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mark-all-btn.present {
+            background: #d4edda;
+            color: #28a745;
+            border: 2px solid #28a745;
+        }
+
+        .mark-all-btn.absent {
+            background: #f8d7da;
+            color: #dc3545;
+            border: 2px solid #dc3545;
+        }
+
+        .mark-all-btn.late {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .mark-all-btn.letoff {
+            background: #cce5ff;
+            color: #004085;
+            border: 2px solid #004085;
+        }
+
+        .mark-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .submit-attendance {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            background: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #B22222;
+            transform: translateY(-2px);
+        }
+
+        .cancel-btn {
+            padding: 12px 30px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .loading-overlay.active {
+            display: flex;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #8B0000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 12px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 1500;
+            border-left: 4px solid #8B0000;
+            font-size: 13px;
+        }
+
+        .notification.show {
+            display: flex;
+        }
+
+        .notification.success {
+            border-left-color: #28a745;
+        }
+
+        .notification.error {
+            border-left-color: #dc3545;
+        }
+
+        .college-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .arabic-footer {
+            font-family: 'Traditional Arabic', 'Times New Roman', serif;
+            font-size: 16px;
+            color: #8B0000;
+            margin-bottom: 5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card .stat-title {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-value {
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            padding: 8px 16px;
+            background: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #B22222;
+            transform: translateY(-2px);
+        }
+
+        .debug-panel {
+            background: #f8f9fa;
+            border: 2px solid #17a2b8;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .debug-panel h3 {
+            color: #17a2b8;
+            margin-bottom: 15px;
+        }
+
+        .debug-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .debug-label {
+            font-weight: bold;
+            width: 150px;
+            color: #495057;
+        }
+
+        .debug-value {
+            color: #212529;
+            word-break: break-all;
+        }
+
+        .debug-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .debug-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <!-- Your existing HTML structure - keep it all -->
+    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
         <div>Loading data...</div>
@@ -53,11 +1729,11 @@
                 <div id="studentFields">
                     <div class="input-group">
                         <label>📋 Register Number</label>
-                        <input type="text" id="registerNumber" placeholder="Enter register number" value="2313181058102">
+                        <input type="text" id="registerNumber" placeholder="Enter register number">
                     </div>
                     <div class="input-group">
                         <label>🔒 Password</label>
-                        <input type="password" id="password" placeholder="Enter password" value="2313181058102">
+                        <input type="password" id="password" placeholder="Enter password">
                         <div class="hint">Password is your register number</div>
                     </div>
                 </div>
@@ -65,11 +1741,11 @@
                 <div id="staffAdminFields" style="display: none;">
                     <div class="input-group">
                         <label>📧 Email Address</label>
-                        <input type="email" id="email" placeholder="Enter email" value="sa.abdulkadhar@thenewcollege.edu.in">
+                        <input type="email" id="email" placeholder="Enter email">
                     </div>
                     <div class="input-group">
                         <label>🔒 Password</label>
-                        <input type="password" id="adminPassword" placeholder="Enter password" value="staff">
+                        <input type="password" id="adminPassword" placeholder="Enter password">
                     </div>
                 </div>
 
@@ -104,6 +1780,7 @@
             <div class="search-box">
                 <input type="text" placeholder="Search" id="menuSearch" onkeyup="searchMenu(this.value)">
             </div>
+
             <div class="recent-section" id="recentSection">
                 <div class="recent-header">
                     <h3>Recent</h3>
@@ -111,9 +1788,12 @@
                 </div>
                 <div id="recentItems"></div>
             </div>
+
             <div class="menu-section">
                 <h3>Menu</h3>
-                <div class="menu-grid" id="menuGrid"></div>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be dynamically updated based on role -->
+                </div>
             </div>
         </div>
 
@@ -151,14 +1831,14 @@
 
     <script>
         // ==================== APPS SCRIPT WEB APP URL ====================
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWnf2TMHYbdotAeXEkYbUJ_QFmn4NLDna4mFi-acR8nWGpJLo21oFelCENfbhvd_DkKg/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzyG6AlUqo0210DJDKxLN46GRfFeNQvDY3Ep0sMeFf-6Gid1pUnrYcoHfpVW3wLJFJWcQ/exec';
 
         // ==================== APPLICATION STATE ====================
         let currentUser = null;
         let currentRole = 'student';
         let currentTab = 'home';
         let menuOpen = false;
-        let recentItems = ['Library Go', 'Attendance', 'Departments', 'Courses', 'Students List', 'Faculty List'];
+        let recentItems = ['Library Go', 'Attendance'];
         let selectedPeriod = 1;
         let selectedCourse = null;
         let attendanceData = {};
@@ -198,20 +1878,17 @@
             name: 'Administrator'
         };
 
-        // ==================== JSONP HELPER FUNCTIONS ====================
-        function jsonp(url, callbackName, callback) {
+        // ==================== JSONP HELPER FUNCTION ====================
+        function jsonp(url, callbackName) {
             return new Promise((resolve, reject) => {
-                // Create a unique callback name
                 const uniqueCallback = callbackName + '_' + Date.now();
                 
-                // Define the callback function globally
                 window[uniqueCallback] = function(data) {
                     delete window[uniqueCallback];
                     document.head.removeChild(script);
                     resolve(data);
                 };
                 
-                // Create script element
                 const script = document.createElement('script');
                 script.src = url + '&callback=' + uniqueCallback;
                 
@@ -225,14 +1902,14 @@
             });
         }
 
-        // ==================== LOAD STUDENTS USING JSONP ====================
+        // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
         async function loadStudentsFromSheet() {
             try {
                 showLoading();
                 const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
-                console.log('🔍 Fetching students via JSONP from:', url);
+                console.log('🔍 Fetching students from:', url);
                 
-                const data = await jsonp(url, 'callback', null);
+                const data = await jsonp(url, 'callback');
                 console.log('📥 Response:', data);
                 
                 if (data.error) {
@@ -246,7 +1923,6 @@
                     localStorage.setItem('students', JSON.stringify(studentsList));
                     console.log(`✅ Loaded ${studentsList.length} students`);
                     
-                    // Update staff dashboard if on home page
                     if (currentRole !== 'student' && currentPage === 'home') {
                         showStaffDashboard();
                     }
@@ -267,13 +1943,13 @@
             }
         }
 
-        // ==================== LOAD ATTENDANCE USING JSONP ====================
+        // ==================== LOAD ATTENDANCE FROM SHEET ====================
         async function loadAttendanceFromSheet() {
             try {
                 const url = APPS_SCRIPT_URL + '?action=getAttendance&t=' + new Date().getTime();
-                console.log('Fetching attendance via JSONP from:', url);
+                console.log('Fetching attendance from:', url);
                 
-                const data = await jsonp(url, 'callback', null);
+                const data = await jsonp(url, 'callback');
                 console.log('Attendance data received:', data);
                 
                 if (data.records) {
@@ -281,7 +1957,6 @@
                     localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
                     console.log('Loaded attendance records:', Object.keys(attendanceData).filter(key => !key.includes('_')).length);
                     
-                    // Update student view if on attendance page
                     if (currentRole === 'student' && currentPage === 'attendance') {
                         showAttendance();
                     } else if (currentRole === 'student' && currentPage === 'home') {
@@ -297,14 +1972,50 @@
             }
         }
 
+        // ==================== SAVE ATTENDANCE TO SHEET ====================
+        async function saveAttendanceToSheet(records) {
+            showLoading();
+            try {
+                console.log('Saving attendance records:', records);
+                
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ records: records })
+                });
+                
+                records.forEach(record => {
+                    const key = `${record.studentId}_${record.date}_${record.period}`;
+                    attendanceData[key] = record.status;
+                    attendanceData[key + '_faculty'] = record.faculty;
+                    attendanceData[key + '_course'] = record.course;
+                    attendanceData[key + '_studentName'] = record.studentName;
+                });
+                
+                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
+                showNotification(`✅ Attendance saved!`, 'success');
+                
+                setTimeout(async () => {
+                    await loadAttendanceFromSheet();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error saving attendance:', error);
+                showNotification('❌ Error saving to Google Sheets', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
         // ==================== FORCE RELOAD STUDENTS ====================
         async function forceReloadStudents() {
             showLoading();
             try {
                 const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
-                const data = await jsonp(url, 'callback', null);
-                
-                console.log('Force reload response:', data);
+                const data = await jsonp(url, 'callback');
                 
                 if (data.students && Array.isArray(data.students)) {
                     studentsList = data.students;
@@ -334,9 +2045,7 @@
             
             try {
                 const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
-                const data = await jsonp(url, 'callback', null);
-                
-                console.log(`📊 Sheet data:`, data);
+                const data = await jsonp(url, 'callback');
                 
                 let debugHTML = `
                     <div class="debug-panel">
@@ -364,10 +2073,6 @@
                             <span class="debug-label">Students Found:</span>
                             <span class="debug-value debug-error">0</span>
                         </div>
-                        <div class="debug-row">
-                            <span class="debug-label">Response:</span>
-                            <span class="debug-value">${JSON.stringify(data)}</span>
-                        </div>
                     `;
                 }
                 
@@ -387,67 +2092,14 @@
             }
         }
 
-        // ==================== SAVE ATTENDANCE TO SHEET ====================
-        async function saveAttendanceToSheet(records) {
-            showLoading();
-            try {
-                console.log('Saving attendance records:', records);
-                
-                // For POST requests, we need to use fetch with no-cors
-                // But we'll also update local data immediately
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        records: records
-                    })
-                });
-                
-                // Update local attendance data immediately
-                records.forEach(record => {
-                    const key = `${record.studentId}_${record.date}_${record.period}`;
-                    attendanceData[key] = record.status;
-                    attendanceData[key + '_faculty'] = record.faculty;
-                    attendanceData[key + '_course'] = record.course;
-                    attendanceData[key + '_studentName'] = record.studentName;
-                });
-                
-                // Save to localStorage
-                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                
-                // Show success message
-                showNotification(`✅ Attendance saved! Refreshing data...`, 'success');
-                
-                // Wait a moment then reload attendance from sheet to confirm
-                setTimeout(async () => {
-                    await loadAttendanceFromSheet();
-                    showNotification('Attendance data refreshed from sheet!', 'success');
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Error saving attendance:', error);
-                showNotification('❌ Error saving to Google Sheets', 'error');
-            } finally {
-                hideLoading();
-            }
-        }
-
         // ==================== SESSION MANAGEMENT ====================
         function loadSession() {
             const savedUser = localStorage.getItem('currentUser');
             const savedRole = localStorage.getItem('currentRole');
             const savedStudents = localStorage.getItem('students');
-            const savedAttendance = localStorage.getItem('attendanceRecords');
             
             if (savedStudents) {
                 studentsList = JSON.parse(savedStudents);
-            }
-            
-            if (savedAttendance) {
-                attendanceData = JSON.parse(savedAttendance);
             }
             
             if (savedUser) {
@@ -484,12 +2136,10 @@
         function startAutoRefresh() {
             if (refreshInterval) clearInterval(refreshInterval);
             refreshInterval = setInterval(() => {
-                if (currentUser) {
-                    if (currentRole === 'student') {
-                        loadAttendanceFromSheet();
-                    }
+                if (currentUser && currentRole === 'student') {
+                    loadAttendanceFromSheet();
                 }
-            }, 10000); // Refresh every 10 seconds
+            }, 30000);
         }
 
         async function refreshData() {
@@ -580,7 +2230,6 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     
-                    // Force load students for staff
                     await loadStudentsFromSheet();
                     await loadAttendanceFromSheet();
                     
@@ -795,7 +2444,7 @@
                 recentDiv.innerHTML = '<div class="recent-item">No recent items</div>';
             } else {
                 recentDiv.innerHTML = recentItems.map(item => {
-                    const section = item.toLowerCase().replace(/ /g, '').replace('list', '');
+                    const section = item.toLowerCase().replace(/ /g, '');
                     return `
                         <div class="recent-item" onclick="navigateTo('${section}')">
                             <span>${getIconForItem(item)}</span>
@@ -815,7 +2464,6 @@
                 'Tutorials': '📹',
                 'Departments': '🏛️',
                 'All Courses': '📚',
-                'Courses': '📚',
                 'Students List': '👥',
                 'Faculty List': '👨‍🏫'
             };
@@ -1248,7 +2896,6 @@
             
             await saveAttendanceToSheet(records);
             
-            // Wait a moment then refresh attendance data
             setTimeout(async () => {
                 await loadAttendanceFromSheet();
                 showNotification('Attendance updated!', 'success');
@@ -1413,11 +3060,6 @@
                         </div>
                         <div id="attendanceContent">
                             ${getAttendanceCourseHTML()}
-                        </div>
-                        <div style="text-align: center; margin-top: 20px;">
-                            <button onclick="refreshData()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
-                                🔄 Refresh Attendance
-                            </button>
                         </div>
                     </div>
                 `;
@@ -1683,10 +3325,10 @@
             selectedPeriod = 1;
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('dashboard').classList.remove('active');
-            document.getElementById('registerNumber').value = '2313181058102';
-            document.getElementById('password').value = '2313181058102';
-            document.getElementById('email').value = 'sa.abdulkadhar@thenewcollege.edu.in';
-            document.getElementById('adminPassword').value = 'staff';
+            document.getElementById('registerNumber').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('adminPassword').value = '';
             showNotification('Logged out successfully', 'info');
         }
 
