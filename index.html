@@ -1653,6 +1653,28 @@
             transform: translateY(-2px);
         }
 
+        .class-selection {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            border-color: #8B0000;
+            box-shadow: 0 10px 25px rgba(139,0,0,0.2);
+        }
+
         .debug-panel {
             background: #f8f9fa;
             border: 2px solid #17a2b8;
@@ -1729,11 +1751,11 @@
                 <div id="studentFields">
                     <div class="input-group">
                         <label>📋 Register Number</label>
-                        <input type="text" id="registerNumber" placeholder="Enter register number">
+                        <input type="text" id="registerNumber" placeholder="Enter register number" value="2313181058102">
                     </div>
                     <div class="input-group">
                         <label>🔒 Password</label>
-                        <input type="password" id="password" placeholder="Enter password">
+                        <input type="password" id="password" placeholder="Enter password" value="2313181058102">
                         <div class="hint">Password is your register number</div>
                     </div>
                 </div>
@@ -1831,18 +1853,19 @@
 
     <script>
         // ==================== APPS SCRIPT WEB APP URL ====================
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_4RaTVenqFwPVhpUFX02mXvSaxwnmSizcUxDddaEzUbk_k9RMoZc8FfO4NAaAlhfJKg/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbze1Zf_Ssg045lXGDG1OtKEfjBYoHsRzErJ9UgTM-JeOvshVIVDiadUtGnWL9mE29Sv/exec';
 
         // ==================== APPLICATION STATE ====================
         let currentUser = null;
         let currentRole = 'student';
         let currentTab = 'home';
         let menuOpen = false;
-        let recentItems = ['Library Go', 'Attendance'];
+        let recentItems = ['Library Go', 'Attendance', 'Departments', 'Courses', 'Faculty', 'Students'];
         let selectedPeriod = 1;
         let selectedCourse = null;
         let attendanceData = {};
         let expandedPeriod = null;
+        let studentsList = [];
         
         // Navigation History
         let navigationHistory = [];
@@ -1855,13 +1878,29 @@
         let selectedMonth = 'November';
         let selectedYear = 2025;
 
-        // ==================== SIMPLIFIED - ONLY ONE CLASS ====================
-        const className = 'Students'; // Just one sheet named "Students"
-
         // ==================== STAFF MEMBERS ====================
         const staffMembers = [
             { name: 'Dr. P. Hakkim Divan Mydeen', email: 'p.hakkimdivanmydeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
+            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. A. Ashraf Ali', email: 'a.ashrafali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Dr. G. Najeeb Ahmed', email: 'g.najeebahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Mr. M.M. Syed Sulaiman', email: 'mm.syedsulaiman@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
+            { name: 'Dr. J. Abdul Rasheedh', email: 'j.abdulrasheedh@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Mr. N. Anver Hussain', email: 'n.anverhussain@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
+            { name: 'Dr. S. Sakthivel', email: 's.sakthivel@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Dr. K. Tajudin', email: 'k.tajudin@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+            { name: 'Mr. H. Riaz Ahamed', email: 'h.riazahamed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. Syed Usman Basha', email: 'syed.usmanbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. A.M. Abdul Kuthus', email: 'am.abdulkuthus@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. Mohammed Arshad .F', email: 'mohammed.arshadf@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. M. Mohamed NagoorGani', email: 'm.mohamednagoorgani@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. S. Xavier Raj', email: 's.xavierraj@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. V.M. Mohamed Noorul Ameen', email: 'vm.mohamednoorulameen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. P. M. H. Hameedudeen', email: 'pmh.hameedudeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. J. Mohammed Javeed Basha', email: 'j.mohammedjaveedbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. N. Mohamed Niyas Ali', email: 'n.mohamedniyasali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. I. Mohideen Basha', email: 'i.mohideenbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
+            { name: 'Mr. Aarif Ahmed', email: 'aarif.ahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
         ];
 
         // ==================== COURSES ====================
@@ -1880,11 +1919,11 @@
             name: 'Administrator'
         };
 
-        // ==================== LOAD STUDENTS FROM GOOGLE SHEETS (SIMPLIFIED) ====================
+        // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
         async function loadStudentsFromSheet() {
             try {
                 showLoading();
-                const url = APPS_SCRIPT_URL + '?action=getStudents&class=' + encodeURIComponent(className) + '&t=' + new Date().getTime();
+                const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
                 console.log('🔍 Fetching students from:', url);
                 
                 const response = await fetch(url);
@@ -1899,20 +1938,12 @@
                 }
                 
                 if (data.students && Array.isArray(data.students)) {
-                    if (data.students.length > 0) {
-                        console.log(`✅ Loaded ${data.students.length} students`);
-                        console.log('Sample student:', data.students[0]);
-                        
-                        // Store students
-                        localStorage.setItem('students', JSON.stringify(data.students));
-                        return data.students;
-                    } else {
-                        console.log('⚠️ No students found in sheet');
-                        showNotification('No students found. Check sheet data.', 'info');
-                        return [];
-                    }
+                    studentsList = data.students;
+                    localStorage.setItem('students', JSON.stringify(studentsList));
+                    console.log(`✅ Loaded ${studentsList.length} students`);
+                    return studentsList;
                 } else {
-                    console.log('❌ Invalid data format:', data);
+                    console.log('⚠️ No students found');
                     return [];
                 }
             } catch (error) {
@@ -1954,22 +1985,18 @@
             console.log("🔍 DEBUGGING SHEETS...");
             
             try {
-                const url = APPS_SCRIPT_URL + '?action=getStudents&class=' + encodeURIComponent(className) + '&t=' + new Date().getTime();
+                const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
                 const response = await fetch(url);
                 const data = await response.json();
                 
-                console.log(`📊 Sheet "${className}" data:`, data);
+                console.log(`📊 Sheet data:`, data);
                 
                 let debugHTML = `
                     <div class="debug-panel">
                         <h3>🔍 Sheet Debug Info</h3>
                         <div class="debug-row">
                             <span class="debug-label">Sheet Name:</span>
-                            <span class="debug-value">${className}</span>
-                        </div>
-                        <div class="debug-row">
-                            <span class="debug-label">Response:</span>
-                            <span class="debug-value">${JSON.stringify(data)}</span>
+                            <span class="debug-value">Students</span>
                         </div>
                 `;
                 
@@ -1992,22 +2019,14 @@
                         </div>
                         <div class="debug-row">
                             <span class="debug-label">Check:</span>
-                            <span class="debug-value">1. Sheet name must be exactly "${className}"</span>
-                        </div>
-                        <div class="debug-row">
-                            <span class="debug-label"></span>
-                            <span class="debug-value">2. Headers must be: Register No | Name | Password | Batch | Year</span>
-                        </div>
-                        <div class="debug-row">
-                            <span class="debug-label"></span>
-                            <span class="debug-value">3. Data must start from row 2</span>
+                            <span class="debug-value">Make sure sheet has data and correct headers</span>
                         </div>
                     `;
                 }
                 
                 debugHTML += `
                         <div class="debug-row">
-                            <button onclick="refreshData()" class="btn-primary" style="margin-top:10px;">🔄 Refresh</button>
+                            <button onclick="loadStudentsFromSheet(); setTimeout(() => location.reload(), 1000)" class="btn-primary" style="margin-top:10px;">🔄 Reload Students</button>
                             <button onclick="this.closest('.debug-panel').remove()" class="btn-primary" style="margin-top:10px; margin-left:10px; background:#6c757d;">✖ Close</button>
                         </div>
                     </div>
@@ -2034,8 +2053,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ 
-                        records: records,
-                        className: className 
+                        records: records
                     })
                 });
                 
@@ -2061,6 +2079,11 @@
         function loadSession() {
             const savedUser = localStorage.getItem('currentUser');
             const savedRole = localStorage.getItem('currentRole');
+            const savedStudents = localStorage.getItem('students');
+            
+            if (savedStudents) {
+                studentsList = JSON.parse(savedStudents);
+            }
             
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
@@ -2108,16 +2131,19 @@
         async function refreshData() {
             showLoading();
             await loadAttendanceFromSheet();
+            await loadStudentsFromSheet();
             hideLoading();
             showNotification('Data refreshed!', 'success');
             
             if (currentRole === 'student') {
                 if (currentPage === 'home') showStudentHome();
                 else if (currentPage === 'attendance') showAttendance();
+            } else {
+                showStaffDashboard();
             }
         }
 
-        // ==================== LOGIN HANDLER (SIMPLIFIED) ====================
+        // ==================== LOGIN HANDLER ====================
         function setRole(role) {
             currentRole = role;
             document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
@@ -2149,7 +2175,7 @@
                             name: student.name,
                             role: 'student',
                             department: 'Computer Science',
-                            semester: '1st',
+                            semester: student.year || '1st',
                             batch: student.batch || 'A'
                         };
                         
@@ -2190,8 +2216,11 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     
+                    // Load students for staff dashboard
+                    await loadStudentsFromSheet();
+                    
                     updateMenuForRole();
-                    showMarkAttendance();
+                    showStaffDashboard();
                     
                     showNotification(`Welcome, ${staff.name}!`, 'success');
                 } else {
@@ -2208,8 +2237,11 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     
+                    // Load students for admin dashboard
+                    await loadStudentsFromSheet();
+                    
                     updateMenuForRole();
-                    showMarkAttendance();
+                    showStaffDashboard();
                     
                     showNotification('Welcome, Admin!', 'success');
                 } else {
@@ -2261,11 +2293,11 @@
                     </div>
                     <div class="menu-grid-item" onclick="navigateTo('students')">
                         <span>👥</span>
-                        <span>Students</span>
+                        <span>Students List</span>
                     </div>
                     <div class="menu-grid-item" onclick="navigateTo('faculty')">
                         <span>👨‍🏫</span>
-                        <span>Faculty</span>
+                        <span>Faculty List</span>
                     </div>
                     <div class="menu-grid-item" onclick="debugSheets()">
                         <span>🔍</span>
@@ -2291,6 +2323,28 @@
                 case 'myAccount':
                     currentPage = 'myAccount';
                     showProfile();
+                    break;
+                case 'departments':
+                    currentPage = 'departments';
+                    showDepartments();
+                    break;
+                case 'courses':
+                    currentPage = 'courses';
+                    showAllCourses();
+                    break;
+                case 'students':
+                    currentPage = 'students';
+                    showStudentsList();
+                    break;
+                case 'faculty':
+                    currentPage = 'faculty';
+                    showFacultyList();
+                    break;
+                case 'libraryGo':
+                case 'fees':
+                case 'tutorials':
+                    currentPage = section;
+                    showPlaceholder(section);
                     break;
                 default:
                     currentPage = section;
@@ -2399,7 +2453,11 @@
                 'Attendance': '✅',
                 'Fees': '💰',
                 'My Account': '👤',
-                'Tutorials': '📹'
+                'Tutorials': '📹',
+                'Departments': '🏛️',
+                'All Courses': '📚',
+                'Students List': '👥',
+                'Faculty List': '👨‍🏫'
             };
             return icons[item] || '📌';
         }
@@ -2500,6 +2558,7 @@
                     <div class="student-header">
                         <h1>${currentUser.name}</h1>
                         <p>Admission No : ${currentUser.reg}</p>
+                        <p>Batch : ${currentUser.batch} | Year : ${currentUser.semester}</p>
                     </div>
 
                     ${hoursGridHTML}
@@ -2587,7 +2646,7 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-title">Students</div>
-                        <div class="stat-value">${JSON.parse(localStorage.getItem('students') || '[]').length}</div>
+                        <div class="stat-value">${studentsList.length}</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-title">Staff</div>
@@ -2603,12 +2662,16 @@
                     </div>
                 </div>
 
-                <div class="table-container" style="background: white; border-radius: 15px; padding: 20px;">
+                <div class="table-container" style="background: white; border-radius: 15px; padding: 20px; margin-top: 20px;">
                     <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #8B0000; padding-bottom: 10px;">
                         <h3 style="color: #333; font-size: 18px;">Quick Actions</h3>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
                         <button class="btn-primary" onclick="navigateTo('markAttendance')" style="padding: 15px;">✅ Mark Attendance</button>
+                        <button class="btn-primary" onclick="navigateTo('departments')" style="padding: 15px;">🏛️ Departments</button>
+                        <button class="btn-primary" onclick="navigateTo('courses')" style="padding: 15px;">📚 All Courses</button>
+                        <button class="btn-primary" onclick="navigateTo('students')" style="padding: 15px;">👥 Students List</button>
+                        <button class="btn-primary" onclick="navigateTo('faculty')" style="padding: 15px;">👨‍🏫 Faculty List</button>
                         <button class="btn-primary" onclick="debugSheets()" style="padding: 15px; background: #17a2b8;">🔍 Debug Sheets</button>
                     </div>
                 </div>
@@ -2620,13 +2683,15 @@
             const content = document.getElementById('mainContent');
             const today = new Date().toISOString().split('T')[0];
 
-            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            if (studentsList.length === 0) {
+                await loadStudentsFromSheet();
+            }
 
-            if (students.length === 0) {
+            if (studentsList.length === 0) {
                 content.innerHTML = `
                     <div style="text-align: center; padding: 50px;">
                         <h3 style="color: #8B0000;">No Students Found</h3>
-                        <p>Please add students to the <strong>Students</strong> sheet in Google Sheets.</p>
+                        <p>Please add students to the Students sheet in Google Sheets.</p>
                         <button class="btn-primary" onclick="debugSheets()" style="margin-top: 20px; padding: 10px 20px; background:#17a2b8;">
                             🔍 Debug Sheets
                         </button>
@@ -2641,7 +2706,7 @@
                     
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                         <p>Date: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        <p>Total Students: ${students.length}</p>
+                        <p>Total Students: ${studentsList.length}</p>
                     </div>
                     
                     <div class="period-selector">
@@ -2679,18 +2744,18 @@
 
                         <div class="student-list">
                             <div class="student-list-header">
-                                <h3>Students (${students.length})</h3>
+                                <h3>Students (${studentsList.length})</h3>
                                 <input type="text" placeholder="Search student..." style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;" onkeyup="searchStudents(this.value)">
                             </div>
                             <div id="studentListContainer">
-                                ${students.map(student => {
+                                ${studentsList.map(student => {
                                     const key = `${student.reg}_${today}_${selectedPeriod}`;
                                     const status = attendanceData[key] || 'unmarked';
                                     return `
                                         <div class="student-list-item" id="student-${student.reg}">
                                             <div class="student-info">
                                                 <h4>${student.name}</h4>
-                                                <p>${student.reg}</p>
+                                                <p>${student.reg} | Batch: ${student.batch || 'A'} | Year: ${student.year || '1st'}</p>
                                             </div>
                                             <div class="student-status">
                                                 <div class="status-option present ${status === 'present' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'present')">✓</div>
@@ -2761,9 +2826,8 @@
             if (!selectedCourse) return;
             
             const today = new Date().toISOString().split('T')[0];
-            const students = JSON.parse(localStorage.getItem('students') || '[]');
             
-            students.forEach(student => {
+            studentsList.forEach(student => {
                 const key = `${student.reg}_${today}_${selectedPeriod}`;
                 attendanceData[key] = status;
                 
@@ -2780,9 +2844,8 @@
             if (!selectedCourse) return;
             
             const today = new Date().toISOString().split('T')[0];
-            const students = JSON.parse(localStorage.getItem('students') || '[]');
             
-            students.forEach(student => {
+            studentsList.forEach(student => {
                 const key = `${student.reg}_${today}_${selectedPeriod}`;
                 delete attendanceData[key];
             });
@@ -2795,11 +2858,10 @@
             
             const today = new Date().toISOString().split('T')[0];
             const selectedCourseObj = courses.find(c => c.id == selectedCourse);
-            const students = JSON.parse(localStorage.getItem('students') || '[]');
             
             const records = [];
             
-            students.forEach(student => {
+            studentsList.forEach(student => {
                 const key = `${student.reg}_${today}_${selectedPeriod}`;
                 const status = attendanceData[key];
                 if (status && status !== 'unmarked') {
@@ -2825,6 +2887,131 @@
             
             selectedCourse = null;
             showMarkAttendance();
+        }
+
+        // ==================== DEPARTMENTS PAGE ====================
+        function showDepartments() {
+            const departments = [
+                { name: 'Computer Science', hod: 'Dr. CS HOD', faculty: 15, courses: 8 },
+                { name: 'Mathematics', hod: 'Dr. Maths HOD', faculty: 12, courses: 6 },
+                { name: 'Physics', hod: 'Dr. Physics HOD', faculty: 10, courses: 5 },
+                { name: 'Chemistry', hod: 'Dr. Chemistry HOD', faculty: 11, courses: 5 },
+                { name: 'English', hod: 'Dr. English HOD', faculty: 9, courses: 4 },
+                { name: 'Commerce', hod: 'Dr. Commerce HOD', faculty: 14, courses: 7 }
+            ];
+            
+            let html = `
+                <div style="background: white; border-radius: 20px; padding: 20px;">
+                    <h2 style="color: #8B0000; margin-bottom: 20px;">Academic Departments</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            `;
+            
+            departments.forEach(dept => {
+                html += `
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; border-left: 4px solid #8B0000;">
+                        <h3 style="color: #8B0000; margin-bottom: 10px;">${dept.name}</h3>
+                        <p style="color: #666; margin-bottom: 5px;">HOD: ${dept.hod}</p>
+                        <p style="color: #666; margin-bottom: 5px;">Faculty: ${dept.faculty}</p>
+                        <p style="color: #666;">Courses: ${dept.courses}</p>
+                    </div>
+                `;
+            });
+            
+            html += `</div></div>`;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        // ==================== ALL COURSES PAGE ====================
+        function showAllCourses() {
+            let html = `
+                <div style="background: white; border-radius: 20px; padding: 20px;">
+                    <h2 style="color: #8B0000; margin-bottom: 20px;">All Courses</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            `;
+            
+            courses.forEach(course => {
+                html += `
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; border-left: 4px solid #8B0000;">
+                        <h3 style="color: #333; margin-bottom: 5px;">${course.name}</h3>
+                        <p style="color: #8B0000; font-weight: 600; margin-bottom: 5px;">${course.code}</p>
+                        <p style="color: #666; margin-bottom: 5px;">Faculty: ${course.faculty}</p>
+                        <p style="color: #666;">Total Hours: ${course.totalHours}</p>
+                    </div>
+                `;
+            });
+            
+            html += `</div></div>`;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        // ==================== STUDENTS LIST PAGE ====================
+        function showStudentsList() {
+            let html = `
+                <div style="background: white; border-radius: 20px; padding: 20px;">
+                    <h2 style="color: #8B0000; margin-bottom: 20px;">Students List (${studentsList.length})</h2>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f8f9fa;">
+                                    <th style="padding: 12px; text-align: left;">S.No</th>
+                                    <th style="padding: 12px; text-align: left;">Register No</th>
+                                    <th style="padding: 12px; text-align: left;">Name</th>
+                                    <th style="padding: 12px; text-align: left;">Batch</th>
+                                    <th style="padding: 12px; text-align: left;">Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            studentsList.forEach((student, index) => {
+                html += `
+                    <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 10px;">${index + 1}</td>
+                        <td style="padding: 10px;">${student.reg}</td>
+                        <td style="padding: 10px;">${student.name}</td>
+                        <td style="padding: 10px;">${student.batch || 'A'}</td>
+                        <td style="padding: 10px;">${student.year || '1st'}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table></div></div>`;
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        // ==================== FACULTY LIST PAGE ====================
+        function showFacultyList() {
+            let html = `
+                <div style="background: white; border-radius: 20px; padding: 20px;">
+                    <h2 style="color: #8B0000; margin-bottom: 20px;">Faculty List (${staffMembers.length})</h2>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f8f9fa;">
+                                    <th style="padding: 12px; text-align: left;">S.No</th>
+                                    <th style="padding: 12px; text-align: left;">Name</th>
+                                    <th style="padding: 12px; text-align: left;">Department</th>
+                                    <th style="padding: 12px; text-align: left;">Designation</th>
+                                    <th style="padding: 12px; text-align: left;">Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            staffMembers.forEach((staff, index) => {
+                html += `
+                    <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 10px;">${index + 1}</td>
+                        <td style="padding: 10px;">${staff.name}</td>
+                        <td style="padding: 10px;">${staff.department}</td>
+                        <td style="padding: 10px;">${staff.designation}</td>
+                        <td style="padding: 10px;">${staff.email}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table></div></div>`;
+            document.getElementById('mainContent').innerHTML = html;
         }
 
         // ==================== ATTENDANCE PAGE ====================
@@ -3071,6 +3258,7 @@
                         </div>
                         <h2 style="color: #333; font-size: 22px;">${currentUser.name}</h2>
                         <p style="color: #666;">${currentUser.role === 'student' ? 'Register No: ' + currentUser.reg : 'Staff Member'}</p>
+                        ${currentUser.role === 'student' ? `<p style="color: #8B0000;">Batch: ${currentUser.batch} | Year: ${currentUser.semester}</p>` : ''}
                     </div>
 
                     <button class="logout-btn-account" onclick="logout()" style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer;">Logout</button>
@@ -3080,7 +3268,7 @@
 
         // ==================== PLACEHOLDER PAGES ====================
         function showPlaceholder(page) {
-            document.getElementById('mainContent').innerHTML = `<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">${page}</h2><p>Coming soon!</p></div>`;
+            document.getElementById('mainContent').innerHTML = `<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000; text-transform: capitalize;">${page}</h2><p>Coming soon!</p></div>`;
         }
 
         // ==================== NOTIFICATION ====================
@@ -3105,20 +3293,21 @@
             selectedPeriod = 1;
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('dashboard').classList.remove('active');
-            document.getElementById('registerNumber').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('adminPassword').value = '';
+            document.getElementById('registerNumber').value = '2313181058102';
+            document.getElementById('password').value = '2313181058102';
+            document.getElementById('email').value = 'sa.abdulkadhar@thenewcollege.edu.in';
+            document.getElementById('adminPassword').value = 'staff';
             showNotification('Logged out successfully', 'info');
         }
 
         // ==================== INITIALIZE ====================
         document.addEventListener('DOMContentLoaded', async () => {
             setRole('student');
+            await loadStudentsFromSheet();
+            await loadAttendanceFromSheet();
             loadSession();
             startAutoRefresh();
             updateRecentItems();
-            await loadAttendanceFromSheet();
         });
     </script>
 </body>
