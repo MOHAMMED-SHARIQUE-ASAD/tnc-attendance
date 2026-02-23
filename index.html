@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE NEW COLLEGE - Attendance System</title>
     <style>
-        /* ==================== COMPLETE STYLES ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -1654,28 +1653,6 @@
             transform: translateY(-2px);
         }
 
-        .class-selection {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .class-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            text-align: center;
-        }
-
-        .class-card:hover {
-            transform: translateY(-5px);
-            border-color: #8B0000;
-            box-shadow: 0 10px 25px rgba(139,0,0,0.2);
-        }
-
         .debug-panel {
             background: #f8f9fa;
             border: 2px solid #17a2b8;
@@ -1864,7 +1841,6 @@
         let recentItems = ['Library Go', 'Attendance'];
         let selectedPeriod = 1;
         let selectedCourse = null;
-        let selectedClass = '';
         let attendanceData = {};
         let expandedPeriod = null;
         
@@ -1879,39 +1855,13 @@
         let selectedMonth = 'November';
         let selectedYear = 2025;
 
-        // ==================== CLASSES ====================
-        const classes = [
-            '1st Year A Batch',
-            '1st Year B Batch',
-            '2nd Year A Batch',
-            '2nd Year B Batch',
-            '3rd Year A Batch',
-            '3rd Year B Batch'
-        ];
+        // ==================== SIMPLIFIED - ONLY ONE CLASS ====================
+        const className = 'Students'; // Just one sheet named "Students"
 
         // ==================== STAFF MEMBERS ====================
         const staffMembers = [
             { name: 'Dr. P. Hakkim Divan Mydeen', email: 'p.hakkimdivanmydeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. A. Ashraf Ali', email: 'a.ashrafali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Dr. G. Najeeb Ahmed', email: 'g.najeebahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. M.M. Syed Sulaiman', email: 'mm.syedsulaiman@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
-            { name: 'Dr. J. Abdul Rasheedh', email: 'j.abdulrasheedh@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. N. Anver Hussain', email: 'n.anverhussain@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
-            { name: 'Dr. S. Sakthivel', email: 's.sakthivel@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Dr. K. Tajudin', email: 'k.tajudin@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. H. Riaz Ahamed', email: 'h.riazahamed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Syed Usman Basha', email: 'syed.usmanbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. A.M. Abdul Kuthus', email: 'am.abdulkuthus@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Mohammed Arshad .F', email: 'mohammed.arshadf@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. M. Mohamed NagoorGani', email: 'm.mohamednagoorgani@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. S. Xavier Raj', email: 's.xavierraj@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. V.M. Mohamed Noorul Ameen', email: 'vm.mohamednoorulameen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. P. M. H. Hameedudeen', email: 'pmh.hameedudeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. J. Mohammed Javeed Basha', email: 'j.mohammedjaveedbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. N. Mohamed Niyas Ali', email: 'n.mohamedniyasali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. I. Mohideen Basha', email: 'i.mohideenbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Aarif Ahmed', email: 'aarif.ahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
+            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
         ];
 
         // ==================== COURSES ====================
@@ -1930,39 +1880,47 @@
             name: 'Administrator'
         };
 
-        // ==================== NO HARDCODED STUDENTS - ALL DATA FROM SHEETS ====================
-
-        // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
-        async function loadStudentsFromSheet(className) {
-            if (!className && currentUser?.role === 'student') {
-                className = currentUser.class;
-            }
-            
-            if (!className) return false;
-            
+        // ==================== LOAD STUDENTS FROM GOOGLE SHEETS (SIMPLIFIED) ====================
+        async function loadStudentsFromSheet() {
             try {
+                showLoading();
                 const url = APPS_SCRIPT_URL + '?action=getStudents&class=' + encodeURIComponent(className) + '&t=' + new Date().getTime();
-                console.log('Fetching students from:', url);
+                console.log('🔍 Fetching students from:', url);
                 
                 const response = await fetch(url);
                 const data = await response.json();
                 
-                console.log(`Data received for ${className}:`, data);
+                console.log('📥 Response:', data);
+                
+                if (data.error) {
+                    console.error('Sheet error:', data.error);
+                    showNotification(`Error: ${data.error}`, 'error');
+                    return [];
+                }
                 
                 if (data.students && Array.isArray(data.students)) {
-                    // Store by class
-                    let allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-                    allStudents[className] = data.students;
-                    localStorage.setItem('allStudents', JSON.stringify(allStudents));
-                    console.log(`Loaded ${data.students.length} students for ${className}`);
-                    return true;
+                    if (data.students.length > 0) {
+                        console.log(`✅ Loaded ${data.students.length} students`);
+                        console.log('Sample student:', data.students[0]);
+                        
+                        // Store students
+                        localStorage.setItem('students', JSON.stringify(data.students));
+                        return data.students;
+                    } else {
+                        console.log('⚠️ No students found in sheet');
+                        showNotification('No students found. Check sheet data.', 'info');
+                        return [];
+                    }
                 } else {
-                    console.log(`No students in response for ${className}`);
-                    return false;
+                    console.log('❌ Invalid data format:', data);
+                    return [];
                 }
             } catch (error) {
-                console.error('Error loading students from sheet:', error);
-                return false;
+                console.error('Error loading students:', error);
+                showNotification('Error connecting to Google Sheets', 'error');
+                return [];
+            } finally {
+                hideLoading();
             }
         }
 
@@ -1981,113 +1939,90 @@
                     attendanceData = data.records;
                     localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
                     console.log('Loaded attendance records:', Object.keys(attendanceData).filter(key => !key.includes('_')).length);
-                } else {
-                    console.warn('No records in attendance data');
                 }
             } catch (error) {
-                console.error('Error loading attendance from sheet:', error);
+                console.error('Error loading attendance:', error);
                 const saved = localStorage.getItem('attendanceRecords');
                 if (saved) {
                     attendanceData = JSON.parse(saved);
-                    console.log('Loaded attendance from localStorage as fallback');
                 }
             }
         }
 
-        // ==================== DEBUG ATTENDANCE FUNCTION ====================
-        async function debugAttendance() {
-            console.log("🔍 DEBUG ATTENDANCE FUNCTION CALLED");
-            console.log("Current attendance data:", attendanceData);
+        // ==================== DEBUG FUNCTION ====================
+        async function debugSheets() {
+            console.log("🔍 DEBUGGING SHEETS...");
             
-            if (currentUser && currentUser.role === 'student') {
-                const studentId = currentUser.reg;
-                const today = new Date().toISOString().split('T')[0];
+            try {
+                const url = APPS_SCRIPT_URL + '?action=getStudents&class=' + encodeURIComponent(className) + '&t=' + new Date().getTime();
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                console.log(`📊 Sheet "${className}" data:`, data);
                 
                 let debugHTML = `
                     <div class="debug-panel">
-                        <h3>🔍 Attendance Debug Info</h3>
+                        <h3>🔍 Sheet Debug Info</h3>
                         <div class="debug-row">
-                            <span class="debug-label">Student:</span>
-                            <span class="debug-value">${currentUser.name} (${studentId})</span>
+                            <span class="debug-label">Sheet Name:</span>
+                            <span class="debug-value">${className}</span>
                         </div>
                         <div class="debug-row">
-                            <span class="debug-label">Class:</span>
-                            <span class="debug-value">${currentUser.class || 'Unknown'}</span>
+                            <span class="debug-label">Response:</span>
+                            <span class="debug-value">${JSON.stringify(data)}</span>
                         </div>
-                        <div class="debug-row">
-                            <span class="debug-label">Today:</span>
-                            <span class="debug-value">${today}</span>
-                        </div>
-                        <div class="debug-row">
-                            <span class="debug-label">Total Records:</span>
-                            <span class="debug-value">${Object.keys(attendanceData).filter(key => !key.includes('_')).length}</span>
-                        </div>
-                        <h4>Period Status for Today:</h4>
                 `;
                 
-                for (let period = 1; period <= 5; period++) {
-                    const key = `${studentId}_${today}_${period}`;
-                    const status = attendanceData[key];
-                    
-                    let statusDisplay = '❌ Not marked';
-                    let statusClass = 'debug-error';
-                    
-                    if (status) {
-                        statusDisplay = `✅ ${status}`;
-                        statusClass = 'debug-success';
-                    }
-                    
+                if (data.students && data.students.length > 0) {
                     debugHTML += `
                         <div class="debug-row">
-                            <span class="debug-label">Period ${period}:</span>
-                            <span class="debug-value ${statusClass}">${statusDisplay}</span>
+                            <span class="debug-label">Students Found:</span>
+                            <span class="debug-value debug-success">${data.students.length}</span>
+                        </div>
+                        <div class="debug-row">
+                            <span class="debug-label">First Student:</span>
+                            <span class="debug-value">${JSON.stringify(data.students[0])}</span>
+                        </div>
+                    `;
+                } else {
+                    debugHTML += `
+                        <div class="debug-row">
+                            <span class="debug-label">Students Found:</span>
+                            <span class="debug-value debug-error">0</span>
+                        </div>
+                        <div class="debug-row">
+                            <span class="debug-label">Check:</span>
+                            <span class="debug-value">1. Sheet name must be exactly "${className}"</span>
+                        </div>
+                        <div class="debug-row">
+                            <span class="debug-label"></span>
+                            <span class="debug-value">2. Headers must be: Register No | Name | Password | Batch | Year</span>
+                        </div>
+                        <div class="debug-row">
+                            <span class="debug-label"></span>
+                            <span class="debug-value">3. Data must start from row 2</span>
                         </div>
                     `;
                 }
                 
-                const allStudentRecords = Object.keys(attendanceData)
-                    .filter(key => key.startsWith(studentId) && !key.includes('_'))
-                    .map(key => {
-                        const [sid, date, period] = key.split('_');
-                        return { date, period, status: attendanceData[key] };
-                    });
-                
-                debugHTML += `
-                    <h4>All Records for ${studentId}:</h4>
-                    <div class="debug-row">
-                        <span class="debug-label">Total Found:</span>
-                        <span class="debug-value">${allStudentRecords.length}</span>
-                    </div>
-                `;
-                
-                if (allStudentRecords.length > 0) {
-                    allStudentRecords.slice(0, 10).forEach(record => {
-                        debugHTML += `
-                            <div class="debug-row">
-                                <span class="debug-label">${record.date} P${record.period}:</span>
-                                <span class="debug-value ${record.status === 'present' ? 'debug-success' : 'debug-error'}">${record.status}</span>
-                            </div>
-                        `;
-                    });
-                } else {
-                    debugHTML += `<div class="debug-row"><span class="debug-error">No attendance records found for this student!</span></div>`;
-                }
-                
                 debugHTML += `
                         <div class="debug-row">
-                            <button onclick="refreshData()" class="btn-primary" style="margin-top: 10px; padding: 8px 15px;">🔄 Refresh Data</button>
-                            <button onclick="document.querySelector('.debug-panel').remove()" class="btn-primary" style="margin-top: 10px; margin-left: 10px; padding: 8px 15px; background: #6c757d;">✖ Close</button>
+                            <button onclick="refreshData()" class="btn-primary" style="margin-top:10px;">🔄 Refresh</button>
+                            <button onclick="this.closest('.debug-panel').remove()" class="btn-primary" style="margin-top:10px; margin-left:10px; background:#6c757d;">✖ Close</button>
                         </div>
                     </div>
                 `;
                 
-                const mainContent = document.getElementById('mainContent');
-                mainContent.innerHTML = debugHTML + mainContent.innerHTML;
+                document.getElementById('mainContent').innerHTML = debugHTML + document.getElementById('mainContent').innerHTML;
+                
+            } catch (error) {
+                console.error('Debug error:', error);
+                alert('Error debugging sheets. Check console (F12).');
             }
         }
 
         // ==================== SAVE ATTENDANCE TO SHEET ====================
-        async function saveAttendanceToSheet(records, className) {
+        async function saveAttendanceToSheet(records) {
             showLoading();
             try {
                 console.log('Saving attendance records:', records);
@@ -2112,7 +2047,7 @@
                 });
                 
                 localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                showNotification(`✅ Attendance for ${className} saved!`, 'success');
+                showNotification(`✅ Attendance saved!`, 'success');
                 
             } catch (error) {
                 console.error('Error saving attendance:', error);
@@ -2139,7 +2074,7 @@
                 if (currentRole === 'student') {
                     showStudentHome();
                 } else {
-                    showStaffAdminDashboard();
+                    showStaffDashboard();
                 }
             }
         }
@@ -2182,7 +2117,7 @@
             }
         }
 
-        // ==================== LOGIN HANDLER ====================
+        // ==================== LOGIN HANDLER (SIMPLIFIED) ====================
         function setRole(role) {
             currentRole = role;
             document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
@@ -2202,34 +2137,20 @@
                 showLoading();
                 
                 try {
-                    let foundStudent = null;
-                    let studentClass = null;
+                    const students = await loadStudentsFromSheet();
                     
-                    for (const className of classes) {
-                        await loadStudentsFromSheet(className);
-                        const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-                        const classStudents = allStudents[className] || [];
-                        
-                        const student = classStudents.find(s => 
-                            s.reg === regNo && (s.password === password || s.password === regNo)
-                        );
-                        
-                        if (student) {
-                            foundStudent = student;
-                            studentClass = className;
-                            break;
-                        }
-                    }
+                    const student = students.find(s => 
+                        s.reg === regNo && (s.password === password || s.password === regNo)
+                    );
                     
-                    if (foundStudent) {
+                    if (student) {
                         currentUser = {
-                            reg: foundStudent.reg,
-                            name: foundStudent.name,
+                            reg: student.reg,
+                            name: student.name,
                             role: 'student',
                             department: 'Computer Science',
-                            semester: foundStudent.year || '1st',
-                            batch: foundStudent.batch || 'A',
-                            class: studentClass
+                            semester: '1st',
+                            batch: student.batch || 'A'
                         };
                         
                         saveSession();
@@ -2245,7 +2166,7 @@
                         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
                         document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
                         
-                        showNotification(`Welcome, ${foundStudent.name}! (${studentClass})`, 'success');
+                        showNotification(`Welcome, ${student.name}!`, 'success');
                         showStudentHome();
                     } else {
                         showNotification('Invalid Register Number or Password!', 'error');
@@ -2270,7 +2191,7 @@
                     document.getElementById('dashboard').classList.add('active');
                     
                     updateMenuForRole();
-                    showClassSelection();
+                    showMarkAttendance();
                     
                     showNotification(`Welcome, ${staff.name}!`, 'success');
                 } else {
@@ -2288,46 +2209,13 @@
                     document.getElementById('dashboard').classList.add('active');
                     
                     updateMenuForRole();
-                    showClassSelection();
+                    showMarkAttendance();
                     
                     showNotification('Welcome, Admin!', 'success');
                 } else {
                     showNotification('Invalid admin credentials!', 'error');
                 }
             }
-        }
-
-        // ==================== CLASS SELECTION ====================
-        function showClassSelection() {
-            const content = document.getElementById('mainContent');
-            
-            content.innerHTML = `
-                <div class="class-selection">
-                    <h2 style="color: #8B0000; margin-bottom: 30px; text-align: center;">Select Class to Mark Attendance</h2>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                        ${classes.map(className => `
-                            <div class="class-card" onclick="selectClass('${className}')">
-                                <div style="font-size: 40px; margin-bottom: 15px;">📚</div>
-                                <h3 style="color: #8B0000; margin-bottom: 10px;">${className}</h3>
-                                <p style="color: #666;">Click to mark attendance</p>
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 30px;">
-                        <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
-                            🔍 Debug Attendance
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function selectClass(className) {
-            selectedClass = className;
-            await loadStudentsFromSheet(className);
-            navigateTo('markAttendance');
         }
 
         // ==================== MENU FUNCTIONS ====================
@@ -2356,26 +2244,6 @@
                         <span>📹</span>
                         <span>Tutorials</span>
                     </div>
-                    <div class="menu-grid-item" onclick="navigateTo('studentTimetable')">
-                        <span>⏰</span>
-                        <span>Student Timetable</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('myMentor')">
-                        <span>👨‍🏫</span>
-                        <span>My Mentor</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('libraryVisits')">
-                        <span>📖</span>
-                        <span>Library Visits</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('onlinePayment')">
-                        <span>💳</span>
-                        <span>Online Payment</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('feePayment')">
-                        <span>💰</span>
-                        <span>Fee Payment</span>
-                    </div>
                 `;
             } else {
                 menuGrid.innerHTML = `
@@ -2399,41 +2267,9 @@
                         <span>👨‍🏫</span>
                         <span>Faculty</span>
                     </div>
-                    <div class="menu-grid-item" onclick="navigateTo('libraryGo')">
-                        <span>📚</span>
-                        <span>Library Go</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('attendance')">
-                        <span>✅</span>
-                        <span>Attendance</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('fees')">
-                        <span>💰</span>
-                        <span>Fees</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('myAccount')">
-                        <span>👤</span>
-                        <span>My Account</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('tutorials')">
-                        <span>📹</span>
-                        <span>Tutorials</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('studentTimetable')">
-                        <span>⏰</span>
-                        <span>Student Timetable</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('libraryVisits')">
-                        <span>📖</span>
-                        <span>Library Visits</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('onlinePayment')">
-                        <span>💳</span>
-                        <span>Online Payment</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('feePayment')">
-                        <span>💰</span>
-                        <span>Fee Payment</span>
+                    <div class="menu-grid-item" onclick="debugSheets()">
+                        <span>🔍</span>
+                        <span>Debug Sheets</span>
                     </div>
                 `;
             }
@@ -2446,67 +2282,19 @@
             switch(section) {
                 case 'markAttendance':
                     currentPage = 'markAttendance';
-                    if (currentRole !== 'student') {
-                        if (!selectedClass) {
-                            showClassSelection();
-                        } else {
-                            showMarkAttendance();
-                        }
-                    }
-                    break;
-                case 'departments':
-                    currentPage = 'departments';
-                    showDepartments();
-                    break;
-                case 'courses':
-                    currentPage = 'courses';
-                    showAllCourses();
-                    break;
-                case 'students':
-                    currentPage = 'students';
-                    showStudents();
-                    break;
-                case 'faculty':
-                    currentPage = 'faculty';
-                    showFaculty();
-                    break;
-                case 'libraryGo':
-                    currentPage = 'libraryGo';
-                    showLibraryGo();
+                    showMarkAttendance();
                     break;
                 case 'attendance':
                     currentPage = 'attendance';
                     showAttendance();
                     break;
-                case 'fees':
-                    currentPage = 'fees';
-                    showFees();
-                    break;
                 case 'myAccount':
                     currentPage = 'myAccount';
                     showProfile();
                     break;
-                case 'tutorials':
-                    currentPage = 'tutorials';
-                    showTutorials();
-                    break;
-                case 'studentTimetable':
-                    currentPage = 'studentTimetable';
-                    showStudentTimetable();
-                    break;
-                case 'myMentor':
-                    currentPage = 'myMentor';
-                    showMyMentor();
-                    break;
-                case 'libraryVisits':
-                    currentPage = 'libraryVisits';
-                    showLibraryVisits();
-                    break;
-                case 'onlinePayment':
-                case 'feePayment':
-                    currentPage = 'fees';
-                    showFees();
-                    break;
+                default:
+                    currentPage = section;
+                    showPlaceholder(section);
             }
             
             document.getElementById('backBtnNav').classList.add('visible');
@@ -2530,7 +2318,7 @@
                 if (currentUser?.role === 'student') {
                     showStudentHome();
                 } else {
-                    showStaffAdminDashboard();
+                    showStaffDashboard();
                 }
             } else if (tab === 'menu') {
                 toggleMenu();
@@ -2557,14 +2345,9 @@
                 currentPage = 'home';
                 document.getElementById('backBtnNav').classList.remove('visible');
             } else {
-                if (currentPage === 'markAttendance') {
-                    showClassSelection();
-                    currentPage = 'classSelection';
-                } else {
-                    showStaffAdminDashboard();
-                    currentPage = 'home';
-                    document.getElementById('backBtnNav').classList.remove('visible');
-                }
+                showStaffDashboard();
+                currentPage = 'home';
+                document.getElementById('backBtnNav').classList.remove('visible');
             }
         }
 
@@ -2616,17 +2399,12 @@
                 'Attendance': '✅',
                 'Fees': '💰',
                 'My Account': '👤',
-                'Tutorials': '📹',
-                'Student Timetable': '⏰',
-                'My Mentor': '👨‍🏫',
-                'Library Visits': '📖',
-                'Online Payment': '💳',
-                'Fee Payment': '💰'
+                'Tutorials': '📹'
             };
             return icons[item] || '📌';
         }
 
-        // ==================== FIXED STUDENT HOME PAGE ====================
+        // ==================== STUDENT HOME PAGE ====================
         function showStudentHome() {
             const content = document.getElementById('mainContent');
             const today = new Date();
@@ -2639,7 +2417,6 @@
             const todayAttendance = [];
             const periodDetails = {};
             
-            // Get today's attendance for this student
             for (let hour = 1; hour <= 5; hour++) {
                 const key = `${studentId}_${todayStr}_${hour}`;
                 if (attendanceData[key]) {
@@ -2659,7 +2436,6 @@
                 }
             }
             
-            // Create hours grid with proper coloring
             let hoursGridHTML = '<div class="hours-grid">';
             for (let hour = 1; hour <= 5; hour++) {
                 const attendance = todayAttendance.find(a => a.hour === hour);
@@ -2673,7 +2449,6 @@
             }
             hoursGridHTML += '</div>';
             
-            // Show period detail if expanded
             let periodDetailHTML = '';
             if (expandedPeriod !== null && periodDetails[expandedPeriod]) {
                 const detail = periodDetails[expandedPeriod];
@@ -2714,7 +2489,6 @@
                 }
             }
             
-            // Calculate attendance summary
             const allStudentRecords = Object.keys(attendanceData)
                 .filter(key => key.startsWith(studentId) && !key.includes('_'));
             const totalClasses = allStudentRecords.length;
@@ -2726,7 +2500,6 @@
                     <div class="student-header">
                         <h1>${currentUser.name}</h1>
                         <p>Admission No : ${currentUser.reg}</p>
-                        <p>Class : ${currentUser.class || 'Not assigned'} | Batch : ${currentUser.batch || 'N/A'}</p>
                     </div>
 
                     ${hoursGridHTML}
@@ -2740,61 +2513,6 @@
                     <div class="feedback-section">
                         <p>Every feedback is valuable.</p>
                         <button class="feedback-btn" onclick="showNotification('Thank you for your feedback!', 'success')">Give Feedback</button>
-                    </div>
-
-                    <div class="favorites-nav">
-                        <span class="title">Favorites</span>
-                        <div class="actions">
-                            <span onclick="navigateTo('attendance')">Attendance</span>
-                            <span onclick="showNotification('Add More feature coming soon', 'info')">Add More</span>
-                        </div>
-                    </div>
-
-                    <div class="schedule-section">
-                        <div class="schedule-header">
-                            <h3>Today's schedule</h3>
-                            <span class="schedule-date">${dayName}, ${month} ${day}</span>
-                        </div>
-                        <div class="schedule-item">
-                            <div class="schedule-time">09:00 - 10:00</div>
-                            <div class="schedule-details">
-                                <h4>Period 1</h4>
-                                <p>${periodDetails[1]?.status ? periodDetails[1].course || 'Class' : 'No class'}</p>
-                                ${periodDetails[1]?.status ? `<small>Status: ${getStatusText(periodDetails[1].status)}</small>` : ''}
-                            </div>
-                        </div>
-                        <div class="schedule-item">
-                            <div class="schedule-time">10:00 - 11:00</div>
-                            <div class="schedule-details">
-                                <h4>Period 2</h4>
-                                <p>${periodDetails[2]?.status ? periodDetails[2].course || 'Class' : 'No class'}</p>
-                                ${periodDetails[2]?.status ? `<small>Status: ${getStatusText(periodDetails[2].status)}</small>` : ''}
-                            </div>
-                        </div>
-                        <div class="schedule-item">
-                            <div class="schedule-time">11:00 - 12:00</div>
-                            <div class="schedule-details">
-                                <h4>Period 3</h4>
-                                <p>${periodDetails[3]?.status ? periodDetails[3].course || 'Class' : 'No class'}</p>
-                                ${periodDetails[3]?.status ? `<small>Status: ${getStatusText(periodDetails[3].status)}</small>` : ''}
-                            </div>
-                        </div>
-                        <div class="schedule-item">
-                            <div class="schedule-time">12:00 - 13:00</div>
-                            <div class="schedule-details">
-                                <h4>Period 4</h4>
-                                <p>${periodDetails[4]?.status ? periodDetails[4].course || 'Class' : 'No class'}</p>
-                                ${periodDetails[4]?.status ? `<small>Status: ${getStatusText(periodDetails[4].status)}</small>` : ''}
-                            </div>
-                        </div>
-                        <div class="schedule-item">
-                            <div class="schedule-time">14:00 - 15:00</div>
-                            <div class="schedule-details">
-                                <h4>Period 5</h4>
-                                <p>${periodDetails[5]?.status ? periodDetails[5].course || 'Class' : 'No class'}</p>
-                                ${periodDetails[5]?.status ? `<small>Status: ${getStatusText(periodDetails[5].status)}</small>` : ''}
-                            </div>
-                        </div>
                     </div>
 
                     <div class="semester-card">
@@ -2823,8 +2541,8 @@
                     </div>
                     
                     <div style="text-align: center; margin-top: 20px;">
-                        <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
-                            🔍 Debug My Attendance
+                        <button onclick="debugSheets()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
+                            🔍 Debug Sheets
                         </button>
                     </div>
                 </div>
@@ -2861,28 +2579,22 @@
             return times[period] || '';
         }
 
-        // ==================== STAFF/ADMIN DASHBOARD ====================
-        function showStaffAdminDashboard() {
+        // ==================== STAFF DASHBOARD ====================
+        function showStaffDashboard() {
             const content = document.getElementById('mainContent');
-            
-            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-            let totalStudents = 0;
-            for (const className in allStudents) {
-                totalStudents += allStudents[className].length;
-            }
             
             content.innerHTML = `
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-title">Total Students</div>
-                        <div class="stat-value">${totalStudents}</div>
+                        <div class="stat-title">Students</div>
+                        <div class="stat-value">${JSON.parse(localStorage.getItem('students') || '[]').length}</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-title">Total Staff</div>
+                        <div class="stat-title">Staff</div>
                         <div class="stat-value">${staffMembers.length}</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-title">Total Courses</div>
+                        <div class="stat-title">Courses</div>
                         <div class="stat-value">${courses.length}</div>
                     </div>
                     <div class="stat-card">
@@ -2891,17 +2603,13 @@
                     </div>
                 </div>
 
-                <div class="table-container" style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <div class="table-container" style="background: white; border-radius: 15px; padding: 20px;">
                     <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #8B0000; padding-bottom: 10px;">
-                        <h3 style="color: #333; font-size: 18px; font-weight: 600;">Quick Actions</h3>
+                        <h3 style="color: #333; font-size: 18px;">Quick Actions</h3>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
                         <button class="btn-primary" onclick="navigateTo('markAttendance')" style="padding: 15px;">✅ Mark Attendance</button>
-                        <button class="btn-primary" onclick="navigateTo('departments')" style="padding: 15px;">🏛️ View Departments</button>
-                        <button class="btn-primary" onclick="navigateTo('courses')" style="padding: 15px;">📚 View Courses</button>
-                        <button class="btn-primary" onclick="navigateTo('students')" style="padding: 15px;">👥 View Students</button>
-                        <button class="btn-primary" onclick="navigateTo('faculty')" style="padding: 15px;">👨‍🏫 View Faculty</button>
-                        <button class="btn-primary" onclick="debugAttendance()" style="padding: 15px; background: #17a2b8;">🔍 Debug Attendance</button>
+                        <button class="btn-primary" onclick="debugSheets()" style="padding: 15px; background: #17a2b8;">🔍 Debug Sheets</button>
                     </div>
                 </div>
             `;
@@ -2912,28 +2620,15 @@
             const content = document.getElementById('mainContent');
             const today = new Date().toISOString().split('T')[0];
 
-            if (!selectedClass) {
-                showClassSelection();
-                return;
-            }
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
 
-            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-            let studentList = allStudents[selectedClass] || [];
-
-            if (studentList.length === 0) {
-                await loadStudentsFromSheet(selectedClass);
-                const updatedAllStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-                studentList = updatedAllStudents[selectedClass] || [];
-            }
-
-            if (studentList.length === 0) {
+            if (students.length === 0) {
                 content.innerHTML = `
                     <div style="text-align: center; padding: 50px;">
                         <h3 style="color: #8B0000;">No Students Found</h3>
-                        <p>No students found in <strong>${selectedClass}</strong>.</p>
-                        <p>Please add students to the <strong>${selectedClass}</strong> sheet in Google Sheets.</p>
-                        <button class="btn-primary" onclick="showClassSelection()" style="margin-top: 20px; padding: 10px 20px;">
-                            ← Back to Class Selection
+                        <p>Please add students to the <strong>Students</strong> sheet in Google Sheets.</p>
+                        <button class="btn-primary" onclick="debugSheets()" style="margin-top: 20px; padding: 10px 20px; background:#17a2b8;">
+                            🔍 Debug Sheets
                         </button>
                     </div>
                 `;
@@ -2942,15 +2637,11 @@
 
             content.innerHTML = `
                 <div class="mark-attendance-page">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2 style="color: #8B0000;">Mark Attendance</h2>
-                        <button class="btn-primary" onclick="showClassSelection()" style="padding: 8px 15px; background: #6c757d;">← Change Class</button>
-                    </div>
+                    <h2 style="color: #8B0000; margin-bottom: 20px;">Mark Attendance</h2>
                     
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                        <h3 style="color: #8B0000;">${selectedClass}</h3>
                         <p>Date: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        <p>Total Students: ${studentList.length}</p>
+                        <p>Total Students: ${students.length}</p>
                     </div>
                     
                     <div class="period-selector">
@@ -2988,11 +2679,11 @@
 
                         <div class="student-list">
                             <div class="student-list-header">
-                                <h3>Students (${studentList.length})</h3>
-                                <input type="text" placeholder="Search student..." style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; width: 200px;" onkeyup="searchStudents(this.value)">
+                                <h3>Students (${students.length})</h3>
+                                <input type="text" placeholder="Search student..." style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;" onkeyup="searchStudents(this.value)">
                             </div>
                             <div id="studentListContainer">
-                                ${studentList.map(student => {
+                                ${students.map(student => {
                                     const key = `${student.reg}_${today}_${selectedPeriod}`;
                                     const status = attendanceData[key] || 'unmarked';
                                     return `
@@ -3052,7 +2743,7 @@
         }
 
         function setStudentStatus(regNo, status) {
-            if (!selectedCourse || !selectedClass) return;
+            if (!selectedCourse) return;
             
             const today = new Date().toISOString().split('T')[0];
             const key = `${regNo}_${today}_${selectedPeriod}`;
@@ -3067,13 +2758,12 @@
         }
 
         function markAllStudents(status) {
-            if (!selectedCourse || !selectedClass) return;
+            if (!selectedCourse) return;
             
             const today = new Date().toISOString().split('T')[0];
-            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-            const studentList = allStudents[selectedClass] || [];
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
             
-            studentList.forEach(student => {
+            students.forEach(student => {
                 const key = `${student.reg}_${today}_${selectedPeriod}`;
                 attendanceData[key] = status;
                 
@@ -3087,13 +2777,12 @@
         }
 
         function resetAttendance() {
-            if (!selectedCourse || !selectedClass) return;
+            if (!selectedCourse) return;
             
             const today = new Date().toISOString().split('T')[0];
-            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-            const studentList = allStudents[selectedClass] || [];
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
             
-            studentList.forEach(student => {
+            students.forEach(student => {
                 const key = `${student.reg}_${today}_${selectedPeriod}`;
                 delete attendanceData[key];
             });
@@ -3102,16 +2791,15 @@
         }
 
         async function submitAttendance() {
-            if (!selectedCourse || !selectedClass) return;
+            if (!selectedCourse) return;
             
             const today = new Date().toISOString().split('T')[0];
             const selectedCourseObj = courses.find(c => c.id == selectedCourse);
-            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-            const studentList = allStudents[selectedClass] || [];
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
             
             const records = [];
             
-            studentList.forEach(student => {
+            students.forEach(student => {
                 const key = `${student.reg}_${today}_${selectedPeriod}`;
                 const status = attendanceData[key];
                 if (status && status !== 'unmarked') {
@@ -3132,14 +2820,14 @@
                 return;
             }
             
-            await saveAttendanceToSheet(records, selectedClass);
-            showNotification(`Attendance for ${selectedClass} - Period ${selectedPeriod} submitted!`, 'success');
+            await saveAttendanceToSheet(records);
+            showNotification(`Attendance for Period ${selectedPeriod} submitted!`, 'success');
             
             selectedCourse = null;
             showMarkAttendance();
         }
 
-        // ==================== FIXED ATTENDANCE PAGE ====================
+        // ==================== ATTENDANCE PAGE ====================
         function showAttendance() {
             const content = document.getElementById('mainContent');
             
@@ -3153,12 +2841,6 @@
                         </div>
                         <div id="attendanceContent">
                             ${getAttendanceCourseHTML()}
-                        </div>
-                        
-                        <div style="text-align: center; margin-top: 20px;">
-                            <button onclick="debugAttendance()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
-                                🔍 Debug Attendance
-                            </button>
                         </div>
                     </div>
                 `;
@@ -3212,7 +2894,6 @@
             
             const currentMonth = months.find(m => m.name === selectedMonth) || months[0];
             
-            // Generate days for the selected month
             const days = [];
             for (let d = 1; d <= currentMonth.days; d++) {
                 const date = new Date(currentMonth.year, currentMonth.monthNum - 1, d);
@@ -3277,7 +2958,6 @@
             showAttendanceHourly();
         }
 
-        // ==================== FIXED TERMLY VIEW ====================
         function showAttendanceTermly() {
             document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
@@ -3384,92 +3064,23 @@
             const content = document.getElementById('mainContent');
             
             content.innerHTML = `
-                <div class="account-page" style="background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div class="account-page" style="background: white; border-radius: 20px; padding: 20px;">
                     <div class="account-header" style="text-align: center; margin-bottom: 30px;">
                         <div class="profile-avatar" style="width: 80px; height: 80px; background: #8B0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; margin: 0 auto 15px;">
                             ${currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
                         </div>
-                        <h2 style="color: #333; font-size: 22px; margin-bottom: 5px;">${currentUser.name}</h2>
-                        <p style="color: #666; font-size: 14px;">${currentUser.role === 'student' ? 'Register No: ' + currentUser.reg : currentUser.role === 'staff' ? 'Staff Member' : 'Administrator'}</p>
-                        ${currentUser.role === 'student' ? `<p style="color: #8B0000; font-size: 14px;">${currentUser.class || ''} | Batch: ${currentUser.batch || ''}</p>` : ''}
+                        <h2 style="color: #333; font-size: 22px;">${currentUser.name}</h2>
+                        <p style="color: #666;">${currentUser.role === 'student' ? 'Register No: ' + currentUser.reg : 'Staff Member'}</p>
                     </div>
 
-                    <div class="profile-details" style="margin-bottom: 20px;">
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Email</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.email || (currentUser.role === 'student' ? 'student@thenewcollege.edu.in' : currentUser.email || 'staff@thenewcollege.edu.in')}</span>
-                        </div>
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Department</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.department || 'Computer Science'}</span>
-                        </div>
-                        ${currentUser.role === 'staff' ? `
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Designation</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.designation || 'Faculty'}</span>
-                        </div>
-                        ` : ''}
-                        ${currentUser.role === 'student' ? `
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Semester</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">${currentUser.semester || '6'}</span>
-                        </div>
-                        ` : ''}
-                        <div class="detail-row" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
-                            <span class="detail-label" style="color: #666; font-size: 14px;">Phone</span>
-                            <span class="detail-value" style="color: #333; font-weight: 500; font-size: 14px;">+91 98765 43210</span>
-                        </div>
-                    </div>
-
-                    <button class="logout-btn-account" onclick="logout()" style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer;">Logout</button>
+                    <button class="logout-btn-account" onclick="logout()" style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer;">Logout</button>
                 </div>
             `;
         }
 
-        // ==================== OTHER PAGES (Placeholders) ====================
-        function showDepartments() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Departments</h2><p>Department details coming soon!</p></div>';
-        }
-
-        function showAllCourses() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">All Courses</h2><p>Course details coming soon!</p></div>';
-        }
-
-        function showStudents() {
-            const allStudents = JSON.parse(localStorage.getItem('allStudents') || '{}');
-            let totalStudents = 0;
-            for (const className in allStudents) {
-                totalStudents += allStudents[className].length;
-            }
-            document.getElementById('mainContent').innerHTML = `<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Students</h2><p>Total Students: ${totalStudents}</p><p>Student list coming soon!</p></div>`;
-        }
-
-        function showFaculty() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Faculty</h2><p>Faculty list coming soon!</p></div>';
-        }
-
-        function showLibraryGo() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Library Go</h2><p>Library features coming soon!</p></div>';
-        }
-
-        function showFees() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Fees</h2><p>Fee management coming soon!</p></div>';
-        }
-
-        function showTutorials() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Tutorials</h2><p>Tutorials coming soon!</p></div>';
-        }
-
-        function showStudentTimetable() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Student Timetable</h2><p>Timetable coming soon!</p></div>';
-        }
-
-        function showMyMentor() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">My Mentor</h2><p>Mentor details coming soon!</p></div>';
-        }
-
-        function showLibraryVisits() {
-            document.getElementById('mainContent').innerHTML = '<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">Library Visits</h2><p>Library visits coming soon!</p></div>';
+        // ==================== PLACEHOLDER PAGES ====================
+        function showPlaceholder(page) {
+            document.getElementById('mainContent').innerHTML = `<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000;">${page}</h2><p>Coming soon!</p></div>`;
         }
 
         // ==================== NOTIFICATION ====================
@@ -3490,7 +3101,6 @@
         function logout() {
             clearSession();
             currentUser = null;
-            selectedClass = '';
             selectedCourse = null;
             selectedPeriod = 1;
             document.getElementById('loginPage').style.display = 'flex';
@@ -3509,8 +3119,6 @@
             startAutoRefresh();
             updateRecentItems();
             await loadAttendanceFromSheet();
-            
-            console.log('🚀 Attendance System Initialized');
         });
     </script>
 </body>
