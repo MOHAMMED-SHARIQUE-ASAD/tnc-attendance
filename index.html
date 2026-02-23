@@ -1831,8 +1831,8 @@
 
     <script>
         // ==================== APPS SCRIPT WEB APP URL ====================
-        // REPLACE THIS WITH YOUR ACTUAL WEB APP URL
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGUOKXskxdYvObCXN1iAtEsX2xWBIKJWnuL-s76mDCotPGAlVjjPLo5F6Y-PduNFJSZQ/exec';
+        // REPLACE WITH YOUR ACTUAL WEB APP URL
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwTDRH_34WhllpwawR3bJu5v8kKbRbVNnt1Qncu-HGjGUH5j3-c-3iB-VeCdSG_yPPTlQ/exec/exec';
 
         // ==================== APPLICATION STATE ====================
         let currentUser = null;
@@ -1911,7 +1911,6 @@
                 } else {
                     console.log('⚠️ No students found');
                     studentsList = [];
-                    showNotification('No students found in sheet', 'info');
                     return [];
                 }
             } catch (error) {
@@ -1938,6 +1937,13 @@
                     attendanceData = data.records;
                     localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
                     console.log('Loaded attendance records:', Object.keys(attendanceData).filter(key => !key.includes('_')).length);
+                    
+                    // Update student view if on attendance page
+                    if (currentRole === 'student' && currentPage === 'attendance') {
+                        showAttendance();
+                    } else if (currentRole === 'student' && currentPage === 'home') {
+                        showStudentHome();
+                    }
                 }
             } catch (error) {
                 console.error('Error loading attendance:', error);
@@ -2040,15 +2046,16 @@
             }
         }
 
-        // ==================== SAVE ATTENDANCE TO SHEET ====================
+        // ==================== FIXED SAVE ATTENDANCE TO SHEET ====================
         async function saveAttendanceToSheet(records) {
             showLoading();
             try {
                 console.log('Saving attendance records:', records);
                 
-                await fetch(APPS_SCRIPT_URL, {
+                // Use no-cors but we'll still update local data
+                const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'no-cors', // Keep no-cors for Google Apps Script
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -2057,15 +2064,26 @@
                     })
                 });
                 
+                // Update local attendance data immediately
                 records.forEach(record => {
                     const key = `${record.studentId}_${record.date}_${record.period}`;
                     attendanceData[key] = record.status;
                     attendanceData[key + '_faculty'] = record.faculty;
                     attendanceData[key + '_course'] = record.course;
+                    attendanceData[key + '_studentName'] = record.studentName;
                 });
                 
+                // Save to localStorage
                 localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                showNotification(`✅ Attendance saved!`, 'success');
+                
+                // Show success message
+                showNotification(`✅ Attendance saved! Refreshing data...`, 'success');
+                
+                // Wait a moment then reload attendance from sheet to confirm
+                setTimeout(async () => {
+                    await loadAttendanceFromSheet();
+                    showNotification('Attendance data refreshed from sheet!', 'success');
+                }, 2000);
                 
             } catch (error) {
                 console.error('Error saving attendance:', error);
@@ -2080,9 +2098,14 @@
             const savedUser = localStorage.getItem('currentUser');
             const savedRole = localStorage.getItem('currentRole');
             const savedStudents = localStorage.getItem('students');
+            const savedAttendance = localStorage.getItem('attendanceRecords');
             
             if (savedStudents) {
                 studentsList = JSON.parse(savedStudents);
+            }
+            
+            if (savedAttendance) {
+                attendanceData = JSON.parse(savedAttendance);
             }
             
             if (savedUser) {
@@ -2121,11 +2144,10 @@
             refreshInterval = setInterval(() => {
                 if (currentUser) {
                     if (currentRole === 'student') {
-                        if (currentPage === 'home') showStudentHome();
-                        else if (currentPage === 'attendance') showAttendance();
+                        loadAttendanceFromSheet();
                     }
                 }
-            }, 30000);
+            }, 10000); // Refresh every 10 seconds
         }
 
         async function refreshData() {
@@ -2218,6 +2240,7 @@
                     
                     // Force load students for staff
                     await loadStudentsFromSheet();
+                    await loadAttendanceFromSheet();
                     
                     updateMenuForRole();
                     showStaffDashboard();
@@ -2238,6 +2261,7 @@
                     document.getElementById('dashboard').classList.add('active');
                     
                     await loadStudentsFromSheet();
+                    await loadAttendanceFromSheet();
                     
                     updateMenuForRole();
                     showStaffDashboard();
@@ -2594,8 +2618,8 @@
                     </div>
                     
                     <div style="text-align: center; margin-top: 20px;">
-                        <button onclick="debugSheets()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
-                            🔍 Debug Sheets
+                        <button onclick="refreshData()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
+                            🔄 Refresh Attendance
                         </button>
                     </div>
                 </div>
@@ -2881,7 +2905,12 @@
             }
             
             await saveAttendanceToSheet(records);
-            showNotification(`Attendance for Period ${selectedPeriod} submitted!`, 'success');
+            
+            // Wait a moment then refresh attendance data
+            setTimeout(async () => {
+                await loadAttendanceFromSheet();
+                showNotification('Attendance updated!', 'success');
+            }, 2000);
             
             selectedCourse = null;
             showMarkAttendance();
@@ -3042,6 +3071,11 @@
                         </div>
                         <div id="attendanceContent">
                             ${getAttendanceCourseHTML()}
+                        </div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button onclick="refreshData()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
+                                🔄 Refresh Attendance
+                            </button>
                         </div>
                     </div>
                 `;
@@ -3241,7 +3275,7 @@
                                 <td><strong>${totalAttended}</strong></td>
                                 <td><strong>${totalClasses}</strong></td>
                                 <td><strong>${overallPercent}</strong></td>
-                            </tr>
+                            </r>
                         </tbody>
                     </table>
                 </div>
