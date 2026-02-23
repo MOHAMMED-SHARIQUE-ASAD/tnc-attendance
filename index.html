@@ -1881,46 +1881,51 @@
 
         // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
         async function loadStudentsFromSheet() {
-            try {
-                showLoading();
-                const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
-                console.log('🔍 Fetching students from:', url);
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                console.log('📥 Response:', data);
-                
-                if (data.error) {
-                    console.error('Sheet error:', data.error);
-                    showNotification(`Error: ${data.error}`, 'error');
-                    return [];
-                }
-                
-                if (data.students && Array.isArray(data.students)) {
-                    studentsList = data.students;
-                    localStorage.setItem('students', JSON.stringify(studentsList));
-                    console.log(`✅ Loaded ${studentsList.length} students`);
-                    
-                    // Update staff dashboard if on home page
-                    if (currentRole !== 'student' && currentPage === 'home') {
-                        showStaffDashboard();
-                    }
-                    
-                    return studentsList;
-                } else {
-                    console.log('⚠️ No students found');
-                    studentsList = [];
-                    return [];
-                }
-            } catch (error) {
-                console.error('Error loading students:', error);
-                showNotification('Error connecting to Google Sheets', 'error');
-                return [];
-            } finally {
-                hideLoading();
-            }
+    try {
+        showLoading();
+        const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
+        console.log('🔍 Fetching from:', url);
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        const data = await response.json();
+        console.log('📥 Raw response:', data);
+        
+        if (data.error) {
+            console.error('Sheet error:', data.error);
+            showNotification(`Error: ${data.error}`, 'error');
+            return [];
+        }
+        
+        if (data.students && Array.isArray(data.students)) {
+            studentsList = data.students;
+            localStorage.setItem('students', JSON.stringify(studentsList));
+            console.log(`✅ Loaded ${studentsList.length} students`);
+            showNotification(`Loaded ${studentsList.length} students`, 'success');
+            
+            // Update dashboard
+            if (currentRole !== 'student' && currentPage === 'home') {
+                showStaffDashboard();
+            }
+            
+            return studentsList;
+        } else {
+            console.log('⚠️ No students array in response:', data);
+            showNotification('No students found in sheet', 'info');
+            return [];
+        }
+    } catch (error) {
+        console.error('❌ Error loading students:', error);
+        showNotification('Error connecting to Google Sheets. Check console.', 'error');
+        return [];
+    } finally {
+        hideLoading();
+    }
+}
 
         // ==================== LOAD ATTENDANCE FROM SHEET ====================
         async function loadAttendanceFromSheet() {
