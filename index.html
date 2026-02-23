@@ -1653,28 +1653,6 @@
             transform: translateY(-2px);
         }
 
-        .class-selection {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .class-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            text-align: center;
-        }
-
-        .class-card:hover {
-            transform: translateY(-5px);
-            border-color: #8B0000;
-            box-shadow: 0 10px 25px rgba(139,0,0,0.2);
-        }
-
         .debug-panel {
             background: #f8f9fa;
             border: 2px solid #17a2b8;
@@ -1853,6 +1831,7 @@
 
     <script>
         // ==================== APPS SCRIPT WEB APP URL ====================
+        // REPLACE THIS WITH YOUR ACTUAL WEB APP URL
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbze1Zf_Ssg045lXGDG1OtKEfjBYoHsRzErJ9UgTM-JeOvshVIVDiadUtGnWL9mE29Sv/exec';
 
         // ==================== APPLICATION STATE ====================
@@ -1881,26 +1860,7 @@
         // ==================== STAFF MEMBERS ====================
         const staffMembers = [
             { name: 'Dr. P. Hakkim Divan Mydeen', email: 'p.hakkimdivanmydeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. A. Ashraf Ali', email: 'a.ashrafali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Dr. G. Najeeb Ahmed', email: 'g.najeebahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. M.M. Syed Sulaiman', email: 'mm.syedsulaiman@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
-            { name: 'Dr. J. Abdul Rasheedh', email: 'j.abdulrasheedh@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. N. Anver Hussain', email: 'n.anverhussain@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
-            { name: 'Dr. S. Sakthivel', email: 's.sakthivel@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Dr. K. Tajudin', email: 'k.tajudin@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. H. Riaz Ahamed', email: 'h.riazahamed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Syed Usman Basha', email: 'syed.usmanbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. A.M. Abdul Kuthus', email: 'am.abdulkuthus@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Mohammed Arshad .F', email: 'mohammed.arshadf@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. M. Mohamed NagoorGani', email: 'm.mohamednagoorgani@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. S. Xavier Raj', email: 's.xavierraj@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. V.M. Mohamed Noorul Ameen', email: 'vm.mohamednoorulameen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. P. M. H. Hameedudeen', email: 'pmh.hameedudeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. J. Mohammed Javeed Basha', email: 'j.mohammedjaveedbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. N. Mohamed Niyas Ali', email: 'n.mohamedniyasali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. I. Mohideen Basha', email: 'i.mohideenbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Aarif Ahmed', email: 'aarif.ahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
+            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
         ];
 
         // ==================== COURSES ====================
@@ -1942,7 +1902,7 @@
                     localStorage.setItem('students', JSON.stringify(studentsList));
                     console.log(`✅ Loaded ${studentsList.length} students`);
                     
-                    // Update staff dashboard if currently on home page
+                    // Update staff dashboard if on home page
                     if (currentRole !== 'student' && currentPage === 'home') {
                         showStaffDashboard();
                     }
@@ -1951,6 +1911,7 @@
                 } else {
                     console.log('⚠️ No students found');
                     studentsList = [];
+                    showNotification('No students found in sheet', 'info');
                     return [];
                 }
             } catch (error) {
@@ -1984,6 +1945,38 @@
                 if (saved) {
                     attendanceData = JSON.parse(saved);
                 }
+            }
+        }
+
+        // ==================== FORCE RELOAD STUDENTS ====================
+        async function forceReloadStudents() {
+            showLoading();
+            try {
+                const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                console.log('Force reload response:', data);
+                
+                if (data.students && Array.isArray(data.students)) {
+                    studentsList = data.students;
+                    localStorage.setItem('students', JSON.stringify(studentsList));
+                    showNotification(`✅ Loaded ${studentsList.length} students!`, 'success');
+                    if (currentPage === 'home') {
+                        showStaffDashboard();
+                    } else if (currentPage === 'markAttendance') {
+                        showMarkAttendance();
+                    } else if (currentPage === 'students') {
+                        showStudentsList();
+                    }
+                } else {
+                    showNotification('❌ No students found', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error loading students', 'error');
+            } finally {
+                hideLoading();
             }
         }
 
@@ -2025,15 +2018,15 @@
                             <span class="debug-value debug-error">0</span>
                         </div>
                         <div class="debug-row">
-                            <span class="debug-label">Check:</span>
-                            <span class="debug-value">Make sure sheet has data and correct headers</span>
+                            <span class="debug-label">Response:</span>
+                            <span class="debug-value">${JSON.stringify(data)}</span>
                         </div>
                     `;
                 }
                 
                 debugHTML += `
                         <div class="debug-row">
-                            <button onclick="loadStudentsFromSheet(); setTimeout(() => location.reload(), 1000)" class="btn-primary" style="margin-top:10px;">🔄 Reload Students</button>
+                            <button onclick="forceReloadStudents()" class="btn-primary" style="margin-top:10px; background:#28a745;">🔄 Force Reload</button>
                             <button onclick="this.closest('.debug-panel').remove()" class="btn-primary" style="margin-top:10px; margin-left:10px; background:#6c757d;">✖ Close</button>
                         </div>
                     </div>
@@ -2223,7 +2216,7 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     
-                    // Force load students for staff dashboard
+                    // Force load students for staff
                     await loadStudentsFromSheet();
                     
                     updateMenuForRole();
@@ -2244,7 +2237,6 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     
-                    // Force load students for admin dashboard
                     await loadStudentsFromSheet();
                     
                     updateMenuForRole();
@@ -2346,12 +2338,6 @@
                 case 'faculty':
                     currentPage = 'faculty';
                     showFacultyList();
-                    break;
-                case 'libraryGo':
-                case 'fees':
-                case 'tutorials':
-                    currentPage = section;
-                    showPlaceholder(section);
                     break;
                 default:
                     currentPage = section;
@@ -2681,6 +2667,7 @@
                         <button class="btn-primary" onclick="navigateTo('students')" style="padding: 15px;">👥 Students List</button>
                         <button class="btn-primary" onclick="navigateTo('faculty')" style="padding: 15px;">👨‍🏫 Faculty List</button>
                         <button class="btn-primary" onclick="debugSheets()" style="padding: 15px; background: #17a2b8;">🔍 Debug Sheets</button>
+                        <button class="btn-primary" onclick="forceReloadStudents()" style="padding: 15px; background: #28a745;">🔄 Force Reload Students</button>
                     </div>
                 </div>
             `;
@@ -2702,6 +2689,9 @@
                         <p>Please add students to the Students sheet in Google Sheets.</p>
                         <button class="btn-primary" onclick="debugSheets()" style="margin-top: 20px; padding: 10px 20px; background:#17a2b8;">
                             🔍 Debug Sheets
+                        </button>
+                        <button class="btn-primary" onclick="forceReloadStudents()" style="margin-top: 20px; margin-left: 10px; padding: 10px 20px; background:#28a745;">
+                            🔄 Force Reload
                         </button>
                     </div>
                 `;
@@ -2958,8 +2948,11 @@
                 document.getElementById('mainContent').innerHTML = `
                     <div style="background: white; border-radius: 20px; padding: 20px; text-align: center;">
                         <h2 style="color: #8B0000; margin-bottom: 20px;">Students List</h2>
-                        <p>No students found. Click "Debug Sheets" to check connection.</p>
-                        <button onclick="debugSheets()" class="btn-primary" style="margin-top: 20px; padding: 10px 20px; background:#17a2b8;">
+                        <p>No students found. Click "Force Reload" to check connection.</p>
+                        <button onclick="forceReloadStudents()" class="btn-primary" style="margin-top: 20px; padding: 10px 20px; background:#28a745;">
+                            🔄 Force Reload Students
+                        </button>
+                        <button onclick="debugSheets()" class="btn-primary" style="margin-top: 20px; margin-left: 10px; padding: 10px 20px; background:#17a2b8;">
                             🔍 Debug Sheets
                         </button>
                     </div>
