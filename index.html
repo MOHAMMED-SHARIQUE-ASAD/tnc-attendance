@@ -1860,7 +1860,7 @@
         let currentRole = 'student';
         let currentTab = 'home';
         let menuOpen = false;
-        let recentItems = ['Library Go', 'Attendance', 'Departments', 'Courses', 'Faculty', 'Students'];
+        let recentItems = ['Library Go', 'Attendance', 'Departments', 'Courses', 'Students List', 'Faculty List'];
         let selectedPeriod = 1;
         let selectedCourse = null;
         let attendanceData = {};
@@ -1941,9 +1941,16 @@
                     studentsList = data.students;
                     localStorage.setItem('students', JSON.stringify(studentsList));
                     console.log(`✅ Loaded ${studentsList.length} students`);
+                    
+                    // Update staff dashboard if currently on home page
+                    if (currentRole !== 'student' && currentPage === 'home') {
+                        showStaffDashboard();
+                    }
+                    
                     return studentsList;
                 } else {
                     console.log('⚠️ No students found');
+                    studentsList = [];
                     return [];
                 }
             } catch (error) {
@@ -2216,7 +2223,7 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     
-                    // Load students for staff dashboard
+                    // Force load students for staff dashboard
                     await loadStudentsFromSheet();
                     
                     updateMenuForRole();
@@ -2237,7 +2244,7 @@
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     
-                    // Load students for admin dashboard
+                    // Force load students for admin dashboard
                     await loadStudentsFromSheet();
                     
                     updateMenuForRole();
@@ -2436,7 +2443,7 @@
                 recentDiv.innerHTML = '<div class="recent-item">No recent items</div>';
             } else {
                 recentDiv.innerHTML = recentItems.map(item => {
-                    const section = item.toLowerCase().replace(/ /g, '');
+                    const section = item.toLowerCase().replace(/ /g, '').replace('list', '');
                     return `
                         <div class="recent-item" onclick="navigateTo('${section}')">
                             <span>${getIconForItem(item)}</span>
@@ -2456,6 +2463,7 @@
                 'Tutorials': '📹',
                 'Departments': '🏛️',
                 'All Courses': '📚',
+                'Courses': '📚',
                 'Students List': '👥',
                 'Faculty List': '👨‍🏫'
             };
@@ -2946,6 +2954,19 @@
 
         // ==================== STUDENTS LIST PAGE ====================
         function showStudentsList() {
+            if (studentsList.length === 0) {
+                document.getElementById('mainContent').innerHTML = `
+                    <div style="background: white; border-radius: 20px; padding: 20px; text-align: center;">
+                        <h2 style="color: #8B0000; margin-bottom: 20px;">Students List</h2>
+                        <p>No students found. Click "Debug Sheets" to check connection.</p>
+                        <button onclick="debugSheets()" class="btn-primary" style="margin-top: 20px; padding: 10px 20px; background:#17a2b8;">
+                            🔍 Debug Sheets
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
             let html = `
                 <div style="background: white; border-radius: 20px; padding: 20px;">
                     <h2 style="color: #8B0000; margin-bottom: 20px;">Students List (${studentsList.length})</h2>
