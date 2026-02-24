@@ -1829,1584 +1829,976 @@
         <span id="notificationMessage"></span>
     </div>
 
-    <script>
-        // ==================== APPS SCRIPT WEB APP URL ====================
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMmItlr68tKCJIgt6BctZyJMnxfmybGVj9uR5YZdO_TRApTesmONX_NOa5DnLDG_NIVA/exec';
+<script>
+    // ==================== APPS SCRIPT WEB APP URL ====================
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQ-OM_vnRsBCrp2S85K5l40dRYSVu2kVxV_S89phvNDEv3qEHmDzCmKUQKZ96DqxR44Q/exec';
 
-        // ==================== APPLICATION STATE ====================
-        let currentUser = null;
-        let currentRole = 'student';
-        let currentTab = 'home';
-        let menuOpen = false;
-        let recentItems = ['Library Go', 'Attendance'];
-        let selectedPeriod = 1;
-        let selectedCourse = null;
-        let attendanceData = {};
-        let expandedPeriod = null;
-        let studentsList = [];
-        
-        // Navigation History
-        let navigationHistory = [];
-        let currentPage = 'home';
+    // ==================== APPLICATION STATE ====================
+    let currentUser = null;
+    let currentRole = 'student';
+    let currentTab = 'home';
+    let menuOpen = false;
+    let recentItems = ['Library Go', 'Attendance'];
+    let selectedPeriod = 1;
+    let selectedCourse = null;
+    let attendanceData = {};
+    let expandedPeriod = null;
+    let studentsList = [];
+    
+    // Navigation History
+    let navigationHistory = [];
+    let currentPage = 'home';
 
-        // Auto-refresh interval
-        let refreshInterval = null;
+    // Auto-refresh interval
+    let refreshInterval = null;
 
-        // For hourly view
-        let selectedMonth = 'November';
-        let selectedYear = 2025;
+    // For hourly view
+    let selectedMonth = 'November';
+    let selectedYear = 2025;
 
-        // ==================== STAFF MEMBERS ====================
-        const staffMembers = [
-            { name: 'Dr. P. Hakkim Divan Mydeen', email: 'p.hakkimdivanmydeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. A. Ashraf Ali', email: 'a.ashrafali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Dr. G. Najeeb Ahmed', email: 'g.najeebahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. M.M. Syed Sulaiman', email: 'mm.syedsulaiman@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
-            { name: 'Dr. J. Abdul Rasheedh', email: 'j.abdulrasheedh@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. N. Anver Hussain', email: 'n.anverhussain@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Associate Professor' },
-            { name: 'Dr. S. Sakthivel', email: 's.sakthivel@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Dr. K. Tajudin', email: 'k.tajudin@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
-            { name: 'Mr. H. Riaz Ahamed', email: 'h.riazahamed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Syed Usman Basha', email: 'syed.usmanbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. A.M. Abdul Kuthus', email: 'am.abdulkuthus@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Mohammed Arshad .F', email: 'mohammed.arshadf@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. M. Mohamed NagoorGani', email: 'm.mohamednagoorgani@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. S. Xavier Raj', email: 's.xavierraj@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. V.M. Mohamed Noorul Ameen', email: 'vm.mohamednoorulameen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. P. M. H. Hameedudeen', email: 'pmh.hameedudeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. J. Mohammed Javeed Basha', email: 'j.mohammedjaveedbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. N. Mohamed Niyas Ali', email: 'n.mohamedniyasali@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. I. Mohideen Basha', email: 'i.mohideenbasha@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' },
-            { name: 'Mr. Aarif Ahmed', email: 'aarif.ahmed@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
-        ];
+    // ==================== STAFF MEMBERS ====================
+    const staffMembers = [
+        { name: 'Dr. P. Hakkim Divan Mydeen', email: 'p.hakkimdivanmydeen@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Professor' },
+        { name: 'Mr. S.A. Abdul Kadhar', email: 'sa.abdulkadhar@thenewcollege.edu.in', password: 'staff', department: 'Computer Science', designation: 'Assistant Professor' }
+    ];
 
-        // ==================== COURSES ====================
-        const courses = [
-            { id: 1, code: '20BJM608', name: 'Programming in ASP.NET', faculty: 'M M Syed Sulaiman', totalHours: 50 },
-            { id: 2, code: '20BJM609', name: 'Operating Systems', faculty: 'N Anver Hussain', totalHours: 57 },
-            { id: 3, code: '20BJMP607', name: 'Programming in ASP.NET PRACTICAL – VII', faculty: 'Dr. S. SAKTHIVEL', totalHours: 65 },
-            { id: 4, code: '20BJM610', name: 'Internet of Things', faculty: 'Dr. G NAJEEB AHMED', totalHours: 37 },
-            { id: 5, code: '20BJMQ601', name: 'Mini Project', faculty: 'Dr. J. Abdul Rasheedh', totalHours: 35 }
-        ];
+    // ==================== COURSES ====================
+    const courses = [
+        { id: 1, code: '20BJM608', name: 'Programming in ASP.NET', faculty: 'M M Syed Sulaiman', totalHours: 50 },
+        { id: 2, code: '20BJM609', name: 'Operating Systems', faculty: 'N Anver Hussain', totalHours: 57 },
+        { id: 3, code: '20BJMP607', name: 'Programming in ASP.NET PRACTICAL – VII', faculty: 'Dr. S. SAKTHIVEL', totalHours: 65 },
+        { id: 4, code: '20BJM610', name: 'Internet of Things', faculty: 'Dr. G NAJEEB AHMED', totalHours: 37 },
+        { id: 5, code: '20BJMQ601', name: 'Mini Project', faculty: 'Dr. J. Abdul Rasheedh', totalHours: 35 }
+    ];
 
-        // ==================== ADMIN USER ====================
-        const adminUser = {
-            email: 'admin@thenewcollege.in',
-            password: 'admin',
-            name: 'Administrator'
-        };
+    // ==================== ADMIN USER ====================
+    const adminUser = {
+        email: 'admin@thenewcollege.in',
+        password: 'admin',
+        name: 'Administrator'
+    };
 
-        // ==================== JSONP HELPER FUNCTION ====================
-        function jsonp(url, callbackName) {
-            return new Promise((resolve, reject) => {
-                const uniqueCallback = callbackName + '_' + Date.now();
-                
-                window[uniqueCallback] = function(data) {
-                    delete window[uniqueCallback];
-                    document.head.removeChild(script);
-                    resolve(data);
-                };
-                
-                const script = document.createElement('script');
-                script.src = url + '&callback=' + uniqueCallback;
-                
-                script.onerror = function(error) {
-                    delete window[uniqueCallback];
-                    document.head.removeChild(script);
-                    reject(error);
-                };
-                
-                document.head.appendChild(script);
-            });
-        }
+    // ==================== JSONP HELPER FUNCTION ====================
+    function jsonp(url) {
+        return new Promise((resolve, reject) => {
+            const callbackName = 'callback_' + Date.now();
+            
+            window[callbackName] = function(data) {
+                delete window[callbackName];
+                document.head.removeChild(script);
+                resolve(data);
+            };
+            
+            const script = document.createElement('script');
+            script.src = url + '&callback=' + callbackName;
+            
+            script.onerror = function(error) {
+                delete window[callbackName];
+                document.head.removeChild(script);
+                reject(error);
+            };
+            
+            document.head.appendChild(script);
+        });
+    }
 
-        // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
-        async function loadStudentsFromSheet() {
-            try {
-                showLoading();
-                const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
-                console.log('🔍 Fetching students from:', url);
-                
-                const data = await jsonp(url, 'callback');
-                console.log('📥 Response:', data);
-                
-                if (data.error) {
-                    console.error('Sheet error:', data.error);
-                    showNotification(`Error: ${data.error}`, 'error');
-                    return [];
-                }
-                
-                if (data.students && Array.isArray(data.students)) {
-                    studentsList = data.students;
-                    localStorage.setItem('students', JSON.stringify(studentsList));
-                    console.log(`✅ Loaded ${studentsList.length} students`);
-                    
-                    if (currentRole !== 'student' && currentPage === 'home') {
-                        showStaffDashboard();
-                    }
-                    
-                    return studentsList;
-                } else {
-                    console.log('⚠️ No students found');
-                    studentsList = [];
-                    return [];
-                }
-            } catch (error) {
-                console.error('Error loading students:', error);
-                showNotification('Error connecting to Google Sheets', 'error');
+    // ==================== LOAD STUDENTS FROM GOOGLE SHEETS ====================
+    async function loadStudentsFromSheet() {
+        try {
+            showLoading();
+            const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
+            console.log('🔍 Fetching students from:', url);
+            
+            const data = await jsonp(url);
+            console.log('📥 Response:', data);
+            
+            if (data.error) {
+                console.error('Sheet error:', data.error);
+                showNotification(`Error: ${data.error}`, 'error');
                 return [];
-            } finally {
-                hideLoading();
+            }
+            
+            if (data.students && Array.isArray(data.students)) {
+                studentsList = data.students;
+                localStorage.setItem('students', JSON.stringify(studentsList));
+                console.log(`✅ Loaded ${studentsList.length} students`);
+                
+                if (currentRole !== 'student' && currentPage === 'home') {
+                    showStaffDashboard();
+                }
+                
+                showNotification(`Loaded ${studentsList.length} students`, 'success');
+                return studentsList;
+            } else {
+                console.log('⚠️ No students found');
+                studentsList = [];
+                return [];
+            }
+        } catch (error) {
+            console.error('Error loading students:', error);
+            showNotification('Error connecting to Google Sheets', 'error');
+            return [];
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // ==================== LOAD ATTENDANCE FROM SHEET ====================
+    async function loadAttendanceFromSheet() {
+        try {
+            const url = APPS_SCRIPT_URL + '?action=getAttendance&t=' + new Date().getTime();
+            console.log('Fetching attendance from:', url);
+            
+            const data = await jsonp(url);
+            console.log('Attendance data received:', data);
+            
+            if (data.records) {
+                attendanceData = data.records;
+                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
+                console.log('Loaded attendance records:', Object.keys(attendanceData).filter(key => !key.includes('_')).length);
+                
+                if (currentRole === 'student' && currentPage === 'attendance') {
+                    showAttendance();
+                } else if (currentRole === 'student' && currentPage === 'home') {
+                    showStudentHome();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading attendance:', error);
+            const saved = localStorage.getItem('attendanceRecords');
+            if (saved) {
+                attendanceData = JSON.parse(saved);
             }
         }
+    }
 
-        // ==================== LOAD ATTENDANCE FROM SHEET ====================
-        async function loadAttendanceFromSheet() {
+    // ==================== SAVE ATTENDANCE TO SHEET ====================
+    async function saveAttendanceToSheet(records) {
+        showLoading();
+        try {
+            console.log('Saving attendance records:', records);
+            
+            // Use fetch for POST (works with CORS)
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ records: records })
+            });
+            
+            // Update local data immediately
+            records.forEach(record => {
+                const key = `${record.studentId}_${record.date}_${record.period}`;
+                attendanceData[key] = record.status;
+                attendanceData[key + '_faculty'] = record.faculty;
+                attendanceData[key + '_course'] = record.course;
+                attendanceData[key + '_studentName'] = record.studentName;
+            });
+            
+            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
+            showNotification(`✅ Attendance saved! Refreshing data...`, 'success');
+            
+            // Refresh attendance data
+            setTimeout(async () => {
+                await loadAttendanceFromSheet();
+                showNotification('Data refreshed from sheet!', 'success');
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Error saving attendance:', error);
+            showNotification('❌ Error saving to Google Sheets', 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // ==================== TEST CONNECTION ====================
+    async function testConnection() {
+        showLoading();
+        try {
+            const url = APPS_SCRIPT_URL + '?action=test&t=' + new Date().getTime();
+            const data = await jsonp(url);
+            
+            let message = '✅ CONNECTION SUCCESSFUL!\n\n';
+            message += `Sheets: ${data.sheets.join(', ')}\n`;
+            message += `Students: ${data.studentCount}\n`;
+            message += `Attendance Records: ${data.attendanceCount}\n`;
+            message += `Sample Student: ${data.sampleStudent?.name || 'None'}`;
+            
+            alert(message);
+            console.log('Test result:', data);
+        } catch (error) {
+            alert('❌ Connection failed: ' + error);
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // ==================== FORCE RELOAD STUDENTS ====================
+    async function forceReloadStudents() {
+        showLoading();
+        try {
+            const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
+            const data = await jsonp(url);
+            
+            if (data.students && Array.isArray(data.students)) {
+                studentsList = data.students;
+                localStorage.setItem('students', JSON.stringify(studentsList));
+                showNotification(`✅ Loaded ${studentsList.length} students!`, 'success');
+                if (currentPage === 'home') {
+                    showStaffDashboard();
+                } else if (currentPage === 'markAttendance') {
+                    showMarkAttendance();
+                } else if (currentPage === 'students') {
+                    showStudentsList();
+                }
+            } else {
+                showNotification('❌ No students found', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification('Error loading students', 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // ==================== SESSION MANAGEMENT ====================
+    function loadSession() {
+        const savedUser = localStorage.getItem('currentUser');
+        const savedRole = localStorage.getItem('currentRole');
+        const savedStudents = localStorage.getItem('students');
+        const savedAttendance = localStorage.getItem('attendanceRecords');
+        
+        if (savedStudents) {
+            studentsList = JSON.parse(savedStudents);
+        }
+        
+        if (savedAttendance) {
+            attendanceData = JSON.parse(savedAttendance);
+        }
+        
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            currentRole = savedRole || 'student';
+            
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            
+            updateMenuForRole();
+            
+            if (currentRole === 'student') {
+                showStudentHome();
+            } else {
+                showStaffDashboard();
+            }
+        }
+    }
+
+    function saveSession() {
+        if (currentUser) {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('currentRole', currentRole);
+        }
+    }
+
+    function clearSession() {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('currentRole');
+        currentUser = null;
+    }
+
+    // ==================== AUTO-REFRESH ====================
+    function startAutoRefresh() {
+        if (refreshInterval) clearInterval(refreshInterval);
+        refreshInterval = setInterval(() => {
+            if (currentUser && currentRole === 'student') {
+                loadAttendanceFromSheet();
+            }
+        }, 30000);
+    }
+
+    async function refreshData() {
+        showLoading();
+        await loadAttendanceFromSheet();
+        await loadStudentsFromSheet();
+        hideLoading();
+        showNotification('Data refreshed!', 'success');
+        
+        if (currentRole === 'student') {
+            if (currentPage === 'home') showStudentHome();
+            else if (currentPage === 'attendance') showAttendance();
+        } else {
+            showStaffDashboard();
+        }
+    }
+
+    // ==================== LOGIN HANDLER ====================
+    function setRole(role) {
+        currentRole = role;
+        document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.getElementById('studentFields').style.display = role === 'student' ? 'block' : 'none';
+        document.getElementById('staffAdminFields').style.display = role !== 'student' ? 'block' : 'none';
+    }
+
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        if (currentRole === 'student') {
+            const regNo = document.getElementById('registerNumber').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            showLoading();
+            
             try {
-                const url = APPS_SCRIPT_URL + '?action=getAttendance&t=' + new Date().getTime();
-                console.log('Fetching attendance from:', url);
+                const students = await loadStudentsFromSheet();
                 
-                const data = await jsonp(url, 'callback');
-                console.log('Attendance data received:', data);
+                const student = students.find(s => 
+                    s.reg == regNo && (s.password == password || s.password == regNo)
+                );
                 
-                if (data.records) {
-                    attendanceData = data.records;
-                    localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                    console.log('Loaded attendance records:', Object.keys(attendanceData).filter(key => !key.includes('_')).length);
+                if (student) {
+                    currentUser = {
+                        reg: student.reg,
+                        name: student.name,
+                        role: 'student',
+                        department: 'Computer Science',
+                        semester: student.year || '1st',
+                        batch: student.batch || 'A'
+                    };
                     
-                    if (currentRole === 'student' && currentPage === 'attendance') {
-                        showAttendance();
-                    } else if (currentRole === 'student' && currentPage === 'home') {
-                        showStudentHome();
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading attendance:', error);
-                const saved = localStorage.getItem('attendanceRecords');
-                if (saved) {
-                    attendanceData = JSON.parse(saved);
-                }
-            }
-        }
-
-        // ==================== FIXED SAVE ATTENDANCE TO SHEET ====================
-        async function saveAttendanceToSheet(records) {
-            showLoading();
-            try {
-                console.log('Saving attendance records:', records);
-                
-                // Use a proxy to avoid CORS issues
-                const response = await fetch('https://cors-anywhere.herokuapp.com/' + APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ records: records })
-                });
-                
-                const result = await response.json();
-                console.log('Save result:', result);
-                
-                if (result.error) {
-                    throw new Error(result.error);
-                }
-                
-                // Update local attendance data immediately
-                records.forEach(record => {
-                    const key = `${record.studentId}_${record.date}_${record.period}`;
-                    attendanceData[key] = record.status;
-                    attendanceData[key + '_faculty'] = record.faculty;
-                    attendanceData[key + '_course'] = record.course;
-                    attendanceData[key + '_studentName'] = record.studentName;
-                });
-                
-                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                showNotification(`✅ Attendance saved! (${records.length} records)`, 'success');
-                
-                // Refresh attendance data
-                setTimeout(async () => {
-                    await loadAttendanceFromSheet();
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Error saving attendance:', error);
-                showNotification('❌ Error saving to Google Sheets. Using local storage only.', 'error');
-                
-                // Still update local data even if sheet save fails
-                records.forEach(record => {
-                    const key = `${record.studentId}_${record.date}_${record.period}`;
-                    attendanceData[key] = record.status;
-                    attendanceData[key + '_faculty'] = record.faculty;
-                    attendanceData[key + '_course'] = record.course;
-                    attendanceData[key + '_studentName'] = record.studentName;
-                });
-                
-                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceData));
-                showNotification('⚠️ Saved locally only. Check sheet connection.', 'warning');
-            } finally {
-                hideLoading();
-            }
-        }
-
-        // ==================== FORCE RELOAD STUDENTS ====================
-        async function forceReloadStudents() {
-            showLoading();
-            try {
-                const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
-                const data = await jsonp(url, 'callback');
-                
-                if (data.students && Array.isArray(data.students)) {
-                    studentsList = data.students;
-                    localStorage.setItem('students', JSON.stringify(studentsList));
-                    showNotification(`✅ Loaded ${studentsList.length} students!`, 'success');
-                    if (currentPage === 'home') {
-                        showStaffDashboard();
-                    } else if (currentPage === 'markAttendance') {
-                        showMarkAttendance();
-                    } else if (currentPage === 'students') {
-                        showStudentsList();
-                    }
+                    saveSession();
+                    
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    
+                    updateMenuForRole();
+                    
+                    navigationHistory = [];
+                    currentPage = 'home';
+                    
+                    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                    document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
+                    
+                    showNotification(`Welcome, ${student.name}!`, 'success');
+                    showStudentHome();
                 } else {
-                    showNotification('❌ No students found', 'error');
+                    showNotification('Invalid Register Number or Password!', 'error');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                showNotification('Error loading students', 'error');
+                console.error('Login error:', error);
+                showNotification('Error connecting to server', 'error');
             } finally {
                 hideLoading();
             }
-        }
+        } else if (currentRole === 'staff') {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('adminPassword').value;
 
-        // ==================== TEST SHEET CONNECTION ====================
-        async function testSheetConnection() {
-            showLoading();
-            try {
-                const url = APPS_SCRIPT_URL + '?action=test&t=' + new Date().getTime();
-                const data = await jsonp(url, 'callback');
-                
-                let message = `✅ Connected!\nSheets: ${data.sheets.join(', ')}\nStudents: ${data.studentCount}\nAttendance: ${data.attendanceCount}`;
-                if (data.testWrite) {
-                    message += `\nWrite test: ${data.testWrite}`;
-                }
-                alert(message);
-                console.log('Test result:', data);
-            } catch (error) {
-                console.error('Test error:', error);
-                alert('❌ Connection failed: ' + error);
-            } finally {
-                hideLoading();
-            }
-        }
+            const staff = staffMembers.find(s => s.email === email && s.password === password);
 
-        // ==================== DEBUG FUNCTION ====================
-        async function debugSheets() {
-            console.log("🔍 DEBUGGING SHEETS...");
-            
-            try {
-                const url = APPS_SCRIPT_URL + '?action=getStudents&t=' + new Date().getTime();
-                const data = await jsonp(url, 'callback');
-                
-                let debugHTML = `
-                    <div class="debug-panel">
-                        <h3>🔍 Sheet Debug Info</h3>
-                        <div class="debug-row">
-                            <span class="debug-label">Sheet Name:</span>
-                            <span class="debug-value">Students</span>
-                        </div>
-                `;
-                
-                if (data.students && data.students.length > 0) {
-                    debugHTML += `
-                        <div class="debug-row">
-                            <span class="debug-label">Students Found:</span>
-                            <span class="debug-value debug-success">${data.students.length}</span>
-                        </div>
-                        <div class="debug-row">
-                            <span class="debug-label">First Student:</span>
-                            <span class="debug-value">${JSON.stringify(data.students[0])}</span>
-                        </div>
-                    `;
-                } else {
-                    debugHTML += `
-                        <div class="debug-row">
-                            <span class="debug-label">Students Found:</span>
-                            <span class="debug-value debug-error">0</span>
-                        </div>
-                    `;
-                }
-                
-                debugHTML += `
-                        <div class="debug-row">
-                            <button onclick="forceReloadStudents()" class="btn-primary" style="margin-top:10px; background:#28a745;">🔄 Force Reload</button>
-                            <button onclick="testSheetConnection()" class="btn-primary" style="margin-top:10px; margin-left:10px; background:#17a2b8;">🔌 Test Connection</button>
-                            <button onclick="this.closest('.debug-panel').remove()" class="btn-primary" style="margin-top:10px; margin-left:10px; background:#6c757d;">✖ Close</button>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('mainContent').innerHTML = debugHTML + document.getElementById('mainContent').innerHTML;
-                
-            } catch (error) {
-                console.error('Debug error:', error);
-                alert('Error debugging sheets. Check console (F12).');
-            }
-        }
-
-        // ==================== SESSION MANAGEMENT ====================
-        function loadSession() {
-            const savedUser = localStorage.getItem('currentUser');
-            const savedRole = localStorage.getItem('currentRole');
-            const savedStudents = localStorage.getItem('students');
-            const savedAttendance = localStorage.getItem('attendanceRecords');
-            
-            if (savedStudents) {
-                studentsList = JSON.parse(savedStudents);
-            }
-            
-            if (savedAttendance) {
-                attendanceData = JSON.parse(savedAttendance);
-            }
-            
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                currentRole = savedRole || 'student';
+            if (staff) {
+                currentUser = { ...staff, role: 'staff' };
+                saveSession();
                 
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('dashboard').classList.add('active');
                 
+                await loadStudentsFromSheet();
+                await loadAttendanceFromSheet();
+                
                 updateMenuForRole();
-                
-                if (currentRole === 'student') {
-                    showStudentHome();
-                } else {
-                    showStaffDashboard();
-                }
-            }
-        }
-
-        function saveSession() {
-            if (currentUser) {
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                localStorage.setItem('currentRole', currentRole);
-            }
-        }
-
-        function clearSession() {
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('currentRole');
-            currentUser = null;
-        }
-
-        // ==================== AUTO-REFRESH ====================
-        function startAutoRefresh() {
-            if (refreshInterval) clearInterval(refreshInterval);
-            refreshInterval = setInterval(() => {
-                if (currentUser && currentRole === 'student') {
-                    loadAttendanceFromSheet();
-                }
-            }, 30000);
-        }
-
-        async function refreshData() {
-            showLoading();
-            await loadAttendanceFromSheet();
-            await loadStudentsFromSheet();
-            hideLoading();
-            showNotification('Data refreshed!', 'success');
-            
-            if (currentRole === 'student') {
-                if (currentPage === 'home') showStudentHome();
-                else if (currentPage === 'attendance') showAttendance();
-            } else {
                 showStaffDashboard();
-            }
-        }
-
-        // ==================== LOGIN HANDLER ====================
-        function setRole(role) {
-            currentRole = role;
-            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            document.getElementById('studentFields').style.display = role === 'student' ? 'block' : 'none';
-            document.getElementById('staffAdminFields').style.display = role !== 'student' ? 'block' : 'none';
-        }
-
-        async function handleLogin(event) {
-            event.preventDefault();
-            
-            if (currentRole === 'student') {
-                const regNo = document.getElementById('registerNumber').value.trim();
-                const password = document.getElementById('password').value.trim();
-
-                showLoading();
                 
-                try {
-                    const students = await loadStudentsFromSheet();
-                    
-                    const student = students.find(s => 
-                        s.reg === regNo && (s.password === password || s.password === regNo)
-                    );
-                    
-                    if (student) {
-                        currentUser = {
-                            reg: student.reg,
-                            name: student.name,
-                            role: 'student',
-                            department: 'Computer Science',
-                            semester: student.year || '1st',
-                            batch: student.batch || 'A'
-                        };
-                        
-                        saveSession();
-                        
-                        document.getElementById('loginPage').style.display = 'none';
-                        document.getElementById('dashboard').classList.add('active');
-                        
-                        updateMenuForRole();
-                        
-                        navigationHistory = [];
-                        currentPage = 'home';
-                        
-                        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-                        document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
-                        
-                        showNotification(`Welcome, ${student.name}!`, 'success');
-                        showStudentHome();
-                    } else {
-                        showNotification('Invalid Register Number or Password!', 'error');
-                    }
-                } catch (error) {
-                    console.error('Login error:', error);
-                    showNotification('Error connecting to server', 'error');
-                } finally {
-                    hideLoading();
-                }
-            } else if (currentRole === 'staff') {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('adminPassword').value;
-
-                const staff = staffMembers.find(s => s.email === email && s.password === password);
-
-                if (staff) {
-                    currentUser = { ...staff, role: 'staff' };
-                    saveSession();
-                    
-                    document.getElementById('loginPage').style.display = 'none';
-                    document.getElementById('dashboard').classList.add('active');
-                    
-                    await loadStudentsFromSheet();
-                    await loadAttendanceFromSheet();
-                    
-                    updateMenuForRole();
-                    showStaffDashboard();
-                    
-                    showNotification(`Welcome, ${staff.name}!`, 'success');
-                } else {
-                    showNotification('Invalid email or password!', 'error');
-                }
-            } else if (currentRole === 'admin') {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('adminPassword').value;
-
-                if (email === adminUser.email && password === adminUser.password) {
-                    currentUser = { ...adminUser, role: 'admin' };
-                    saveSession();
-                    
-                    document.getElementById('loginPage').style.display = 'none';
-                    document.getElementById('dashboard').classList.add('active');
-                    
-                    await loadStudentsFromSheet();
-                    await loadAttendanceFromSheet();
-                    
-                    updateMenuForRole();
-                    showStaffDashboard();
-                    
-                    showNotification('Welcome, Admin!', 'success');
-                } else {
-                    showNotification('Invalid admin credentials!', 'error');
-                }
-            }
-        }
-
-        // ==================== MENU FUNCTIONS ====================
-        function updateMenuForRole() {
-            const menuGrid = document.getElementById('menuGrid');
-            
-            if (currentRole === 'student') {
-                menuGrid.innerHTML = `
-                    <div class="menu-grid-item" onclick="navigateTo('libraryGo')">
-                        <span>📚</span>
-                        <span>Library Go</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('attendance')">
-                        <span>✅</span>
-                        <span>Attendance</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('fees')">
-                        <span>💰</span>
-                        <span>Fees</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('myAccount')">
-                        <span>👤</span>
-                        <span>My Account</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('tutorials')">
-                        <span>📹</span>
-                        <span>Tutorials</span>
-                    </div>
-                `;
+                showNotification(`Welcome, ${staff.name}!`, 'success');
             } else {
-                menuGrid.innerHTML = `
-                    <div class="menu-grid-item" onclick="navigateTo('markAttendance')">
-                        <span>✅</span>
-                        <span>Mark Attendance</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('departments')">
-                        <span>🏛️</span>
-                        <span>Departments</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('courses')">
-                        <span>📚</span>
-                        <span>All Courses</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('students')">
-                        <span>👥</span>
-                        <span>Students List</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="navigateTo('faculty')">
-                        <span>👨‍🏫</span>
-                        <span>Faculty List</span>
-                    </div>
-                    <div class="menu-grid-item" onclick="debugSheets()">
-                        <span>🔍</span>
-                        <span>Debug Sheets</span>
-                    </div>
-                `;
+                showNotification('Invalid email or password!', 'error');
+            }
+        } else if (currentRole === 'admin') {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (email === adminUser.email && password === adminUser.password) {
+                currentUser = { ...adminUser, role: 'admin' };
+                saveSession();
+                
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                
+                await loadStudentsFromSheet();
+                await loadAttendanceFromSheet();
+                
+                updateMenuForRole();
+                showStaffDashboard();
+                
+                showNotification('Welcome, Admin!', 'success');
+            } else {
+                showNotification('Invalid admin credentials!', 'error');
             }
         }
+    }
 
-        function navigateTo(section) {
+    // ==================== MENU FUNCTIONS ====================
+    function updateMenuForRole() {
+        const menuGrid = document.getElementById('menuGrid');
+        
+        if (currentRole === 'student') {
+            menuGrid.innerHTML = `
+                <div class="menu-grid-item" onclick="navigateTo('libraryGo')">
+                    <span>📚</span>
+                    <span>Library Go</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('attendance')">
+                    <span>✅</span>
+                    <span>Attendance</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('fees')">
+                    <span>💰</span>
+                    <span>Fees</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('myAccount')">
+                    <span>👤</span>
+                    <span>My Account</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('tutorials')">
+                    <span>📹</span>
+                    <span>Tutorials</span>
+                </div>
+            `;
+        } else {
+            menuGrid.innerHTML = `
+                <div class="menu-grid-item" onclick="navigateTo('markAttendance')">
+                    <span>✅</span>
+                    <span>Mark Attendance</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('departments')">
+                    <span>🏛️</span>
+                    <span>Departments</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('courses')">
+                    <span>📚</span>
+                    <span>All Courses</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('students')">
+                    <span>👥</span>
+                    <span>Students List</span>
+                </div>
+                <div class="menu-grid-item" onclick="navigateTo('faculty')">
+                    <span>👨‍🏫</span>
+                    <span>Faculty List</span>
+                </div>
+                <div class="menu-grid-item" onclick="testConnection()">
+                    <span>🔌</span>
+                    <span>Test Connection</span>
+                </div>
+            `;
+        }
+    }
+
+    function navigateTo(section) {
+        document.getElementById('fullMenu').classList.remove('open');
+        document.getElementById('mainContent').style.display = 'block';
+        
+        switch(section) {
+            case 'markAttendance':
+                currentPage = 'markAttendance';
+                showMarkAttendance();
+                break;
+            case 'attendance':
+                currentPage = 'attendance';
+                showAttendance();
+                break;
+            case 'myAccount':
+                currentPage = 'myAccount';
+                showProfile();
+                break;
+            case 'departments':
+                currentPage = 'departments';
+                showDepartments();
+                break;
+            case 'courses':
+                currentPage = 'courses';
+                showAllCourses();
+                break;
+            case 'students':
+                currentPage = 'students';
+                showStudentsList();
+                break;
+            case 'faculty':
+                currentPage = 'faculty';
+                showFacultyList();
+                break;
+            default:
+                currentPage = section;
+                showPlaceholder(section);
+        }
+        
+        document.getElementById('backBtnNav').classList.add('visible');
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        event.target.closest('.nav-item').classList.add('active');
+
+        if (tab === 'home') {
             document.getElementById('fullMenu').classList.remove('open');
             document.getElementById('mainContent').style.display = 'block';
             
-            switch(section) {
-                case 'markAttendance':
-                    currentPage = 'markAttendance';
-                    showMarkAttendance();
-                    break;
-                case 'attendance':
-                    currentPage = 'attendance';
-                    showAttendance();
-                    break;
-                case 'myAccount':
-                    currentPage = 'myAccount';
-                    showProfile();
-                    break;
-                case 'departments':
-                    currentPage = 'departments';
-                    showDepartments();
-                    break;
-                case 'courses':
-                    currentPage = 'courses';
-                    showAllCourses();
-                    break;
-                case 'students':
-                    currentPage = 'students';
-                    showStudentsList();
-                    break;
-                case 'faculty':
-                    currentPage = 'faculty';
-                    showFacultyList();
-                    break;
-                default:
-                    currentPage = section;
-                    showPlaceholder(section);
-            }
+            navigationHistory = [];
+            currentPage = 'home';
+            expandedPeriod = null;
+            document.getElementById('backBtnNav').classList.remove('visible');
             
-            document.getElementById('backBtnNav').classList.add('visible');
-        }
-
-        function switchTab(tab) {
-            currentTab = tab;
-            
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.nav-item').classList.add('active');
-
-            if (tab === 'home') {
-                document.getElementById('fullMenu').classList.remove('open');
-                document.getElementById('mainContent').style.display = 'block';
-                
-                navigationHistory = [];
-                currentPage = 'home';
-                expandedPeriod = null;
-                document.getElementById('backBtnNav').classList.remove('visible');
-                
-                if (currentUser?.role === 'student') {
-                    showStudentHome();
-                } else {
-                    showStaffDashboard();
-                }
-            } else if (tab === 'menu') {
-                toggleMenu();
-            } else if (tab === 'profile') {
-                document.getElementById('fullMenu').classList.remove('open');
-                document.getElementById('mainContent').style.display = 'block';
-                currentPage = 'myAccount';
-                showProfile();
-                document.getElementById('backBtnNav').classList.add('visible');
-            }
-        }
-
-        function toggleMenu() {
-            menuOpen = !menuOpen;
-            document.getElementById('fullMenu').classList.toggle('open', menuOpen);
-            document.getElementById('mainContent').style.display = menuOpen ? 'none' : 'block';
-        }
-
-        function goBack() {
-            if (currentPage === 'home') return;
-            
-            if (currentRole === 'student') {
+            if (currentUser?.role === 'student') {
                 showStudentHome();
-                currentPage = 'home';
-                document.getElementById('backBtnNav').classList.remove('visible');
             } else {
                 showStaffDashboard();
-                currentPage = 'home';
-                document.getElementById('backBtnNav').classList.remove('visible');
             }
+        } else if (tab === 'menu') {
+            toggleMenu();
+        } else if (tab === 'profile') {
+            document.getElementById('fullMenu').classList.remove('open');
+            document.getElementById('mainContent').style.display = 'block';
+            currentPage = 'myAccount';
+            showProfile();
+            document.getElementById('backBtnNav').classList.add('visible');
         }
+    }
 
-        function showLoading() {
-            document.getElementById('loadingOverlay').classList.add('active');
-        }
+    function toggleMenu() {
+        menuOpen = !menuOpen;
+        document.getElementById('fullMenu').classList.toggle('open', menuOpen);
+        document.getElementById('mainContent').style.display = menuOpen ? 'none' : 'block';
+    }
 
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.remove('active');
-        }
-
-        function searchMenu(query) {
-            const items = document.querySelectorAll('.menu-grid-item');
-            items.forEach(item => {
-                const text = item.querySelector('span:last-child').textContent.toLowerCase();
-                if (text.includes(query.toLowerCase())) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-
-        function clearRecent() {
-            recentItems = [];
-            updateRecentItems();
-        }
-
-        function updateRecentItems() {
-            const recentDiv = document.getElementById('recentItems');
-            if (recentItems.length === 0) {
-                recentDiv.innerHTML = '<div class="recent-item">No recent items</div>';
-            } else {
-                recentDiv.innerHTML = recentItems.map(item => {
-                    const section = item.toLowerCase().replace(/ /g, '');
-                    return `
-                        <div class="recent-item" onclick="navigateTo('${section}')">
-                            <span>${getIconForItem(item)}</span>
-                            <span>${item}</span>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
-
-        function getIconForItem(item) {
-            const icons = {
-                'Library Go': '📚',
-                'Attendance': '✅',
-                'Fees': '💰',
-                'My Account': '👤',
-                'Tutorials': '📹',
-                'Departments': '🏛️',
-                'All Courses': '📚',
-                'Students List': '👥',
-                'Faculty List': '👨‍🏫'
-            };
-            return icons[item] || '📌';
-        }
-
-        // ==================== STUDENT HOME PAGE ====================
-        function showStudentHome() {
-            const content = document.getElementById('mainContent');
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
-            const month = today.toLocaleDateString('en-US', { month: 'short' });
-            const day = today.getDate();
-            
-            const studentId = currentUser.reg;
-            const todayAttendance = [];
-            const periodDetails = {};
-            
-            for (let hour = 1; hour <= 5; hour++) {
-                const key = `${studentId}_${todayStr}_${hour}`;
-                if (attendanceData[key]) {
-                    todayAttendance.push({
-                        hour: hour,
-                        status: attendanceData[key],
-                        faculty: attendanceData[key + '_faculty'] || 'Not assigned',
-                        course: attendanceData[key + '_course'] || 'No course'
-                    });
-                    periodDetails[hour] = {
-                        status: attendanceData[key],
-                        faculty: attendanceData[key + '_faculty'] || 'Not assigned',
-                        course: attendanceData[key + '_course'] || 'No course'
-                    };
-                } else {
-                    periodDetails[hour] = { status: null };
-                }
-            }
-            
-            let hoursGridHTML = '<div class="hours-grid">';
-            for (let hour = 1; hour <= 5; hour++) {
-                const attendance = todayAttendance.find(a => a.hour === hour);
-                const status = attendance ? attendance.status : null;
-                hoursGridHTML += `
-                    <div class="hour-box ${status || ''}" onclick="showPeriodDetail(${hour})">
-                        <div class="hour">${hour} hr</div>
-                        ${status ? `<div class="status">${getStatusText(status)}</div>` : '<div class="status">Not Marked</div>'}
-                    </div>
-                `;
-            }
-            hoursGridHTML += '</div>';
-            
-            let periodDetailHTML = '';
-            if (expandedPeriod !== null && periodDetails[expandedPeriod]) {
-                const detail = periodDetails[expandedPeriod];
-                if (detail.status) {
-                    periodDetailHTML = `
-                        <div class="period-detail-card">
-                            <div class="period-detail-header">
-                                <h3>Class - Hour ${expandedPeriod}</h3>
-                                <span class="period-time">${getPeriodTime(expandedPeriod)}</span>
-                            </div>
-                            <div class="period-detail-content">
-                                <div class="period-detail-row">
-                                    <span class="period-detail-label">Faculty:</span>
-                                    <span class="period-detail-value faculty">${detail.faculty}</span>
-                                </div>
-                                <div class="period-detail-row">
-                                    <span class="period-detail-label">Status:</span>
-                                    <span class="period-detail-value status ${detail.status}">${getStatusText(detail.status)}</span>
-                                </div>
-                                <div class="period-detail-course">
-                                    <h4>${detail.course}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    periodDetailHTML = `
-                        <div class="period-detail-card">
-                            <div class="period-detail-header">
-                                <h3>Class - Hour ${expandedPeriod}</h3>
-                                <span class="period-time">${getPeriodTime(expandedPeriod)}</span>
-                            </div>
-                            <div class="period-detail-content">
-                                <p style="text-align: center; color: #666;">No attendance marked for this period</p>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            
-            const allStudentRecords = Object.keys(attendanceData)
-                .filter(key => key.startsWith(studentId) && !key.includes('_'));
-            const totalClasses = allStudentRecords.length;
-            const presentClasses = allStudentRecords.filter(key => attendanceData[key] === 'present').length;
-            const attendancePercentage = totalClasses > 0 ? Math.round((presentClasses / totalClasses) * 100) : 0;
-            
-            content.innerHTML = `
-                <div class="student-home">
-                    <div class="student-header">
-                        <h1>${currentUser.name}</h1>
-                        <p>Admission No : ${currentUser.reg}</p>
-                        <p>Batch : ${currentUser.batch} | Year : ${currentUser.semester}</p>
-                    </div>
-
-                    ${hoursGridHTML}
-
-                    ${periodDetailHTML}
-
-                    <div class="view-all-link">
-                        <a href="#" onclick="navigateTo('attendance'); return false;">View all attendance records →</a>
-                    </div>
-
-                    <div class="feedback-section">
-                        <p>Every feedback is valuable.</p>
-                        <button class="feedback-btn" onclick="showNotification('Thank you for your feedback!', 'success')">Give Feedback</button>
-                    </div>
-
-                    <div class="semester-card">
-                        <div class="card-header">
-                            <h3>Attendance Summary</h3>
-                            <a href="#" class="see-all" onclick="navigateTo('attendance'); return false;">See All →</a>
-                        </div>
-                        <div>
-                            <h4>Current Semester</h4>
-                            <div class="semester-stats">
-                                <div class="stats-details">
-                                    <div class="stat-row">
-                                        <span class="stat-label">Total Classes</span>
-                                        <span class="stat-value">${totalClasses}</span>
-                                    </div>
-                                    <div class="stat-row">
-                                        <span class="stat-label">Classes Present</span>
-                                        <span class="stat-value">${presentClasses}</span>
-                                    </div>
-                                </div>
-                                <div class="percentage-circle">
-                                    ${attendancePercentage}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button onclick="refreshData()" class="btn-primary" style="background: #17a2b8; padding: 10px 20px;">
-                            🔄 Refresh Attendance
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showPeriodDetail(hour) {
-            if (expandedPeriod === hour) {
-                expandedPeriod = null;
-            } else {
-                expandedPeriod = hour;
-            }
+    function goBack() {
+        if (currentPage === 'home') return;
+        
+        if (currentRole === 'student') {
             showStudentHome();
+            currentPage = 'home';
+            document.getElementById('backBtnNav').classList.remove('visible');
+        } else {
+            showStaffDashboard();
+            currentPage = 'home';
+            document.getElementById('backBtnNav').classList.remove('visible');
         }
+    }
 
-        function getStatusText(status) {
-            switch(status) {
-                case 'present': return '✓ Present';
-                case 'absent': return '✗ Absent';
-                case 'late': return '⏰ Late';
-                case 'letoff': return '☑ Let-off';
-                default: return '';
+    function showLoading() {
+        document.getElementById('loadingOverlay').classList.add('active');
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingOverlay').classList.remove('active');
+    }
+
+    function searchMenu(query) {
+        const items = document.querySelectorAll('.menu-grid-item');
+        items.forEach(item => {
+            const text = item.querySelector('span:last-child').textContent.toLowerCase();
+            if (text.includes(query.toLowerCase())) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
             }
-        }
+        });
+    }
 
-        function getPeriodTime(period) {
-            const times = {
-                1: '09:00 - 10:00',
-                2: '10:00 - 11:00',
-                3: '11:00 - 12:00',
-                4: '12:00 - 13:00',
-                5: '14:00 - 15:00'
-            };
-            return times[period] || '';
-        }
+    function clearRecent() {
+        recentItems = [];
+        updateRecentItems();
+    }
 
-        // ==================== STAFF DASHBOARD ====================
-        function showStaffDashboard() {
-            const content = document.getElementById('mainContent');
-            
-            content.innerHTML = `
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-title">Students</div>
-                        <div class="stat-value">${studentsList.length}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Staff</div>
-                        <div class="stat-value">${staffMembers.length}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Courses</div>
-                        <div class="stat-value">${courses.length}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Today's Date</div>
-                        <div class="stat-value">${new Date().toLocaleDateString()}</div>
-                    </div>
-                </div>
-
-                <div class="table-container" style="background: white; border-radius: 15px; padding: 20px; margin-top: 20px;">
-                    <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #8B0000; padding-bottom: 10px;">
-                        <h3 style="color: #333; font-size: 18px;">Quick Actions</h3>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
-                        <button class="btn-primary" onclick="navigateTo('markAttendance')" style="padding: 15px;">✅ Mark Attendance</button>
-                        <button class="btn-primary" onclick="navigateTo('departments')" style="padding: 15px;">🏛️ Departments</button>
-                        <button class="btn-primary" onclick="navigateTo('courses')" style="padding: 15px;">📚 All Courses</button>
-                        <button class="btn-primary" onclick="navigateTo('students')" style="padding: 15px;">👥 Students List</button>
-                        <button class="btn-primary" onclick="navigateTo('faculty')" style="padding: 15px;">👨‍🏫 Faculty List</button>
-                        <button class="btn-primary" onclick="debugSheets()" style="padding: 15px; background: #17a2b8;">🔍 Debug Sheets</button>
-                        <button class="btn-primary" onclick="forceReloadStudents()" style="padding: 15px; background: #28a745;">🔄 Force Reload Students</button>
-                        <button class="btn-primary" onclick="testSheetConnection()" style="padding: 15px; background: #ffc107;">🔌 Test Connection</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // ==================== MARK ATTENDANCE PAGE ====================
-        async function showMarkAttendance() {
-            const content = document.getElementById('mainContent');
-            const today = new Date().toISOString().split('T')[0];
-
-            if (studentsList.length === 0) {
-                await loadStudentsFromSheet();
-            }
-
-            if (studentsList.length === 0) {
-                content.innerHTML = `
-                    <div style="text-align: center; padding: 50px;">
-                        <h3 style="color: #8B0000;">No Students Found</h3>
-                        <p>Please add students to the Students sheet in Google Sheets.</p>
-                        <button class="btn-primary" onclick="debugSheets()" style="margin-top: 20px; padding: 10px 20px; background:#17a2b8;">
-                            🔍 Debug Sheets
-                        </button>
-                        <button class="btn-primary" onclick="forceReloadStudents()" style="margin-top: 20px; margin-left: 10px; padding: 10px 20px; background:#28a745;">
-                            🔄 Force Reload
-                        </button>
+    function updateRecentItems() {
+        const recentDiv = document.getElementById('recentItems');
+        if (recentItems.length === 0) {
+            recentDiv.innerHTML = '<div class="recent-item">No recent items</div>';
+        } else {
+            recentDiv.innerHTML = recentItems.map(item => {
+                const section = item.toLowerCase().replace(/ /g, '');
+                return `
+                    <div class="recent-item" onclick="navigateTo('${section}')">
+                        <span>${getIconForItem(item)}</span>
+                        <span>${item}</span>
                     </div>
                 `;
-                return;
-            }
+            }).join('');
+        }
+    }
 
+    function getIconForItem(item) {
+        const icons = {
+            'Library Go': '📚',
+            'Attendance': '✅',
+            'Fees': '💰',
+            'My Account': '👤',
+            'Tutorials': '📹',
+            'Departments': '🏛️',
+            'All Courses': '📚',
+            'Students List': '👥',
+            'Faculty List': '👨‍🏫'
+        };
+        return icons[item] || '📌';
+    }
+
+    // ==================== STAFF DASHBOARD ====================
+    function showStaffDashboard() {
+        const content = document.getElementById('mainContent');
+        
+        content.innerHTML = `
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Students</div>
+                    <div class="stat-value">${studentsList.length}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Staff</div>
+                    <div class="stat-value">${staffMembers.length}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Courses</div>
+                    <div class="stat-value">${courses.length}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Today's Date</div>
+                    <div class="stat-value">${new Date().toLocaleDateString()}</div>
+                </div>
+            </div>
+
+            <div class="table-container" style="background: white; border-radius: 15px; padding: 20px; margin-top: 20px;">
+                <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #8B0000; padding-bottom: 10px;">
+                    <h3 style="color: #333; font-size: 18px;">Quick Actions</h3>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                    <button class="btn-primary" onclick="navigateTo('markAttendance')" style="padding: 15px;">✅ Mark Attendance</button>
+                    <button class="btn-primary" onclick="navigateTo('departments')" style="padding: 15px;">🏛️ Departments</button>
+                    <button class="btn-primary" onclick="navigateTo('courses')" style="padding: 15px;">📚 All Courses</button>
+                    <button class="btn-primary" onclick="navigateTo('students')" style="padding: 15px;">👥 Students List</button>
+                    <button class="btn-primary" onclick="navigateTo('faculty')" style="padding: 15px;">👨‍🏫 Faculty List</button>
+                    <button class="btn-primary" onclick="testConnection()" style="padding: 15px; background: #28a745;">🔌 Test Connection</button>
+                    <button class="btn-primary" onclick="forceReloadStudents()" style="padding: 15px; background: #ffc107;">🔄 Force Reload</button>
+                </div>
+            </div>
+        `;
+    }
+
+    // ==================== MARK ATTENDANCE PAGE ====================
+    async function showMarkAttendance() {
+        const content = document.getElementById('mainContent');
+        const today = new Date().toISOString().split('T')[0];
+
+        if (studentsList.length === 0) {
+            await loadStudentsFromSheet();
+        }
+
+        if (studentsList.length === 0) {
             content.innerHTML = `
-                <div class="mark-attendance-page">
-                    <h2 style="color: #8B0000; margin-bottom: 20px;">Mark Attendance</h2>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                        <p>Date: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        <p>Total Students: ${studentsList.length}</p>
-                    </div>
-                    
-                    <div class="period-selector">
-                        <h3>Select Period</h3>
-                        <div class="period-grid">
-                            ${[1, 2, 3, 4, 5].map(period => `
-                                <div class="period-card ${selectedPeriod === period ? 'selected' : ''}" onclick="selectPeriod(${period})">
-                                    <div class="period-number">Period ${period}</div>
-                                    <div class="period-time">${getPeriodTime(period)}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <div class="course-selector">
-                        <h3>Select Course</h3>
-                        <select class="course-select" onchange="selectCourse(this.value)">
-                            <option value="">Choose a course...</option>
-                            ${courses.map(course => `
-                                <option value="${course.id}" ${selectedCourse == course.id ? 'selected' : ''}>${course.code} - ${course.name}</option>
-                            `).join('')}
-                        </select>
-                    </div>
-
-                    ${selectedCourse ? `
-                        <div class="mark-all-section">
-                            <h3>Quick Mark All</h3>
-                            <div class="mark-all-buttons">
-                                <button class="mark-all-btn present" onclick="markAllStudents('present')">✅ All Present</button>
-                                <button class="mark-all-btn absent" onclick="markAllStudents('absent')">❌ All Absent</button>
-                                <button class="mark-all-btn late" onclick="markAllStudents('late')">⏰ All Late</button>
-                                <button class="mark-all-btn letoff" onclick="markAllStudents('letoff')">☑ All Let-off</button>
-                            </div>
-                        </div>
-
-                        <div class="student-list">
-                            <div class="student-list-header">
-                                <h3>Students (${studentsList.length})</h3>
-                                <input type="text" placeholder="Search student..." style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;" onkeyup="searchStudents(this.value)">
-                            </div>
-                            <div id="studentListContainer">
-                                ${studentsList.map(student => {
-                                    const key = `${student.reg}_${today}_${selectedPeriod}`;
-                                    const status = attendanceData[key] || 'unmarked';
-                                    return `
-                                        <div class="student-list-item" id="student-${student.reg}">
-                                            <div class="student-info">
-                                                <h4>${student.name}</h4>
-                                                <p>${student.reg} | Batch: ${student.batch || 'A'} | Year: ${student.year || '1st'}</p>
-                                            </div>
-                                            <div class="student-status">
-                                                <div class="status-option present ${status === 'present' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'present')">✓</div>
-                                                <div class="status-option absent ${status === 'absent' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'absent')">✗</div>
-                                                <div class="status-option late ${status === 'late' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'late')">⏰</div>
-                                                <div class="status-option letoff ${status === 'letoff' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'letoff')">☑</div>
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-
-                        <div class="submit-attendance">
-                            <button class="cancel-btn" onclick="resetAttendance()">Reset</button>
-                            <button class="submit-btn" onclick="submitAttendance()">Submit Attendance</button>
-                        </div>
-                    ` : `
-                        <div style="text-align: center; padding: 50px; color: #666;">
-                            Please select a course to start marking attendance
-                        </div>
-                    `}
+                <div style="text-align: center; padding: 50px;">
+                    <h3 style="color: #8B0000;">No Students Found</h3>
+                    <p>Please add students to the Students sheet in Google Sheets.</p>
+                    <button class="btn-primary" onclick="testConnection()" style="margin-top: 20px; padding: 10px 20px; background:#28a745;">
+                        🔌 Test Connection
+                    </button>
+                    <button class="btn-primary" onclick="forceReloadStudents()" style="margin-top: 20px; margin-left: 10px; padding: 10px 20px; background:#ffc107;">
+                        🔄 Force Reload
+                    </button>
                 </div>
             `;
+            return;
         }
 
-        function searchStudents(query) {
-            const items = document.querySelectorAll('.student-list-item');
-            const queryLower = query.toLowerCase();
-            
-            items.forEach(item => {
-                const name = item.querySelector('.student-info h4').textContent.toLowerCase();
-                const reg = item.querySelector('.student-info p').textContent;
-                if (name.includes(queryLower) || reg.includes(query)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
+        content.innerHTML = `
+            <div class="mark-attendance-page">
+                <h2 style="color: #8B0000; margin-bottom: 20px;">Mark Attendance</h2>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <p>Date: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <p>Total Students: ${studentsList.length}</p>
+                </div>
+                
+                <div class="period-selector">
+                    <h3>Select Period</h3>
+                    <div class="period-grid">
+                        ${[1, 2, 3, 4, 5].map(period => `
+                            <div class="period-card ${selectedPeriod === period ? 'selected' : ''}" onclick="selectPeriod(${period})">
+                                <div class="period-number">Period ${period}</div>
+                                <div class="period-time">${getPeriodTime(period)}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
 
-        function selectPeriod(period) {
-            selectedPeriod = period;
-            showMarkAttendance();
-        }
+                <div class="course-selector">
+                    <h3>Select Course</h3>
+                    <select class="course-select" onchange="selectCourse(this.value)">
+                        <option value="">Choose a course...</option>
+                        ${courses.map(course => `
+                            <option value="${course.id}" ${selectedCourse == course.id ? 'selected' : ''}>${course.code} - ${course.name}</option>
+                        `).join('')}
+                    </select>
+                </div>
 
-        function selectCourse(courseId) {
-            selectedCourse = parseInt(courseId);
-            showMarkAttendance();
-        }
+                ${selectedCourse ? `
+                    <div class="mark-all-section">
+                        <h3>Quick Mark All</h3>
+                        <div class="mark-all-buttons">
+                            <button class="mark-all-btn present" onclick="markAllStudents('present')">✅ All Present</button>
+                            <button class="mark-all-btn absent" onclick="markAllStudents('absent')">❌ All Absent</button>
+                            <button class="mark-all-btn late" onclick="markAllStudents('late')">⏰ All Late</button>
+                            <button class="mark-all-btn letoff" onclick="markAllStudents('letoff')">☑ All Let-off</button>
+                        </div>
+                    </div>
 
-        function setStudentStatus(regNo, status) {
-            if (!selectedCourse) return;
-            
-            const today = new Date().toISOString().split('T')[0];
-            const key = `${regNo}_${today}_${selectedPeriod}`;
+                    <div class="student-list">
+                        <div class="student-list-header">
+                            <h3>Students (${studentsList.length})</h3>
+                            <input type="text" placeholder="Search student..." style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;" onkeyup="searchStudents(this.value)">
+                        </div>
+                        <div id="studentListContainer">
+                            ${studentsList.map(student => {
+                                const key = `${student.reg}_${today}_${selectedPeriod}`;
+                                const status = attendanceData[key] || 'unmarked';
+                                return `
+                                    <div class="student-list-item" id="student-${student.reg}">
+                                        <div class="student-info">
+                                            <h4>${student.name}</h4>
+                                            <p>${student.reg} | Batch: ${student.batch || 'A'} | Year: ${student.year || '1st'}</p>
+                                        </div>
+                                        <div class="student-status">
+                                            <div class="status-option present ${status === 'present' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'present')">✓</div>
+                                            <div class="status-option absent ${status === 'absent' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'absent')">✗</div>
+                                            <div class="status-option late ${status === 'late' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'late')">⏰</div>
+                                            <div class="status-option letoff ${status === 'letoff' ? 'active' : ''}" onclick="setStudentStatus('${student.reg}', 'letoff')">☑</div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <div class="submit-attendance">
+                        <button class="cancel-btn" onclick="resetAttendance()">Reset</button>
+                        <button class="submit-btn" onclick="submitAttendance()">Submit Attendance</button>
+                    </div>
+                ` : `
+                    <div style="text-align: center; padding: 50px; color: #666;">
+                        Please select a course to start marking attendance
+                    </div>
+                `}
+            </div>
+        `;
+    }
+
+    function searchStudents(query) {
+        const items = document.querySelectorAll('.student-list-item');
+        const queryLower = query.toLowerCase();
+        
+        items.forEach(item => {
+            const name = item.querySelector('.student-info h4').textContent.toLowerCase();
+            const reg = item.querySelector('.student-info p').textContent;
+            if (name.includes(queryLower) || reg.includes(query)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    function selectPeriod(period) {
+        selectedPeriod = period;
+        showMarkAttendance();
+    }
+
+    function selectCourse(courseId) {
+        selectedCourse = parseInt(courseId);
+        showMarkAttendance();
+    }
+
+    function setStudentStatus(regNo, status) {
+        if (!selectedCourse) return;
+        
+        const today = new Date().toISOString().split('T')[0];
+        const key = `${regNo}_${today}_${selectedPeriod}`;
+        attendanceData[key] = status;
+        
+        const studentDiv = document.getElementById(`student-${regNo}`);
+        if (studentDiv) {
+            const options = studentDiv.querySelectorAll('.status-option');
+            options.forEach(opt => opt.classList.remove('active'));
+            studentDiv.querySelector(`.status-option.${status}`).classList.add('active');
+        }
+    }
+
+    function markAllStudents(status) {
+        if (!selectedCourse) return;
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        studentsList.forEach(student => {
+            const key = `${student.reg}_${today}_${selectedPeriod}`;
             attendanceData[key] = status;
             
-            const studentDiv = document.getElementById(`student-${regNo}`);
+            const studentDiv = document.getElementById(`student-${student.reg}`);
             if (studentDiv) {
                 const options = studentDiv.querySelectorAll('.status-option');
                 options.forEach(opt => opt.classList.remove('active'));
                 studentDiv.querySelector(`.status-option.${status}`).classList.add('active');
             }
-        }
+        });
+    }
 
-        function markAllStudents(status) {
-            if (!selectedCourse) return;
-            
-            const today = new Date().toISOString().split('T')[0];
-            
-            studentsList.forEach(student => {
-                const key = `${student.reg}_${today}_${selectedPeriod}`;
-                attendanceData[key] = status;
-                
-                const studentDiv = document.getElementById(`student-${student.reg}`);
-                if (studentDiv) {
-                    const options = studentDiv.querySelectorAll('.status-option');
-                    options.forEach(opt => opt.classList.remove('active'));
-                    studentDiv.querySelector(`.status-option.${status}`).classList.add('active');
-                }
-            });
-        }
+    function resetAttendance() {
+        if (!selectedCourse) return;
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        studentsList.forEach(student => {
+            const key = `${student.reg}_${today}_${selectedPeriod}`;
+            delete attendanceData[key];
+        });
+        
+        showMarkAttendance();
+    }
 
-        function resetAttendance() {
-            if (!selectedCourse) return;
-            
-            const today = new Date().toISOString().split('T')[0];
-            
-            studentsList.forEach(student => {
-                const key = `${student.reg}_${today}_${selectedPeriod}`;
-                delete attendanceData[key];
-            });
-            
-            showMarkAttendance();
-        }
-
-        async function submitAttendance() {
-            if (!selectedCourse) return;
-            
-            const today = new Date().toISOString().split('T')[0];
-            const selectedCourseObj = courses.find(c => c.id == selectedCourse);
-            
-            const records = [];
-            
-            studentsList.forEach(student => {
-                const key = `${student.reg}_${today}_${selectedPeriod}`;
-                const status = attendanceData[key];
-                if (status && status !== 'unmarked') {
-                    records.push({
-                        date: today,
-                        studentId: student.reg,
-                        studentName: student.name,
-                        period: selectedPeriod,
-                        status: status,
-                        faculty: currentUser.name,
-                        course: selectedCourseObj ? `${selectedCourseObj.code}-${selectedCourseObj.name}` : 'Course'
-                    });
-                }
-            });
-            
-            if (records.length === 0) {
-                showNotification('No attendance marked!', 'info');
-                return;
-            }
-            
-            await saveAttendanceToSheet(records);
-            
-            setTimeout(async () => {
-                await loadAttendanceFromSheet();
-            }, 2000);
-            
-            selectedCourse = null;
-            showMarkAttendance();
-        }
-
-        // ==================== DEPARTMENTS PAGE ====================
-        function showDepartments() {
-            const departments = [
-                { name: 'Computer Science', hod: 'Dr. CS HOD', faculty: 15, courses: 8 },
-                { name: 'Mathematics', hod: 'Dr. Maths HOD', faculty: 12, courses: 6 },
-                { name: 'Physics', hod: 'Dr. Physics HOD', faculty: 10, courses: 5 },
-                { name: 'Chemistry', hod: 'Dr. Chemistry HOD', faculty: 11, courses: 5 },
-                { name: 'English', hod: 'Dr. English HOD', faculty: 9, courses: 4 },
-                { name: 'Commerce', hod: 'Dr. Commerce HOD', faculty: 14, courses: 7 }
-            ];
-            
-            let html = `
-                <div style="background: white; border-radius: 20px; padding: 20px;">
-                    <h2 style="color: #8B0000; margin-bottom: 20px;">Academic Departments</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-            `;
-            
-            departments.forEach(dept => {
-                html += `
-                    <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; border-left: 4px solid #8B0000;">
-                        <h3 style="color: #8B0000; margin-bottom: 10px;">${dept.name}</h3>
-                        <p style="color: #666; margin-bottom: 5px;">HOD: ${dept.hod}</p>
-                        <p style="color: #666; margin-bottom: 5px;">Faculty: ${dept.faculty}</p>
-                        <p style="color: #666;">Courses: ${dept.courses}</p>
-                    </div>
-                `;
-            });
-            
-            html += `</div></div>`;
-            document.getElementById('mainContent').innerHTML = html;
-        }
-
-        // ==================== ALL COURSES PAGE ====================
-        function showAllCourses() {
-            let html = `
-                <div style="background: white; border-radius: 20px; padding: 20px;">
-                    <h2 style="color: #8B0000; margin-bottom: 20px;">All Courses</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-            `;
-            
-            courses.forEach(course => {
-                html += `
-                    <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; border-left: 4px solid #8B0000;">
-                        <h3 style="color: #333; margin-bottom: 5px;">${course.name}</h3>
-                        <p style="color: #8B0000; font-weight: 600; margin-bottom: 5px;">${course.code}</p>
-                        <p style="color: #666; margin-bottom: 5px;">Faculty: ${course.faculty}</p>
-                        <p style="color: #666;">Total Hours: ${course.totalHours}</p>
-                    </div>
-                `;
-            });
-            
-            html += `</div></div>`;
-            document.getElementById('mainContent').innerHTML = html;
-        }
-
-        // ==================== STUDENTS LIST PAGE ====================
-        function showStudentsList() {
-            if (studentsList.length === 0) {
-                document.getElementById('mainContent').innerHTML = `
-                    <div style="background: white; border-radius: 20px; padding: 20px; text-align: center;">
-                        <h2 style="color: #8B0000; margin-bottom: 20px;">Students List</h2>
-                        <p>No students found. Click "Force Reload" to check connection.</p>
-                        <button onclick="forceReloadStudents()" class="btn-primary" style="margin-top: 20px; padding: 10px 20px; background:#28a745;">
-                            🔄 Force Reload Students
-                        </button>
-                        <button onclick="debugSheets()" class="btn-primary" style="margin-top: 20px; margin-left: 10px; padding: 10px 20px; background:#17a2b8;">
-                            🔍 Debug Sheets
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = `
-                <div style="background: white; border-radius: 20px; padding: 20px;">
-                    <h2 style="color: #8B0000; margin-bottom: 20px;">Students List (${studentsList.length})</h2>
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background: #f8f9fa;">
-                                    <th style="padding: 12px; text-align: left;">S.No</th>
-                                    <th style="padding: 12px; text-align: left;">Register No</th>
-                                    <th style="padding: 12px; text-align: left;">Name</th>
-                                    <th style="padding: 12px; text-align: left;">Batch</th>
-                                    <th style="padding: 12px; text-align: left;">Year</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-            `;
-            
-            studentsList.forEach((student, index) => {
-                html += `
-                    <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="padding: 10px;">${index + 1}</td>
-                        <td style="padding: 10px;">${student.reg}</td>
-                        <td style="padding: 10px;">${student.name}</td>
-                        <td style="padding: 10px;">${student.batch || 'A'}</td>
-                        <td style="padding: 10px;">${student.year || '1st'}</td>
-                    </tr>
-                `;
-            });
-            
-            html += `</tbody></table></div></div>`;
-            document.getElementById('mainContent').innerHTML = html;
-        }
-
-        // ==================== FACULTY LIST PAGE ====================
-        function showFacultyList() {
-            let html = `
-                <div style="background: white; border-radius: 20px; padding: 20px;">
-                    <h2 style="color: #8B0000; margin-bottom: 20px;">Faculty List (${staffMembers.length})</h2>
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background: #f8f9fa;">
-                                    <th style="padding: 12px; text-align: left;">S.No</th>
-                                    <th style="padding: 12px; text-align: left;">Name</th>
-                                    <th style="padding: 12px; text-align: left;">Department</th>
-                                    <th style="padding: 12px; text-align: left;">Designation</th>
-                                    <th style="padding: 12px; text-align: left;">Email</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-            `;
-            
-            staffMembers.forEach((staff, index) => {
-                html += `
-                    <tr style="border-bottom: 1px solid #f0f0f0;">
-                        <td style="padding: 10px;">${index + 1}</td>
-                        <td style="padding: 10px;">${staff.name}</td>
-                        <td style="padding: 10px;">${staff.department}</td>
-                        <td style="padding: 10px;">${staff.designation}</td>
-                        <td style="padding: 10px;">${staff.email}</td>
-                    </tr>
-                `;
-            });
-            
-            html += `</tbody></table></div></div>`;
-            document.getElementById('mainContent').innerHTML = html;
-        }
-
-        // ==================== ATTENDANCE PAGE ====================
-        function showAttendance() {
-            const content = document.getElementById('mainContent');
-            
-            if (currentUser.role === 'student') {
-                content.innerHTML = `
-                    <div class="attendance-page">
-                        <div class="attendance-tabs">
-                            <button class="attendance-tab active" onclick="showAttendanceCourse()">Course</button>
-                            <button class="attendance-tab" onclick="showAttendanceHourly()">Hourly</button>
-                            <button class="attendance-tab" onclick="showAttendanceTermly()">Termly</button>
-                        </div>
-                        <div id="attendanceContent">
-                            ${getAttendanceCourseHTML()}
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function getAttendanceCourseHTML() {
-            const studentId = currentUser.reg;
-            
-            const allRecords = Object.keys(attendanceData)
-                .filter(key => key.startsWith(studentId) && !key.includes('_'));
-            
-            const totalClasses = allRecords.length;
-            const presentClasses = allRecords.filter(key => attendanceData[key] === 'present').length;
-            const attendancePercentage = totalClasses > 0 ? Math.round((presentClasses / totalClasses) * 100) : 0;
-            
-            return `
-                <div class="course-list">
-                    <div class="course-item">
-                        <div class="course-header">
-                            <h3>Overall Attendance</h3>
-                        </div>
-                        <div class="course-stats">
-                            <span>Total Classes: ${totalClasses}</span>
-                            <span>Attended: ${presentClasses}</span>
-                            <span>Percentage: ${attendancePercentage}%</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showAttendanceCourse() {
-            document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('attendanceContent').innerHTML = getAttendanceCourseHTML();
-        }
-
-        function showAttendanceHourly() {
-            document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const studentId = currentUser.reg;
-            
-            const months = [
-                { name: 'November', year: 2025, monthNum: 11, days: 30 },
-                { name: 'December', year: 2025, monthNum: 12, days: 31 },
-                { name: 'January', year: 2026, monthNum: 1, days: 31 },
-                { name: 'February', year: 2026, monthNum: 2, days: 28 }
-            ];
-            
-            const currentMonth = months.find(m => m.name === selectedMonth) || months[0];
-            
-            const days = [];
-            for (let d = 1; d <= currentMonth.days; d++) {
-                const date = new Date(currentMonth.year, currentMonth.monthNum - 1, d);
-                const weekday = date.toLocaleDateString('en-US', { weekday: 'short' }).substring(0, 3);
-                days.push({ 
-                    day: d, 
-                    weekday: weekday, 
-                    date: `${currentMonth.year}-${currentMonth.monthNum.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}` 
+    async function submitAttendance() {
+        if (!selectedCourse) return;
+        
+        const today = new Date().toISOString().split('T')[0];
+        const selectedCourseObj = courses.find(c => c.id == selectedCourse);
+        
+        const records = [];
+        
+        studentsList.forEach(student => {
+            const key = `${student.reg}_${today}_${selectedPeriod}`;
+            const status = attendanceData[key];
+            if (status && status !== 'unmarked') {
+                records.push({
+                    date: today,
+                    studentId: student.reg,
+                    studentName: student.name,
+                    period: selectedPeriod,
+                    status: status,
+                    faculty: currentUser.name,
+                    course: selectedCourseObj ? `${selectedCourseObj.code}-${selectedCourseObj.name}` : 'Course'
                 });
             }
-            
-            const html = `
-                <div>
-                    <div class="month-grid">
-                        ${months.map(month => `
-                            <button class="month-btn ${selectedMonth === month.name ? 'active' : ''}" onclick="selectMonth('${month.name}')">
-                                ${month.name}
-                            </button>
-                        `).join('')}
-                    </div>
-                    <table class="attendance-table">
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>H1</th>
-                                <th>H2</th>
-                                <th>H3</th>
-                                <th>H4</th>
-                                <th>H5</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${days.map(day => {
-                                return `
-                                    <tr>
-                                        <td>${day.day}-${day.weekday}</td>
-                                        ${[1, 2, 3, 4, 5].map(hour => {
-                                            const key = `${studentId}_${day.date}_${hour}`;
-                                            const status = attendanceData[key] || 'unmarked';
-                                            return `<td class="status-${status}">${getStatusSymbol(status)}</td>`;
-                                        }).join('')}
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                    <div class="status-buttons">
-                        <span class="status-btn present">✅ Present</span>
-                        <span class="status-btn absent">❌ Absent</span>
-                        <span class="status-btn late">⏰ Late</span>
-                        <span class="status-btn letoff">☑ Let-off</span>
-                        <span class="status-btn unmarked">◻ Unmarked</span>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('attendanceContent').innerHTML = html;
-        }
-
-        function selectMonth(month) {
-            selectedMonth = month;
-            showAttendanceHourly();
-        }
-
-        function showAttendanceTermly() {
-            document.querySelectorAll('.attendance-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const studentId = currentUser.reg;
-            
-            const months = [
-                { name: 'Nov', days: 30, year: 2025, monthNum: 11 },
-                { name: 'Dec', days: 31, year: 2025, monthNum: 12 },
-                { name: 'Jan', days: 31, year: 2026, monthNum: 1 }
-            ];
-            
-            let totalAttended = 0;
-            let totalClasses = 0;
-            
-            const monthData = months.map((month, index) => {
-                let attended = 0;
-                let total = 0;
-                
-                for (let day = 1; day <= month.days; day++) {
-                    const date = `${month.year}-${month.monthNum.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                    for (let hour = 1; hour <= 5; hour++) {
-                        const key = `${studentId}_${date}_${hour}`;
-                        if (attendanceData[key]) {
-                            total++;
-                            totalClasses++;
-                            if (attendanceData[key] === 'present') {
-                                attended++;
-                                totalAttended++;
-                            }
-                        }
-                    }
-                }
-                
-                const percent = total > 0 ? Math.round((attended / total) * 100) : 0;
-                
-                return {
-                    sl: index + 1,
-                    year: month.year,
-                    month: month.name,
-                    attended: attended,
-                    total: total,
-                    percent: percent
-                };
-            });
-            
-            const overallPercent = totalClasses > 0 ? Math.round((totalAttended / totalClasses) * 100) : 0;
-            
-            const html = `
-                <div class="term-stats">
-                    <div class="term-header">
-                        <h3>Semester-6</h3>
-                        <span>${overallPercent}%</span>
-                    </div>
-                    <div class="term-period">Term<br>19-11-2025 To 15-04-2026</div>
-                    <table class="term-table">
-                        <thead>
-                            <tr>
-                                <th>SI</th>
-                                <th>Year</th>
-                                <th>Month</th>
-                                <th>Attendance</th>
-                                <th>Total</th>
-                                <th>%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${monthData.map(m => `
-                                <tr>
-                                    <td>${m.sl}</td>
-                                    <td>${m.year}</td>
-                                    <td>${m.month}</td>
-                                    <td>${m.attended}</td>
-                                    <td>${m.total}</td>
-                                    <td>${m.percent}</td>
-                                </tr>
-                            `).join('')}
-                            <tr>
-                                <td colspan="3"><strong>Total</strong></td>
-                                <td><strong>${totalAttended}</strong></td>
-                                <td><strong>${totalClasses}</strong></td>
-                                <td><strong>${overallPercent}</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            
-            document.getElementById('attendanceContent').innerHTML = html;
-        }
-
-        function getStatusSymbol(status) {
-            switch(status) {
-                case 'present': return '✅';
-                case 'absent': return '❌';
-                case 'late': return '⏰';
-                case 'letoff': return '☑';
-                default: return '◻';
-            }
-        }
-
-        // ==================== PROFILE PAGE ====================
-        function showProfile() {
-            const content = document.getElementById('mainContent');
-            
-            content.innerHTML = `
-                <div class="account-page" style="background: white; border-radius: 20px; padding: 20px;">
-                    <div class="account-header" style="text-align: center; margin-bottom: 30px;">
-                        <div class="profile-avatar" style="width: 80px; height: 80px; background: #8B0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; margin: 0 auto 15px;">
-                            ${currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
-                        </div>
-                        <h2 style="color: #333; font-size: 22px;">${currentUser.name}</h2>
-                        <p style="color: #666;">${currentUser.role === 'student' ? 'Register No: ' + currentUser.reg : 'Staff Member'}</p>
-                        ${currentUser.role === 'student' ? `<p style="color: #8B0000;">Batch: ${currentUser.batch} | Year: ${currentUser.semester}</p>` : ''}
-                    </div>
-
-                    <button class="logout-btn-account" onclick="logout()" style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer;">Logout</button>
-                </div>
-            `;
-        }
-
-        // ==================== PLACEHOLDER PAGES ====================
-        function showPlaceholder(page) {
-            document.getElementById('mainContent').innerHTML = `<div style="background: white; border-radius: 20px; padding: 20px;"><h2 style="color: #8B0000; text-transform: capitalize;">${page}</h2><p>Coming soon!</p></div>`;
-        }
-
-        // ==================== NOTIFICATION ====================
-        function showNotification(message, type = 'info') {
-            const notification = document.getElementById('notification');
-            const icon = document.getElementById('notificationIcon');
-            const msg = document.getElementById('notificationMessage');
-            
-            notification.className = `notification ${type}`;
-            icon.textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
-            msg.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => notification.classList.remove('show'), 3000);
-        }
-
-        // ==================== LOGOUT ====================
-        function logout() {
-            clearSession();
-            currentUser = null;
-            selectedCourse = null;
-            selectedPeriod = 1;
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('dashboard').classList.remove('active');
-            document.getElementById('registerNumber').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('adminPassword').value = '';
-            showNotification('Logged out successfully', 'info');
-        }
-
-        // ==================== INITIALIZE ====================
-        document.addEventListener('DOMContentLoaded', async () => {
-            setRole('student');
-            await loadStudentsFromSheet();
-            await loadAttendanceFromSheet();
-            loadSession();
-            startAutoRefresh();
-            updateRecentItems();
         });
-    </script>
+        
+        if (records.length === 0) {
+            showNotification('No attendance marked!', 'info');
+            return;
+        }
+        
+        await saveAttendanceToSheet(records);
+        
+        setTimeout(async () => {
+            await loadAttendanceFromSheet();
+        }, 2000);
+        
+        selectedCourse = null;
+        showMarkAttendance();
+    }
+
+    // ==================== OTHER PAGE FUNCTIONS ====================
+    function showStudentHome() {
+        // Your existing showStudentHome function
+        document.getElementById('mainContent').innerHTML = '<div>Student Home</div>';
+    }
+
+    function showAttendance() {
+        document.getElementById('mainContent').innerHTML = '<div>Attendance Page</div>';
+    }
+
+    function showProfile() {
+        document.getElementById('mainContent').innerHTML = '<div>Profile Page</div>';
+    }
+
+    function showDepartments() {
+        document.getElementById('mainContent').innerHTML = '<div>Departments Page</div>';
+    }
+
+    function showAllCourses() {
+        document.getElementById('mainContent').innerHTML = '<div>All Courses Page</div>';
+    }
+
+    function showStudentsList() {
+        if (studentsList.length === 0) {
+            document.getElementById('mainContent').innerHTML = '<div>No students found</div>';
+            return;
+        }
+        let html = '<h2>Students List</h2><ul>';
+        studentsList.forEach(s => html += `<li>${s.name} - ${s.reg}</li>`);
+        html += '</ul>';
+        document.getElementById('mainContent').innerHTML = html;
+    }
+
+    function showFacultyList() {
+        let html = '<h2>Faculty List</h2><ul>';
+        staffMembers.forEach(s => html += `<li>${s.name} - ${s.department}</li>`);
+        html += '</ul>';
+        document.getElementById('mainContent').innerHTML = html;
+    }
+
+    function showPlaceholder(page) {
+        document.getElementById('mainContent').innerHTML = `<h2>${page} - Coming Soon</h2>`;
+    }
+
+    function getPeriodTime(period) {
+        const times = {
+            1: '09:00 - 10:00',
+            2: '10:00 - 11:00',
+            3: '11:00 - 12:00',
+            4: '12:00 - 13:00',
+            5: '14:00 - 15:00'
+        };
+        return times[period] || '';
+    }
+
+    // ==================== NOTIFICATION ====================
+    function showNotification(message, type = 'info') {
+        const notification = document.getElementById('notification');
+        const icon = document.getElementById('notificationIcon');
+        const msg = document.getElementById('notificationMessage');
+        
+        notification.className = `notification ${type}`;
+        icon.textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+        msg.textContent = message;
+        notification.classList.add('show');
+        
+        setTimeout(() => notification.classList.remove('show'), 3000);
+    }
+
+    // ==================== LOGOUT ====================
+    function logout() {
+        clearSession();
+        currentUser = null;
+        selectedCourse = null;
+        selectedPeriod = 1;
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('dashboard').classList.remove('active');
+        document.getElementById('registerNumber').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('adminPassword').value = '';
+        showNotification('Logged out successfully', 'info');
+    }
+
+    // ==================== INITIALIZE ====================
+    document.addEventListener('DOMContentLoaded', async () => {
+        setRole('student');
+        await loadStudentsFromSheet();
+        await loadAttendanceFromSheet();
+        loadSession();
+        startAutoRefresh();
+        updateRecentItems();
+    });
+</script>
 </body>
 </html>
